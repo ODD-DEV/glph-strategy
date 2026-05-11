@@ -1,0 +1,4609 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLPH Strategy Hub</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0a0a0b;
+  --surface: #111113;
+  --surface-2: #18181b;
+  --surface-3: #1f1f23;
+  --border: #27272a;
+  --border-light: #3f3f46;
+  --text: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --accent: #6366f1;
+  --accent-light: #818cf8;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --green: #22c55e;
+  --green-dim: rgba(34, 197, 94, 0.12);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245, 158, 11, 0.12);
+  --red: #ef4444;
+  --red-dim: rgba(239, 68, 68, 0.12);
+  --cyan: #06b6d4;
+  --cyan-dim: rgba(6, 182, 212, 0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 10, 11, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-mark {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--accent), #a855f7);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: -0.5px;
+  color: white;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.logo-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-light);
+  margin: 0 4px;
+}
+
+.logo-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.version-badge {
+  padding: 4px 10px;
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.tabs-container {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 69px;
+  z-index: 99;
+}
+
+.tabs {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  gap: 0;
+}
+
+.tab {
+  position: relative;
+  padding: 16px 28px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: color 0.2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: inherit;
+}
+
+.tab:hover { color: var(--text-secondary); }
+.tab.active { color: var(--text); }
+
+.tab::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 16px;
+  right: 16px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px 2px 0 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tab.active::after { opacity: 1; }
+
+.tab-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.tab-icon.global { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+.tab-icon.korea { background: linear-gradient(135deg, #06b6d4, #0ea5e9); }
+.tab-icon.sku { background: linear-gradient(135deg, #f59e0b, #f97316); }
+
+.tab-label-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 32px 120px;
+}
+
+.tab-panel { display: none; animation: fadeIn 0.35s ease; }
+.tab-panel.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero {
+  margin-bottom: 56px;
+  padding: 48px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.hero-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent-light);
+  margin-bottom: 16px;
+}
+
+.hero h1 {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, var(--text) 0%, var(--text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 640px;
+  line-height: 1.7;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 24px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.hero-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.hero-meta-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.section { margin-bottom: 48px; }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.section h2 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.section h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 32px 0 16px;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.section h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 24px 0 12px;
+  color: var(--text-secondary);
+}
+
+.section p, .section > ul > li, .accordion-content p {
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  font-size: 15px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.card:hover { border-color: var(--border-light); transform: translateY(-1px); }
+
+.card-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.card-value {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 4px;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.card-accent { border-left: 3px solid var(--accent); }
+.card-green { border-left: 3px solid var(--green); }
+.card-amber { border-left: 3px solid var(--amber); }
+.card-red { border-left: 3px solid var(--red); }
+.card-cyan { border-left: 3px solid var(--cyan); }
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.stat-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--accent-light);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+thead { background: var(--surface-2); }
+
+th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+td strong, td b { color: var(--text); font-weight: 600; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-verified { background: var(--green-dim); color: var(--green); }
+.badge-hypothesis { background: var(--amber-dim); color: var(--amber); }
+.badge-unverified { background: var(--red-dim); color: var(--red); }
+.badge-info { background: var(--cyan-dim); color: var(--cyan); }
+.badge-accent { background: var(--accent-glow); color: var(--accent-light); }
+
+.callout {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+
+.callout-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-light);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.callout p { font-size: 14px; color: var(--text-secondary); margin-bottom: 0; }
+.callout p + p { margin-top: 12px; }
+
+.callout.callout-green { border-left-color: var(--green); }
+.callout.callout-green .callout-title { color: var(--green); }
+.callout.callout-amber { border-left-color: var(--amber); }
+.callout.callout-amber .callout-title { color: var(--amber); }
+.callout.callout-red { border-left-color: var(--red); }
+.callout.callout-red .callout-title { color: var(--red); }
+
+.code-block {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 32px;
+  margin-bottom: 24px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 11px; top: 4px; bottom: 4px;
+  width: 2px;
+  background: var(--border);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -25px; top: 6px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+}
+
+.timeline-date { font-size: 12px; font-weight: 600; color: var(--accent-light); margin-bottom: 4px; }
+.timeline-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.timeline-desc { font-size: 13px; color: var(--text-muted); }
+
+.flow-steps {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.flow-step {
+  flex: 1;
+  min-width: 140px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+}
+
+.flow-step-num { font-size: 11px; font-weight: 700; color: var(--accent-light); margin-bottom: 4px; }
+.flow-step-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.flow-step-desc { font-size: 11px; color: var(--text-muted); }
+
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  color: var(--border-light);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.checklist { list-style: none; margin-bottom: 24px; }
+
+.checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.checklist li:last-child { border-bottom: none; }
+
+.check-box {
+  width: 18px; height: 18px;
+  border: 2px solid var(--border-light);
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.compare-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.compare-header {
+  padding: 16px 20px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.compare-body { padding: 20px; }
+
+.compare-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.compare-row:last-child { border-bottom: none; }
+.compare-label { color: var(--text-muted); }
+.compare-value { color: var(--text); font-weight: 500; text-align: right; max-width: 60%; }
+
+.accordion {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.accordion-trigger {
+  width: 100%;
+  padding: 16px 20px;
+  background: var(--surface);
+  border: none;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+
+.accordion-trigger:hover { background: var(--surface-2); }
+
+.accordion-arrow { transition: transform 0.2s; color: var(--text-muted); }
+.accordion.open .accordion-arrow { transform: rotate(180deg); }
+
+.accordion-content {
+  display: none;
+  padding: 0 20px 20px;
+  background: var(--surface);
+}
+
+.accordion.open .accordion-content { display: block; }
+
+.divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+.feature-list { list-style: none; margin-bottom: 24px; }
+
+.feature-list li {
+  padding: 8px 0 8px 20px;
+  position: relative;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.feature-list li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 14px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.sub-section {
+  padding-left: 20px;
+  border-left: 2px solid var(--border);
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .header-inner { padding: 12px 16px; }
+  .tabs { padding: 0 16px; overflow-x: auto; }
+  .tab { padding: 12px 16px; font-size: 13px; }
+  .content { padding: 24px 16px 80px; }
+  .hero { padding: 28px 24px; }
+  .hero h1 { font-size: 26px; }
+  .card-grid { grid-template-columns: 1fr; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .flow-steps { flex-direction: column; }
+  .flow-arrow { transform: rotate(90deg); justify-content: center; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .logo-divider, .logo-sub, .header-meta { display: none; }
+  .tab .tab-label-sub { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-mark">G</div>
+      <span class="logo-text">GLPH</span>
+      <div class="logo-divider"></div>
+      <span class="logo-sub">Strategy Hub</span>
+    </div>
+    <div class="header-meta">
+      <span class="version-badge">V2 &middot; 2026.05</span>
+      <span>Hanah One Co.</span>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs-container">
+  <div class="tabs">
+    <button class="tab active" data-tab="sku" onclick="switchTab('sku')">
+      <span class="tab-icon sku">S</span>
+      SKU Portfolio
+      <span class="tab-label-sub">Research</span>
+    </button>
+    <button class="tab" data-tab="korea" onclick="switchTab('korea')">
+      <span class="tab-icon korea">K</span>
+      Korea Launch
+      <span class="tab-label-sub">Offline + Online</span>
+    </button>
+    <button class="tab" data-tab="global" onclick="switchTab('global')">
+      <span class="tab-icon global">G</span>
+      Global Plan
+      <span class="tab-label-sub">Amazon US</span>
+    </button>
+  </div>
+</nav>
+
+<main class="content">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TAB 1: SKU PORTFOLIO RESEARCH (FULL)                   -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="tab-panel active" id="panel-sku">
+
+<div class="hero">
+  <div class="hero-eyebrow">Product Research</div>
+  <h1>GLPH SKU 포트폴리오<br>리서치 (최종)</h1>
+  <p class="hero-desc">단일(올인원) vs 복수 SKU 전략 판단. 소비자 심리학 + 시장 데이터 + 포뮬러 경쟁력 + 벤치마킹 + 오프라인→온라인 전략.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><div class="hero-meta-dot"></div>3건 독립 연구 기반</div>
+    <div class="hero-meta-item"><div class="hero-meta-dot"></div>Nutrafol / Vital Proteins 벤치마크</div>
+    <div class="hero-meta-item"><div class="hero-meta-dot"></div>3 SKU 최종 포뮬러 확정</div>
+  </div>
+</div>
+
+<!-- Section 1 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">1</div>
+    <h2>개요</h2>
+  </div>
+  <h3>핵심 질문</h3>
+  <p>50g 올인원 1개 vs 복수 SKU — 어느 쪽이 소비자를 선택하게 만드는가?</p>
+  <h3>배경</h3>
+  <ul class="feature-list">
+    <li>현재 50g 올인원(고형분 37.7%)은 맛·제조에서 타협 필요 가능성 높음</li>
+    <li>타협하면 각 원료가 임상 유효 용량 미달 ("다 들어있지만 다 중간")</li>
+    <li>복수 SKU로 나누면 각 SKU가 풀 도즈 도달 + 최적 제형 선택 가능</li>
+  </ul>
+  <h3>포트폴리오 역할 (Ian 원안)</h3>
+  <ul class="feature-list">
+    <li>탈모·피부 전용 SKU = 공격 플레이어 (특정 고객을 직접 잡음)</li>
+    <li>올인원 SKU = 리바운더 (전용이 놓친 고객을 받아줌)</li>
+    <li>올인원은 바스켓 역할. 공격 SKU로 못 잡은 고객이 다른 곳으로 떨어지지 않게 받는 구조.</li>
+  </ul>
+</div>
+
+<div class="divider"></div>
+
+<!-- Section 2 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">2</div>
+    <h2>딥 리서치 — 소비자 선택 심리학</h2>
+  </div>
+
+  <h3>연구 1: Single Option Aversion</h3>
+  <p><strong>Mochon, Daniel (2013). "Single Option Aversion." Journal of Consumer Research, Vol. 40.</strong></p>
+  <ul class="feature-list">
+    <li>소속: Tulane University</li>
+    <li>저널: Journal of Consumer Research (소비자 연구 최상위 저널, 피어리뷰)</li>
+    <li>설계: 소비자에게 DVD 플레이어를 제시</li>
+    <li>그룹 A: Sony 1개만 제시</li>
+    <li>그룹 B: Philips 1개만 제시</li>
+    <li>그룹 C: Sony + Philips 2개 제시</li>
+    <li>결과: 1개만 제시받은 그룹이 구매를 거절할 확률이 유의미하게 높음. 2개를 본 그룹이 더 많이 구매.</li>
+    <li>연구자 결론: "선택지를 하나로 제한하면 소비자가 해당 제품을 구매할 가능성이 줄어든다. 처음에 하나만 제시받은 소비자는 나중에 다른 옵션이 주어져도 계속 대안을 찾으려는 경향이 있다."</li>
+    <li>후속 인용: 다수 논문에서 "single option aversion"을 확립된 효과로 참조. ResearchGate에서 후속 연구들이 이 용어를 채택.</li>
+  </ul>
+
+  <h3>연구 2: Which-to-buy vs Whether-to-buy 마인드셋</h3>
+  <p><strong>Tian, Jing; Chen, Rong; He, Feng (2019). "Forgo or Go for One?" Frontiers in Psychology.</strong></p>
+  <ul class="feature-list">
+    <li>소속: Tsinghua University (칭화대)</li>
+    <li>저널: Frontiers in Psychology (PMC 등재, 피어리뷰)</li>
+    <li>설계: 4개의 피험자간 실험(between-subject)</li>
+    <li>핵심 발견:
+      <ul style="margin-top:8px;padding-left:20px;">
+        <li style="padding:4px 0;color:var(--text-secondary);font-size:14px;">복수 옵션 → "which-to-buy" 마인드셋 활성화 → 구매 의향 유의미하게 높음</li>
+        <li style="padding:4px 0;color:var(--text-secondary);font-size:14px;">단일 옵션 → "whether-to-buy" 마인드셋 → 구매 의향 낮음</li>
+        <li style="padding:4px 0;color:var(--text-secondary);font-size:14px;">Mochon(2013)과 독립적으로 같은 결론에 도달</li>
+        <li style="padding:4px 0;color:var(--text-secondary);font-size:14px;">4개 실험으로 재현성 확인</li>
+      </ul>
+    </li>
+    <li>추가 발견: 구매 마인드셋은 장바구니 상태, 결제 방식 등으로도 조작 가능</li>
+  </ul>
+
+  <h3>연구 3: 선행 관찰</h3>
+  <p><strong>Zakay (1984). 단일 대안 선택 연구.</strong></p>
+  <ul class="feature-list">
+    <li>사람들은 단일 대안이 "이상적(ideal)"에 충분히 가깝지 않으면 거부</li>
+    <li>Mochon(2013)과 Tian(2019) 모두 이 연구를 선행 근거로 인용</li>
+  </ul>
+
+  <h3>실측 데이터: 3개 vs 5개</h3>
+  <p><strong>Dr. Scholl's 이메일 캠페인 (실제 비즈니스 A/B 테스트)</strong></p>
+  <ul class="feature-list">
+    <li>3개 제품 이메일 vs 5개 제품 이메일 비교</li>
+    <li>3개가: 매출 38% 높음, 전환율 58% 높음, 주문 59% 높음</li>
+    <li>학술 피어리뷰는 아니지만 실제 비즈니스 실측 데이터</li>
+  </ul>
+
+  <h3>반박 근거 — 투명하게</h3>
+  <p><strong>Scheibehenne, Greifeneder &amp; Todd (2010). 메타분석. Journal of Consumer Research.</strong></p>
+  <ul class="feature-list">
+    <li>Iyengar 잼 실험 재현 시도 → 효과 발견 못 함</li>
+    <li>기존 연구 전부 모아 메타분석 → 평균 효과 크기 = 거의 0</li>
+    <li>"선택지가 많으면 구매가 줄어든다"는 효과가 일관되지 않음</li>
+    <li>연구마다 결과 상충 (상황에 따라 다름)</li>
+    <li><strong>다만</strong>: "많은 옵션 vs 적은 옵션"에 대한 메타분석이지 "1개 vs 복수"를 다루지 않음</li>
+    <li>Mochon의 Single Option Aversion은 이 메타분석에 의해 반박되지 않음</li>
+  </ul>
+
+  <h3>핵심 메커니즘</h3>
+  <ul class="feature-list">
+    <li>1개 제품: "하실래요?" = Yes/No → "whether-to-buy" 마인드셋 → No가 쉬움</li>
+    <li>3개 제품: "뭐가 걱정되세요?" = Which → "which-to-buy" 마인드셋 → 거절하려면 질문의 프레임을 깨야 함 → 심리적 저항 발생 → 거절이 어려움</li>
+  </ul>
+
+  <h3>근거 종합</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>주장</th><th>근거 수준</th><th>출처</th></tr></thead>
+      <tbody>
+        <tr><td>1개만 제시 → 거절 확률 ↑</td><td>3건 독립 연구로 확인</td><td>Mochon 2013, Tian 2019, Zakay 1984</td></tr>
+        <tr><td>복수 = which-to-buy → 구매 ↑</td><td>4개 실험 검증</td><td>Tian et al. 2019</td></tr>
+        <tr><td>3개가 5개보다 나음</td><td>실측 1건</td><td>Dr. Scholl's</td></tr>
+        <tr><td>"3개가 정확히 최적"인가</td><td>3 vs 2, 3 vs 4 비교 없음</td><td>"소수가 다수보다 낫다"가 정확</td></tr>
+        <tr><td>의원 카운터에서도 적용?</td><td>데이터 없음</td><td>GLPH 직접 테스트 필요</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Section 3 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">3</div>
+    <h2>딥 리서치 — 시장 데이터</h2>
+  </div>
+
+  <h3>3-1. Nutrafol — 탈모 카테고리 벤치마크</h3>
+  <div class="callout callout-green">
+    <div class="callout-title">핵심 발견</div>
+    <p>Nutrafol 아마존 리스팅에 <strong>"Can be used with GLP-1 medications"</strong> 추가 (2026, Amazon 직접 확인)</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>데이터</th><th>출처</th></tr></thead>
+      <tbody>
+        <tr><td>런칭</td><td>2016년</td><td>Modern Retail 2022</td></tr>
+        <tr><td>포지션</td><td>#1 Dermatologist-Recommended Hair Growth Supplement (미국)</td><td>Unilever 2025</td></tr>
+        <tr><td>초기 채널</td><td>의사·헤어 전문가 4,000명 오프라인 네트워크</td><td>Modern Retail 2022</td></tr>
+        <tr><td>현재 채널</td><td>90% DTC (자사몰+아마존)</td><td>Modern Retail 2022</td></tr>
+        <tr><td>DTC 재구매율</td><td>80% (DTC 매출의 80%가 기존 고객)</td><td>Unilever 2025</td></tr>
+        <tr><td>소비자</td><td>100만+ 미국 소비자</td><td>Unilever 2025</td></tr>
+        <tr><td>인수</td><td>2022년 Unilever → 이후 매출 2배+ 성장</td><td>Unilever 2025</td></tr>
+        <tr><td>유통 확장</td><td>2023 Sephora, 2023 중국 크로스보더</td><td>Retail Dive 2024</td></tr>
+        <tr><td>SKU 확장</td><td>Women→Men→Postpartum→Balance→Men50+→Skin(여드름)</td><td>Retail Dive 2024</td></tr>
+        <tr><td>원료</td><td>21종: Synergen Complex(saw palmetto, ashwagandha, curcumin, marine collagen, tocotrienol, HA) + Nutrafol Blend(cysteine, lysine, methionine, keratin, resveratrol, piperine) + biotin, zinc, selenium, VitA/C/D</td><td>Nutrafol 공식, PMC 8944288</td></tr>
+        <tr><td>임상</td><td>20건+ (RCT 3건 포함)</td><td>Nutrafol 공식</td></tr>
+        <tr><td>타겟</td><td>여성 80%</td><td>Modern Retail 2022</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>Nutrafol 성장 경로:</strong></p>
+  <ul class="feature-list">
+    <li>Phase 1 (2016~2019): 의사 4,000명 네트워크 → "의사 추천" 신뢰 구축</li>
+    <li>Phase 2 (2019~2022): DTC 확장 → "#1 Dermatologist-Recommended" 마케팅 → 매출 90% 온라인</li>
+    <li>Phase 3 (2022~현재): Unilever 인수 → 아마존+Sephora+중국 확장, 매출 2배+</li>
+    <li>Phase 4 (2024~): SKU 확장 (Hair→Skin 여드름) + GLP-1 compatible 표기</li>
+  </ul>
+
+  <div class="callout">
+    <div class="callout-title">CEO 원칙</div>
+    <p>"I don't believe in diversifying too quickly just to increase basket sizes."</p>
+    <p>"Retail is a great way to introduce people to the brand via topical products while still trying to get repeat customers to buy online."</p>
+  </div>
+
+  <h3>3-2. Vital Proteins — 콜라겐 카테고리 벤치마크</h3>
+  <p><strong>아마존 콜라겐 Best Seller #1 (80,000+ 리뷰)</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>Vital Proteins</th><th>출처</th></tr></thead>
+      <tbody>
+        <tr><td>소유</td><td>Nestle Health Science</td><td>&mdash;</td></tr>
+        <tr><td>콜라겐</td><td>20g/서빙 (소 유래, Type I &amp; III)</td><td>Amazon 리스팅</td></tr>
+        <tr><td>Advanced 버전</td><td>+VitC + HA 120mg + VERISOL 2.5g (별도 SKU)</td><td>Amazon 리스팅</td></tr>
+        <tr><td>제형</td><td>분말 (물/커피에 타서 음용)</td><td>&mdash;</td></tr>
+        <tr><td>가격</td><td>$36/22서빙 = $1.64/서빙</td><td>Amazon</td></tr>
+        <tr><td>리뷰</td><td>80,000+ (대부분 긍정)</td><td>Yahoo Health 2026</td></tr>
+        <tr><td>인증</td><td>NSF Certified for Sport</td><td>Yahoo Health 2026</td></tr>
+        <tr><td>임상</td><td>브랜드 자체 RCT 없음. 일반 콜라겐 문헌 참조.</td><td>&mdash;</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>아마존 콜라겐 카테고리 특성 (ASInsight 2026):</strong></p>
+  <ul class="feature-list">
+    <li>가격대 $20~50에 전체 ASIN의 63.14% 집중</li>
+    <li>리뷰 평점 4.3~4.7에 80.74% 분포</li>
+    <li>Top 3 ASIN 합산 클릭률 25.16%, 전환율 16.72%</li>
+  </ul>
+
+  <h3>3-3. GLP-1 전용 보충제 — 경쟁 환경 형성 중</h3>
+  <p><strong>The Vitamin Shoppe (2025.04):</strong></p>
+  <ul class="feature-list">
+    <li>"Whole Health Rx" 브랜드로 GLP-1 전용 라인 출시</li>
+    <li>GLP-1 Support Multivitamins (남녀), GLP-1 Support Nutrient Powder</li>
+    <li>사장: "GLP-1 약물 사용자에게 맞춤화된 영양 지원의 시장 gap을 인식"</li>
+    <li>= GLP-1 전용 보충제라는 카테고리가 형성되기 시작</li>
+  </ul>
+
+  <p><strong>Nutrafol:</strong></p>
+  <ul class="feature-list">
+    <li>"Can be used with GLP-1 medications" 문구 추가 = GLP-1 시장 관심 표시</li>
+    <li>다만 GLP-1 전용 제품 출시 발표는 없음 (2026.05 기준)</li>
+    <li>"전용"이 아닌 "호환(compatible)" 수준</li>
+  </ul>
+
+  <p>→ GLP-1 전용 보충제 시장이 형성되고 있으며 빠른 진입이 유리한 환경. 다만 "시간 제한"이라고 단정할 구체적 근거(Nutrafol 전용 라인 개발 확인 등)는 없음.</p>
+
+  <h3>3-4. AG1 — 단일 SKU의 유일한 대표</h3>
+  <ul class="feature-list">
+    <li>2010년 런칭, 15년간 단일 SKU(그린 파우더) 운영</li>
+    <li>2024년: 아마존 진출 + Costco 입점 + 두 번째 SKU "AGZ"(수면 보충제) 출시</li>
+    <li>CMO: "카테고리를 만들고 나서 확장한다"</li>
+    <li>= 단일 SKU 전략은 "카테고리 창출" 단계에서만 효과적. 결국 복수로 전환.</li>
+    <li>(출처: AdExchanger 2024)</li>
+  </ul>
+
+  <h3>3-5. 한국 건기식</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>데이터</th><th>출처</th></tr></thead>
+      <tbody>
+        <tr><td>시장 규모</td><td>2024년 약 5조 9,531억 원</td><td>건기식협회 2025</td></tr>
+        <tr><td>성장</td><td>전년 대비 1.6% 감소, 정체기</td><td>전자신문 2024.11</td></tr>
+        <tr><td>상위 3사</td><td>종근당(27.8%), 고려은단(25.2%), 정관장(24.9%)</td><td>푸드투데이 2025.11</td></tr>
+        <tr><td>상위 3사 SKU</td><td>전부 복수 SKU</td><td>&mdash;</td></tr>
+        <tr><td>단일 SKU 상위</td><td>없음</td><td>&mdash;</td></tr>
+        <tr><td>약국 채널</td><td>4.2% (3년 최고, 상승 추세)</td><td>전자신문 2024.11</td></tr>
+        <tr><td>온라인 비중</td><td>69.8%</td><td>건기식협회 2024</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Section 4 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">4</div>
+    <h2>합리적 요인 정리</h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>요인</th><th>단일</th><th>복수 (3개)</th></tr></thead>
+      <tbody>
+        <tr><td>소비자 심리</td><td>whether-to-buy, 거절 쉬움</td><td><strong>which-to-buy, 거절 어려움</strong></td></tr>
+        <tr><td>제조·맛</td><td>37.7% 고형분 리스크</td><td><strong>각 SKU 여유</strong></td></tr>
+        <tr><td>임상 용량</td><td>타협 필요</td><td><strong>풀 도즈 가능</strong></td></tr>
+        <tr><td>가격</td><td>37,500원 단일</td><td><strong>25,000~39,000원 범위</strong></td></tr>
+        <tr><td>한국 선례</td><td>상위 단일 0</td><td><strong>상위 전부 복수</strong></td></tr>
+        <tr><td>아마존</td><td>리스팅 1개</td><td><strong>3개 = 노출 3배</strong></td></tr>
+        <tr><td>hero 결정</td><td>런칭 전 고정</td><td><strong>시장이 정함</strong></td></tr>
+        <tr><td>실패 리스크</td><td>전체</td><td><strong>부분</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Section 5 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">5</div>
+    <h2>GLP-1 탈모 기전 분석 — AFTER-HAIR 포뮬러의 근거</h2>
+  </div>
+
+  <h3>5-1. GLP-1 탈모는 TE와 AGA 모두 발생한다</h3>
+
+  <p><strong>Gupta, Teasell, Economopoulos, Mirmirani (2026). 시스템적 리뷰. PMC.</strong></p>
+  <ul class="feature-list">
+    <li>24건 연구 분석</li>
+    <li>"GLP-1 RAs have been associated with non-scarring hair loss, most commonly telogen effluvium (TE) AND androgenetic alopecia (AGA)"</li>
+    <li>티르제파타이드(체중감소 최대)가 TE와 가장 빈번하게 연결</li>
+    <li>세마글루타이드는 용량 의존적 (2mg 미만에서는 드물고 고용량에서 증가)</li>
+    <li>여성이 불균형적으로 영향받음</li>
+  </ul>
+
+  <p><strong>George Washington University (EADV 2025, Medscape 보도)</strong></p>
+  <ul class="feature-list">
+    <li>대규모 실세계 코호트 (TriNetX, 2014~2024, 67개 의료기관)</li>
+    <li>GLP-1RA 사용 12개월 후: TE 위험 유의미 증가 + AGA 위험도 유의미 증가</li>
+    <li>기존 탈모 이력, 갑상선 질환, 영양결핍, 항암치료 등 교란 변수 제외</li>
+  </ul>
+
+  <p><strong>PMC Scoping Review (2025)</strong></p>
+  <ul class="feature-list">
+    <li>탈모 패턴을 임상적으로 분류한 유일한 연구에서 TE와 AGA가 가장 빈번한 아형으로 확인</li>
+    <li>미국 FDA FAERS에 1,000건 이상의 자발적 보고</li>
+  </ul>
+
+  <p>→ <strong>TE가 주된 유형이지만 AGA도 동반 발생.</strong> "GLP-1 탈모 = TE only"라는 이전 프레이밍은 부정확.</p>
+
+  <h3>5-2. 그런데 쏘팔메토(saw palmetto)를 넣으면 안 되는 이유</h3>
+  <p>GLP-1 사용자에서 AGA도 발생하므로 DHT 차단제(쏘팔메토)를 넣는 것이 논리적으로 보일 수 있음. 그러나 이 타겟에서는 넣지 않는 것이 맞음. 이유:</p>
+
+  <h4>이유 1: 타겟의 80%가 여성 — 호르몬 안전성 문제</h4>
+  <ul class="feature-list">
+    <li>GLP-1 비당뇨 사용자의 80%가 여성 (UTHealth Houston)</li>
+    <li>이 여성들 중 상당수가 가임기 (외모 개선 목적으로 체중감소)</li>
+    <li>쏘팔메토의 기전 = 5-alpha reductase 억제 → 테스토스테론→DHT 변환 차단</li>
+    <li>= 호르몬에 직접 영향을 주는 물질</li>
+  </ul>
+  <p>여성에 대한 경고 (복수 의학 출처 일치):</p>
+  <ul class="feature-list">
+    <li>"임신·수유 중 절대 금기" (Healthline, SingleCare, WebMD, Wimpole Clinic)</li>
+    <li>"Finasteride와 유사한 기전 → 태아 기형 유발 가능" (Wimpole Clinic 2025)</li>
+    <li>"경구 피임약과 상호작용 가능" (Medical News Today 2024, Healthline)</li>
+    <li>"폐경 전 여성에게 권장되지 않음" (일부 의사 견해)</li>
+    <li>여성 대상 임상 데이터 자체가 거의 없음 (대부분 남성 대상 연구)</li>
+  </ul>
+  <p>→ 80% 여성 타겟에게 임신 금기 + 피임약 상호작용이 있는 원료를 넣는 것은 안전성 리스크.</p>
+
+  <h4>이유 2: GI 부작용 추가 부담</h4>
+  <p>쏘팔메토 GI 부작용 데이터:</p>
+  <ul class="feature-list">
+    <li>위장 불편 4% 미만 (320mg, Remedys Nutrition 2025)</li>
+    <li>GI 부작용 10~15% (메스꺼움, 설사 포함) (Doctronic 2023)</li>
+    <li>6.25배 용량(2,000mg)에서도 부작용 0 (BGG Japan 2019)</li>
+    <li>WebMD: "흔한 부작용: 설사, 어지러움, 두통, 피로"</li>
+  </ul>
+  <p>→ 데이터 상충. 대부분 "경미"하지만 10~15%에서 GI 부작용 보고.<br>→ GLP-1 사용자의 44~74%가 이미 위장장애 → 추가 GI 부담은 지양.</p>
+
+  <h4>이유 3: 한국 규제 불일치</h4>
+  <ul class="feature-list">
+    <li>한국에서 쏘팔메토는 "전립선 건강" 기능성만 인정</li>
+    <li>여성용 탈모 제품에 쏘팔메토를 넣으면 기능성과 제품 포지셔닝 불일치</li>
+    <li>건기식이든 일반식품이든 마케팅에서 "DHT 차단"을 소구하기 어려움</li>
+  </ul>
+
+  <h4>이유 4: 여성 대상 효과 데이터 부족</h4>
+  <p>PMC 시스템적 리뷰 (2020): 5건 RCT + 2건 코호트에서 SP 효과 확인 → 다만 대부분 남성 대상 연구 → 여성에서의 안전성·효과 데이터가 불충분</p>
+  <p>Hers (포헤어스): "남성 대상 연구에서는 효과 확인. 여성에게 어떻게 작용하는지는 아직 확인 불가."</p>
+
+  <div class="callout callout-green">
+    <div class="callout-title">결론: 쏘팔메토를 제외하는 것이 맞음</div>
+    <p>이전 이유 (부정확): "GLP-1 탈모 = TE only. AGA 아님. 쏘팔메토 불필요."</p>
+    <p>수정된 이유 (정확): "GLP-1 탈모에 AGA도 동반되지만, 타겟의 80%가 여성(가임기 포함)이므로 호르몬 영향이 있는 쏘팔메토는 안전성 리스크. 여성 대상 충분한 임상 데이터도 부족. 한국 규제에서도 전립선 기능성만 인정. 따라서 호르몬 개입 없이 영양 보충(철분·비오틴·아미노산)에 집중하는 것이 이 타겟에 가장 안전하고 적합한 전략."</p>
+  </div>
+
+  <h3>5-3. AFTER-HAIR 포지셔닝 — Nutrafol 대비</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th></th><th>Nutrafol</th><th>GLPH AFTER-HAIR</th></tr></thead>
+      <tbody>
+        <tr><td>타겟 기전</td><td>AGA 전반 (DHT + 스트레스 + 염증)</td><td>GLP-1 유발 탈모 (TE 우선 + 영양 보충)</td></tr>
+        <tr><td>핵심 원리</td><td>DHT 억제 (saw palmetto) + 코르티솔 관리 (ashwagandha)</td><td>영양결핍 보충 (철분, 비오틴, 아미노산)</td></tr>
+        <tr><td>호르몬 개입</td><td>있음 (saw palmetto = 항안드로겐)</td><td><strong>없음 → 여성 80% 타겟에 안전</strong></td></tr>
+        <tr><td>AGA 커버</td><td>있음</td><td>제한적 (AGA 동반 시 전문의 상담 권장)</td></tr>
+        <tr><td>가격</td><td>$88/월 (~120,000원)</td><td><strong>25,000~29,000원/월</strong></td></tr>
+        <tr><td>제형</td><td>캡슐 4알/일</td><td>정제 2알/일</td></tr>
+        <tr><td>철분</td><td>없음</td><td><strong>14mg (비스글리시네이트 = GI 안전)</strong></td></tr>
+        <tr><td>GLP-1 위장 배려</td><td>"Compatible" (문구만)</td><td><strong>철분 형태부터 GI 안전 설계</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>→ "완전히 다른 카테고리"가 아니라 "같은 문제에 대해 다른 접근 (호르몬 vs 영양)."<br>→ "여성 80% 타겟이기 때문에 호르몬 개입을 피하는 것"이 전략적 선택.<br>→ AGA가 동반된 경우의 한계를 솔직히 인정: "전문의 상담을 권장합니다."</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- Section 6 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">6</div>
+    <h2>철분 위장 안전성 — AFTER-HAIR 원료 검증</h2>
+  </div>
+
+  <h3>일반 철분은 GLP-1 사용자에게 위험하다</h3>
+  <p><strong>Tolkien et al. (2015), PLOS ONE — 메타분석 (43건 RCT, 6,831명)</strong></p>
+  <ul class="feature-list">
+    <li>황산철·퓨마르산철 → 위장 부작용 위험 유의미 증가</li>
+    <li>vs 플라시보: OR 2.32 (95% CI 1.74~3.08, p&lt;0.0001)</li>
+    <li>vs IV 철분: OR 3.05 (95% CI 2.07~4.48, p&lt;0.0001)</li>
+    <li>주요 부작용: 메스꺼움, 변비, 설사, 복부 불편</li>
+  </ul>
+
+  <p><strong>StatPearls (NIH, 2023)</strong></p>
+  <ul class="feature-list">
+    <li>"가장 흔한 부작용: 메스꺼움/구토, 변비, 설사, 팽만감, 금속 맛"</li>
+    <li>황산철 복용자의 40~50%가 위장 부작용으로 복용 중단</li>
+  </ul>
+  <p>→ GLP-1 사용자의 44~74%가 이미 위장장애 → 일반 철분 추가 = 악화.</p>
+
+  <h3>해결: 철 비스글리시네이트(Ferrous Bisglycinate)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>철분 형태</th><th>원소 철</th><th>GI 부작용</th><th>흡수율</th><th>GLP-1 적합도</th></tr></thead>
+      <tbody>
+        <tr><td>황산철 (Ferrous sulfate)</td><td>20%</td><td>심각 (OR 2.32, 40~50% 중단)</td><td>높음</td><td style="color:var(--red);">부적합</td></tr>
+        <tr><td>퓨마르산철 (Ferrous fumarate)</td><td>33%</td><td>높음</td><td>높음</td><td style="color:var(--red);">부적합</td></tr>
+        <tr><td>글루콘산철 (Ferrous gluconate)</td><td>12%</td><td>중간</td><td>중간</td><td style="color:var(--amber);">주의</td></tr>
+        <tr><td><strong>비스글리시네이트 (Ferrous bisglycinate)</strong></td><td><strong>20%</strong></td><td><strong>거의 없음</strong></td><td><strong>높음 (동등~우수)</strong></td><td style="color:var(--green);"><strong>적합</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>근거:</strong></p>
+  <ul class="feature-list">
+    <li>GoodRx (2024): "비스글리시네이트는 동등하게 흡수되면서 GI 부작용이 거의 없다"</li>
+    <li>ClinicalTrials NCT03378791: "비스글리시네이트는 더 나은 환자 순응도. 위장 부작용이 적기 때문."</li>
+    <li>Consensus 학술엔진: "Low-dose iron (20~60mg/day)은 GI 부작용 최소. 비스글리시네이트는 퓨마르산철·황산철 대비 GI 프로필 유리."</li>
+  </ul>
+  <p>→ AFTER-HAIR에 철 비스글리시네이트 14mg 사용 = GLP-1 사용자 위장 배려 설계.<br>→ 이 형태 선택 자체가 "GLP-1 사용자의 위장을 고려한 철분"이라는 차별화.</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- Section 7 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">7</div>
+    <h2>VERISOL 콜라겐 — 효능 근거 + 마케팅 가치</h2>
+  </div>
+
+  <h3>7-1. VERISOL 임상 데이터 — 팩트</h3>
+  <p><strong>Proksch et al. (2014). Skin Pharmacology and Physiology.</strong></p>
+  <ul class="feature-list">
+    <li>114명 여성, 이중맹검 RCT, 8주</li>
+    <li>VERISOL 2.5g/일 → 눈가 주름 부피 감소, 프로콜라겐 I 65% 증가, 엘라스틴 18% 증가</li>
+    <li>보충 중단 4주 후에도 효과 지속 (주름 부피 11.5% 감소 유지)</li>
+  </ul>
+
+  <p><strong>VERISOL B RCT (2025). MDPI Cosmetics.</strong></p>
+  <ul class="feature-list">
+    <li>66명 여성, 이중맹검 RCT, 8주</li>
+    <li>VERISOL B(소 유래) 2.5g/일 → 주름 감소 + 피부 탄력 + 보습 유의미 개선 (p&lt;0.05)</li>
+    <li>4주 만에 효과 시작, 8주에 더 두드러짐</li>
+  </ul>
+
+  <p><strong>다만 한계도 있음 (NMI 리뷰):</strong></p>
+  <ul class="feature-list">
+    <li>"VERISOL 2.5g/5g RCT에서 피부 탄력·수분 개선이 관찰되었으나, 피부 기능(skin function) 측정치는 플라시보 대비 통계적 유의성을 달성하지 못함"</li>
+    <li>= VERISOL도 모든 지표에서 완벽하지 않음</li>
+  </ul>
+
+  <p><strong>비브랜드 콜라겐도 효과가 있음:</strong></p>
+  <ul class="feature-list">
+    <li>CollaSel Pro 10g, RCT (PMC 11432272): 피부 탄력·보습·거칠기 유의미 개선</li>
+    <li>= 비브랜드라도 고용량(10g+)에서는 효과 확인</li>
+  </ul>
+
+  <p><strong>VERISOL vs 비브랜드 — 직접 비교 연구는 없음:</strong></p>
+  <ul class="feature-list">
+    <li>VERISOL 임상 = VERISOL vs 플라시보</li>
+    <li>비브랜드 임상 = 비브랜드 vs 플라시보</li>
+    <li>VERISOL vs 비브랜드 head-to-head = 존재하지 않음</li>
+    <li>"VERISOL이 비브랜드보다 낫다"는 증명 안 됨</li>
+  </ul>
+
+  <p><strong>기전 차이는 확인됨 (ScienceInsights 2025, GELITA 공식):</strong></p>
+  <ul class="feature-list">
+    <li>VERISOL: 분자량 ~2,000 Da. 특정 펩타이드 서열이 섬유아세포(fibroblast)를 자극 → 체내 콜라겐 생산을 늘리는 "신호 전달(signaling)" 기전. 적은 양(2.5~5g)으로 효과.</li>
+    <li>비브랜드: 분자량 3,000~5,000 Da. 아미노산(글리신, 프롤린) 원료 공급. 많은 양(10~20g) 필요.</li>
+    <li>= VERISOL은 "원료를 주는 것"이 아니라 "몸이 스스로 만들게 하는 것."</li>
+  </ul>
+
+  <h3>7-2. VERISOL의 마케팅 가치 — 이게 비싼 원료를 쓰는 진짜 이유</h3>
+  <p>VERISOL의 효능이 "다른 콜라겐보다 확실히 더 좋다"는 증명되지 않았음. 그러나 VERISOL을 쓰는 이유는 효능의 절대적 우월성이 아니라 <strong>"임상 검증 = 신뢰 = 마케팅 자산"</strong>이라는 것.</p>
+
+  <p><strong>시장에서 VERISOL이 어떻게 사용되는가:</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>브랜드/기관</th><th>VERISOL 마케팅 방식</th><th>출처</th></tr></thead>
+      <tbody>
+        <tr><td>GELITA (원료사)</td><td>"피부 뷰티 성분의 골드 스탠다드" "전 세계 300+ 뷰티 브랜드 사용" "매일 350만 명 섭취"</td><td>GELITA 공식</td></tr>
+        <tr><td>Holland &amp; Barrett</td><td>자사 "Expert" 프리미엄 라인에 VERISOL 사용. "임상적으로 유의미한 효과가 입증된 성분"</td><td>H&amp;B Greece 2025</td></tr>
+        <tr><td>TechLabs Europe</td><td>"VERISOL은 프리미엄 안티에이징 보충제의 레퍼런스 원료" "소비자 인지도가 높아 품질과 결과를 연상"</td><td>TechLabs 2025</td></tr>
+        <tr><td>AlgaeCal</td><td>"일반 콜라겐이 아닌 THE 콜라겐" "6건 임상 연구로 뒷받침" "4주 안에 피부 탄력 개선 확인" "300+ 브랜드 신뢰"</td><td>AlgaeCal 2025</td></tr>
+        <tr><td>Supply Side SJ</td><td>"임상시험이 주름, 피부 탄력, 셀룰라이트, 손톱, 모발 두께에 가시적 효과를 입증"</td><td>SSSJ</td></tr>
+        <tr><td>Sparkle Wellness</td><td>"피부 콜라겐 수치를 최대 60% 증가시킨다는 임상 연구"</td><td>Sparkle 2025</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>공통 마케팅 키워드:</strong></p>
+  <ol style="padding-left:20px;color:var(--text-secondary);font-size:14px;margin-bottom:16px;">
+    <li style="padding:4px 0;">"Clinically proven" (임상 검증)</li>
+    <li style="padding:4px 0;">"Visible results in 4 weeks" (4주 안에 가시적 결과)</li>
+    <li style="padding:4px 0;">"65% increase in skin collagen" (피부 콜라겐 65% 증가)</li>
+    <li style="padding:4px 0;">"The only collagen that activates fibroblasts" (섬유아세포 활성화 유일)</li>
+    <li style="padding:4px 0;">"300+ brands trust" (300+ 브랜드가 선택)</li>
+    <li style="padding:4px 0;">"German engineered by GELITA" (독일 GELITA)</li>
+    <li style="padding:4px 0;">"Gold standard / Reference ingredient" (골드 스탠다드)</li>
+  </ol>
+
+  <p><strong>GLPH AFTER-SKIN이 쓸 수 있는 마케팅 요소:</strong></p>
+  <p>패키지/상세페이지:</p>
+  <ul class="feature-list">
+    <li>"독일 GELITA의 VERISOL® 콜라겐 5,000mg"</li>
+    <li>"임상시험에서 4주 만에 피부 탄력 개선 확인"</li>
+    <li>"세계 300+ 뷰티 브랜드가 선택한 프리미엄 원료"</li>
+  </ul>
+  <p>의사/약사 설명:</p>
+  <ul class="feature-list">
+    <li>"이 콜라겐은 일반 콜라겐이랑 달라요. 독일에서 만든 건데 임상시험을 거친 거예요."</li>
+  </ul>
+
+  <div class="callout callout-amber">
+    <div class="callout-title">정리</div>
+    <p>VERISOL의 가치 = "효능이 다른 콜라겐보다 확실히 더 좋기 때문"이 아니라 "임상 데이터가 있기 때문에 '검증되었다'고 말할 수 있는 것." 비브랜드 콜라겐으로는 이 말을 할 수 없음. 비싼 원료를 쓰는 이유는 이 마케팅 자산(임상 검증 스토리 + 브랜드 인지도) 때문.</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Section 8 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">8</div>
+    <h2>콜라겐 경쟁 벤치마크 — Vital Proteins 대비</h2>
+  </div>
+
+  <h3>Vital Proteins vs GLPH AFTER-SKIN</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th></th><th>Vital Proteins (기본)</th><th>Vital Proteins (Advanced)</th><th>GLPH AFTER-SKIN</th></tr></thead>
+      <tbody>
+        <tr><td>콜라겐</td><td>20g (소, 비브랜드)</td><td>20g + VERISOL 2.5g</td><td><strong>VERISOL F 5g (어류)</strong></td></tr>
+        <tr><td>유형</td><td>Type I, III</td><td>Type I, III</td><td>Type I (어류)</td></tr>
+        <tr><td>임상</td><td>자체 RCT 없음</td><td>VERISOL 2.5g (소/돼지 임상)</td><td><strong>VERISOL F 5g (Proksch 2020, 어류 RCT)</strong></td></tr>
+        <tr><td>히알루론산</td><td>없음</td><td>120mg</td><td>100mg</td></tr>
+        <tr><td>비타민C</td><td>없음</td><td>100% DV</td><td>100mg</td></tr>
+        <tr><td>프롤린·글리신</td><td>콜라겐 자체에 포함</td><td>콜라겐 자체에 포함</td><td><strong>별도 추가 300mg + 300mg</strong></td></tr>
+        <tr><td>제형</td><td>분말 (스쿱)</td><td>분말 (스쿱)</td><td><strong>액상 스틱 (바로 마시기)</strong></td></tr>
+        <tr><td>가격/서빙</td><td>~$1.64</td><td>~$1.80</td><td>$1.70~1.90</td></tr>
+        <tr><td>리뷰</td><td>80,000+</td><td>수천</td><td>0 (신규)</td></tr>
+        <tr><td>타겟</td><td>일반 뷰티/건강</td><td>일반 뷰티/건강</td><td><strong>GLP-1 체중감소 후 피부</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>AFTER-SKIN의 차별점</h3>
+  <ol style="padding-left:20px;color:var(--text-secondary);font-size:14px;margin-bottom:16px;">
+    <li style="padding:4px 0;"><strong>VERISOL F 5g = 어류 콜라겐 임상 정확한 용량.</strong> VP 기본은 비브랜드 20g (임상 미검증). VP Advanced는 VERISOL 2.5g (소/돼지). GLPH는 VERISOL F 5g (어류 RCT 용량). "임상 검증된 원료를 임상 용량 그대로."</li>
+    <li style="padding:4px 0;"><strong>어류 콜라겐 = 소비자 선호 + BSE 없음 + 할랄/코셔.</strong></li>
+    <li style="padding:4px 0;"><strong>프롤린·글리신 별도 추가 = 콜라겐 합성 원료 직접 보충.</strong></li>
+    <li style="padding:4px 0;"><strong>액상 스틱 = 편의성.</strong> 분말은 스쿱·세척 필요. 스틱은 뜯어서 바로.</li>
+    <li style="padding:4px 0;"><strong>GLP-1 전용 포지셔닝 = 니치 카테고리 선점.</strong></li>
+  </ol>
+
+  <h3>AFTER-SKIN의 약점 — 솔직하게</h3>
+  <ol style="padding-left:20px;color:var(--text-secondary);font-size:14px;margin-bottom:16px;">
+    <li style="padding:4px 0;"><strong>콜라겐 양:</strong> VP 20g vs GLPH 5g → 숫자만 보면 적어 보임. 대응: "비브랜드 20g과 임상 검증 VERISOL 5g은 기전이 다름(원료 공급 vs 신호 전달). 단, 직접 비교 연구는 없음."</li>
+    <li style="padding:4px 0;"><strong>리뷰:</strong> 80,000 vs 0 → 신규 브랜드. 대응: 의사 추천 채널이 리뷰를 대체.</li>
+    <li style="padding:4px 0;"><strong>인지도:</strong> Nestle 소유 글로벌 vs 신규. 대응: "GLP-1 aftercare" 니치에서 시작.</li>
+  </ol>
+
+  <h3>아마존 액상 사셰/스틱 콜라겐 — 이미 존재하는 시장</h3>
+  <p>AFTER-SKIN의 제형(액상 스틱)이 아마존에서 새로운 포맷인지 확인한 결과, 이미 여러 브랜드가 액상 사셰 콜라겐을 판매 중. 다만 아마존 Best Seller 상위권은 여전히 분말이 지배하고 있으며, 액상 사셰는 성장 중인 포맷.</p>
+
+  <p><strong>아마존 액상 사셰/스틱 콜라겐 주요 제품:</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>브랜드</th><th>콜라겐</th><th>추가 원료</th><th>제형</th><th>가격대</th><th>리뷰</th><th>특징</th></tr></thead>
+      <tbody>
+        <tr><td>BeMe Be Radiant</td><td>VERISOL 2,500mg (해양)</td><td>비오틴, CoQ10, VitC 300mg, VitE, 아스타잔틴</td><td>액상 사셰 15/30포</td><td>$1.50~2.00/포</td><td>4.3★</td><td>GELITA 공식 파트너. VERISOL 액상 사셰의 직접 경쟁자.</td></tr>
+        <tr><td>Primabiotic</td><td>10,000mg (소)</td><td>12종 비타민</td><td>30ml 유리병 샷 30병</td><td>~$1.30/병</td><td>다수</td><td>고함량 비브랜드. 사과·복숭아·레몬 맛.</td></tr>
+        <tr><td>Revive Collagen Enhanced Plus</td><td>10,000mg (해양)</td><td>&mdash;</td><td>22ml 사셰 14포</td><td>~$3.00/포</td><td>다수</td><td>UK 브랜드. 폐경 전용 라인("Menopause") 별도 보유.</td></tr>
+        <tr><td>NatureWise Liquid Collagen</td><td>4,000mg (소)</td><td>비오틴, HA, VitC, VitB군</td><td>튜브 30개</td><td>~$1.00/튜브</td><td>Best Seller 등재</td><td>가성비. 아마존 Best Seller 리스트에 진입.</td></tr>
+        <tr><td>KUDU Nutrition</td><td>20,000mg (소)</td><td>&mdash;</td><td>사셰</td><td>~$3.50/포</td><td>소수</td><td>스포츠 인증(Informed Sport). 고함량 프리미엄.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>BeMe — GLPH AFTER-SKIN의 가장 가까운 경쟁자 (상세)</h3>
+  <p>BeMe는 GELITA와 공식 파트너십을 맺고 VERISOL을 액상 사셰로 제공하는 브랜드. GLPH AFTER-SKIN과 제형(액상 사셰) + 원료(VERISOL) + 포지셔닝(뷰티)이 가장 유사.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>BeMe Be Radiant</th><th>GLPH AFTER-SKIN</th></tr></thead>
+      <tbody>
+        <tr><td>VERISOL</td><td>2,500mg (해양/소 버전 모두 있음)</td><td><strong>VERISOL F 5,000mg (어류)</strong></td></tr>
+        <tr><td>비타민C</td><td>300mg</td><td>100mg</td></tr>
+        <tr><td>CoQ10</td><td>포함</td><td>미포함</td></tr>
+        <tr><td>아스타잔틴</td><td>포함</td><td>미포함</td></tr>
+        <tr><td>비오틴</td><td>포함</td><td>미포함 (AFTER-HAIR에 분리)</td></tr>
+        <tr><td>히알루론산</td><td>미포함</td><td><strong>100mg</strong></td></tr>
+        <tr><td>프롤린·글리신</td><td>미포함</td><td><strong>300mg + 300mg</strong></td></tr>
+        <tr><td>제형</td><td>액상 사셰</td><td>액상 스틱</td></tr>
+        <tr><td>VERISOL 용량</td><td>2,500mg (임상 최소 용량)</td><td><strong>5,000mg (풀 임상 도즈)</strong></td></tr>
+        <tr><td>타겟</td><td>일반 뷰티/안티에이징</td><td><strong>GLP-1 체중감소 후 피부 탄력</strong></td></tr>
+        <tr><td>인증</td><td>cGMP, NSF, HACCP</td><td>확인 필요 (OEM 의존)</td></tr>
+        <tr><td>아마존 평점</td><td>4.3★</td><td>신규 (0)</td></tr>
+        <tr><td>SKU 구조</td><td>Be Radiant(피부), BODYBALANCE(근육), TENDOFORTE(인대), FORTIBONE(뼈)</td><td>AFTER-SKIN(피부), AFTER-HAIR(탈모), AFTER-1(올인원)</td></tr>
+        <tr><td>GELITA 파트너십</td><td>공식 파트너</td><td>제원(Jewon) 통해 VERISOL F 구매</td></tr>
+        <tr><td>마케팅 메시지</td><td>"주름 32% 감소, 피부 탄력 10% 개선 (8주)"</td><td>"GLP-1 전용 피부 탄력 회복"</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>BeMe 대비 GLPH AFTER-SKIN의 차별점:</strong></p>
+  <ol style="padding-left:20px;color:var(--text-secondary);font-size:14px;margin-bottom:16px;">
+    <li style="padding:4px 0;"><strong>VERISOL 용량:</strong> BeMe 2,500mg vs GLPH 5,000mg. GLPH가 풀 임상 도즈. BeMe는 임상 최소 용량.</li>
+    <li style="padding:4px 0;"><strong>프롤린·글리신 별도 추가:</strong> BeMe 없음. GLPH는 콜라겐 합성 원료를 직접 보충.</li>
+    <li style="padding:4px 0;"><strong>GLP-1 전용 포지셔닝:</strong> BeMe는 일반 뷰티. GLPH는 체중감소 후 피부 특화.</li>
+    <li style="padding:4px 0;"><strong>히알루론산:</strong> BeMe 없음. GLPH 100mg 포함.</li>
+  </ol>
+
+  <p><strong>BeMe 대비 GLPH AFTER-SKIN의 약점:</strong></p>
+  <ol style="padding-left:20px;color:var(--text-secondary);font-size:14px;margin-bottom:16px;">
+    <li style="padding:4px 0;"><strong>CoQ10 + 아스타잔틴:</strong> BeMe 포함. GLPH 미포함. 항산화 스택에서 BeMe가 더 다양.</li>
+    <li style="padding:4px 0;"><strong>비타민C:</strong> BeMe 300mg vs GLPH 100mg. BeMe가 3배.</li>
+    <li style="padding:4px 0;"><strong>인증:</strong> BeMe는 cGMP+NSF+HACCP 명시. GLPH는 OEM에 의존 (확인 필요).</li>
+    <li style="padding:4px 0;"><strong>리뷰·인지도:</strong> BeMe 4.3★ 확보 vs GLPH 신규.</li>
+    <li style="padding:4px 0;"><strong>GELITA 파트너십:</strong> BeMe는 GELITA 공식 파트너로 마케팅. GLPH는 제원(유통사) 경유.</li>
+  </ol>
+
+  <p><strong>BeMe의 전략에서 배울 점:</strong></p>
+  <p>BeMe는 "General Collagen을 만들지 않는다. 근육, 인대, 뼈, 관절, 피부 각각에 맞는 별도 포뮬러를 만든다"는 철학으로 운영. 이는 GLPH의 3 SKU 전략(올인원, 탈모, 피부)과 구조적으로 유사. BeMe가 이미 이 접근으로 아마존에서 4.3★을 받고 있다는 것은 "타겟별 전문 SKU" 전략이 소비자에게 수용된다는 시장 증거.</p>
+
+  <div class="callout callout-green">
+    <div class="callout-title">핵심 시사점</div>
+    <p>액상 사셰 콜라겐은 새로운 포맷이 아님. BeMe가 이미 VERISOL + 액상 사셰를 하고 있음. 따라서 AFTER-SKIN의 차별화는 "제형"이 아니라 다음 3가지의 조합:</p>
+    <p>1. VERISOL F 5,000mg (BeMe의 2배, 풀 임상 도즈)<br>2. GLP-1 전용 포지셔닝 (BeMe에 없음)<br>3. 프롤린·글리신 + 히알루론산 (BeMe에 없음)</p>
+    <p>다만 BeMe 대비 약한 부분(CoQ10, 아스타잔틴, VitC 용량, 인증)도 솔직히 인지해야 함. 특히 인증(cGMP 등)은 OEM 선정 시 반드시 확보해야 BeMe와 동등 이상의 신뢰를 얻을 수 있음.</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Section 9: 3 SKU Formulas -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">9</div>
+    <h2>3 SKU 최종 포뮬러</h2>
+  </div>
+
+  <!-- AFTER-1 -->
+  <h3>SKU 1: AFTER-1 (올인원)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>원료</th><th>함량</th><th>역할</th></tr></thead>
+      <tbody>
+        <tr><td>EAA 9종</td><td>3,000mg (류신 1,200mg)</td><td>근단백 합성</td></tr>
+        <tr><td>비필수 아미노산</td><td>2,000mg</td><td>기전 매칭 + 맛 보조</td></tr>
+        <tr><td>아미노산 총합</td><td>5,000mg</td><td>숫자 임팩트</td></tr>
+        <tr><td>VERISOL F 콜라겐</td><td>2,500mg</td><td>피부 기본 (임상 절반이나 포함)</td></tr>
+        <tr><td>마그네슘</td><td>270mg (글루콘산)</td><td>결핍 보충</td></tr>
+        <tr><td>비타민D</td><td>1,000IU</td><td>결핍 1위</td></tr>
+        <tr><td>비타민B군</td><td>1일분</td><td>에너지 대사</td></tr>
+        <tr><td>비오틴</td><td>2,500mcg</td><td>기본 포함</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>제형: <strong>45g 액상 스틱</strong> (활성 원료 ~12g + 맛/부형제 ~1g = 고형분 ~13g / 45g = 28.9% → 제조·맛 여유). 가격: 37,500원/15포.<br>역할: 리바운더. GLP-1 올인원 = 시장에 비교군 0.</p>
+
+  <!-- AFTER-HAIR -->
+  <h3>SKU 2: AFTER-HAIR (GLP-1 탈모 — 영양 보충 특화)</h3>
+
+  <p><strong>이 포뮬러에 토코트리에놀이 포함된 이유:</strong></p>
+  <p>JAMA Dermatology(2023) 시스템적 리뷰는 30건의 탈모 보충제 연구(RCT 17건 포함)를 분석하여 "가장 높은 품질의 근거를 보인 영양 보충제"를 분류했다. 토코트리에놀은 이 최고 품질 그룹에 포함된 원료다. Beoy et al.(2010) RCT에서 38명 탈모 환자에게 8개월간 토코트리에놀을 보충한 결과, 모발 수가 34.5% 증가했고 플라시보 그룹은 0.1% 감소했다.</p>
+
+  <div class="accordion open">
+    <button class="accordion-trigger" onclick="toggleAccordion(this)">
+      <span>토코트리에놀이란 (상세)</span>
+      <span class="accordion-arrow">&#9660;</span>
+    </button>
+    <div class="accordion-content">
+      <ul class="feature-list">
+        <li>비타민E의 한 형태. 비타민E에는 4종 토코페롤 + 4종 토코트리에놀이 있음.</li>
+        <li>토코페롤(일반 비타민E)보다 항산화 활성이 40~60배 높음 (일부 연구).</li>
+        <li>두피의 산화 스트레스 감소 → 모낭 보호.</li>
+        <li>두피 혈류 개선 → 모낭에 영양 공급 촉진.</li>
+        <li>지질 과산화 억제 → 모낭 세포막 보호.</li>
+        <li>Nutrafol의 Synergen Complex에도 포함된 원료 (EVNolMax™ 팜 토코트리에놀).</li>
+        <li>호르몬 영향 없음 → 여성 80% 타겟에 안전.</li>
+        <li>GLP-1 약물 상호작용: 없음.</li>
+        <li>GI 부작용: 50mg에서 거의 없음.</li>
+        <li>다만 지용성 오일 형태일 경우 정제에서 트림·구역감 가능 → 장용 코팅 또는 건조 분말형으로 방지 가능 → OEM 확인 필요.</li>
+      </ul>
+      <p><strong>GLP-1 사용자에게 특별히 관련 있는 이유:</strong> 급격한 체중감소 → 체지방 분해 → 활성산소(ROS) 증가 → 두피 산화 스트레스 → 모낭 손상 가속. 토코트리에놀의 항산화 작용이 이 과정을 완화한다. AFTER-SKIN의 아스타잔틴이 피부 콜라겐을 보호하듯, 토코트리에놀은 두피 모낭을 보호하는 역할.</p>
+    </div>
+  </div>
+
+  <p><strong>베타카로틴(비타민A)을 넣지 않은 이유:</strong></p>
+  <p>PMC TE 비교 연구에서 "더 효과적인 그룹"에 비타민A가 포함되어 있었으나, 해당 그룹에는 비타민A·C·E·B군·아연·철·마그네슘·엽산·아미노산이 전부 포함되어 있어 비타민A 단독 효과인지 조합 효과인지 분리되지 않는다. 비타민A 단독으로 탈모 개선을 보인 RCT는 없다. 또한 베타카로틴은 "탈모 전용 원료"라기보다 "멀티비타민 원소"에 가까우며, 향후 AFTER-CORE(멀티비타민) SKU에 넣는 것이 "타겟별 전문 포뮬러"라는 GLPH의 SKU 전략에 부합한다.</p>
+
+  <p><strong>포뮬러:</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>원료</th><th>함량</th><th>역할</th><th>근거</th></tr></thead>
+      <tbody>
+        <tr><td>리포좀비오틴</td><td>10,000mcg</td><td>케라틴 합성</td><td>다수 RCT</td></tr>
+        <tr><td>L-시스테인HCl</td><td>200mg</td><td>S-S결합 (케라틴 구조)</td><td>TE 보충제 연구 다수</td></tr>
+        <tr><td>L-메티오닌</td><td>200mg</td><td>황 아미노산 → 케라틴</td><td>TE 보충제 연구 다수</td></tr>
+        <tr><td>아연 (아미노산 킬레이트)</td><td>8mg</td><td>세포 분열 + 단백질 합성</td><td>JAMA 시스템적 리뷰 2023</td></tr>
+        <tr><td>셀레늄 (셀레노메티오닌)</td><td>55mcg</td><td>항산화 + 갑상선(T3/T4)</td><td>다수</td></tr>
+        <tr><td>비타민D</td><td>1,000IU</td><td>GLP-1 결핍 1위</td><td>다수</td></tr>
+        <tr><td>판토텐산(B5)</td><td>10mg</td><td>모낭 영양</td><td>TE 보충제 연구</td></tr>
+        <tr><td>철 비스글리시네이트</td><td>14mg</td><td>GLP-1 식이감소→철결핍→탈모. GI 안전 형태.</td><td>Tolkien 2015 메타분석</td></tr>
+        <tr><td>비타민C</td><td>100mg</td><td>철분 흡수 보조 + 콜라겐 합성</td><td>다수</td></tr>
+        <tr><td>엽산 (5-MTHF)</td><td>400mcg</td><td>모발 성장기(anagen) 촉진</td><td>PMC TE 연구</td></tr>
+        <tr><td>토코트리에놀 (팜)</td><td>50mg</td><td>두피 항산화 + 모발 수 34.5% 증가</td><td>Beoy 2010 RCT, JAMA 2023</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>총 활성 원료: ~610mg → 정제 2알(1알 ~305mg) = 표준 정제 크기 유지.<br>제형: <strong>정제 60정</strong> (1일 2정, 30일분). 가격: 25,000~29,000원/30일.<br>OEM 확인 필요: 토코트리에놀의 트림 방지를 위한 장용 코팅 또는 건조 분말형 가능 여부 및 비용.</p>
+  <p>포지셔닝: 호르몬 개입 없이 영양으로 접근하는 GLP-1 전용 탈모 케어.<br>Nutrafol과의 관계: 같은 문제에 대해 다른 접근 (호르몬 vs 영양). 여성 80% 타겟에 안전한 선택.<br>한계 솔직히 명시: AGA가 동반된 경우 전문의 상담 권장.</p>
+
+  <!-- AFTER-SKIN -->
+  <h3>SKU 3: AFTER-SKIN (피부)</h3>
+
+  <p><strong>이 포뮬러에 CoQ10과 아스타잔틴이 포함된 이유:</strong></p>
+  <p>GLP-1 사용자는 급격한 체중감소 과정에서 체지방이 빠르게 분해되며 활성산소(ROS)가 증가한다. 이 산화 스트레스는 MMP(Matrix Metalloproteinase)를 활성화하여 기존 피부 콜라겐을 분해한다. 즉 GLP-1 사용자는 "체중은 빠지는데 피부는 더 빨리 늙는" 상황에 놓일 수 있다. VERISOL만으로는 새 콜라겐 생산은 촉진하지만 기존 콜라겐 파괴는 막지 못한다. CoQ10과 아스타잔틴이 이 갭을 메운다.</p>
+
+  <div class="accordion">
+    <button class="accordion-trigger" onclick="toggleAccordion(this)">
+      <span>CoQ10 (코엔자임 Q10) 상세</span>
+      <span class="accordion-arrow">&#9660;</span>
+    </button>
+    <div class="accordion-content">
+      <ul class="feature-list">
+        <li>모든 세포의 미토콘드리아에 존재하는 분자. ATP(세포 에너지) 생산에 필수.</li>
+        <li>환원 형태(유비퀴놀)에서 강력한 항산화 작용.</li>
+        <li>나이가 들면 체내 생산량이 감소 → 외부 보충이 의미 있음.</li>
+        <li>피부 임상: Žmitek et al. (2017) RCT — 33명, 12주, 50mg/일에서 눈가 주름 유의미 감소, 피부 매끈함·탄력 개선 (p&lt;0.05). JAAD (2023) RCT — 41명, 12주, 200mg/일에서 콜라겐 합성↑, 탄성 섬유 보존, 부작용 없음. JCAD (2025): "CoQ10은 피부 노화의 부수적 요소가 아니라 주된 원인 중 하나."</li>
+        <li>CoQ10 + 어류 콜라겐 병용 임상이 이미 존재 (ClinicalTrials NCT03811756: 어류 콜라겐 4,000mg + CoQ10 50mg + VitC 80mg, 12주 RCT).</li>
+        <li>GLP-1 상호작용: Drugs.com "CoQ10과 세마글루타이드 간 상호작용 없음."</li>
+        <li>GI 부작용: 소량(50mg)에서 거의 없음. 용량 의존적이지 않음 (ScienceDirect 리뷰).</li>
+        <li>지용성 → 액상에서 수용성 형태(Q10Vital® 등) 사용 또는 유화 처리 필요 → OEM 확인.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-trigger" onclick="toggleAccordion(this)">
+      <span>아스타잔틴 상세</span>
+      <span class="accordion-arrow">&#9660;</span>
+    </button>
+    <div class="accordion-content">
+      <ul class="feature-list">
+        <li>연어·새우·미세조류의 붉은색을 만드는 잔토필 카로티노이드.</li>
+        <li>항산화력: 베타카로틴의 10~100배, 비타민E의 500배 (in vitro).</li>
+        <li>세포막 전체를 관통하는 독특한 구조 → 지질+수용성 양쪽 환경 보호.</li>
+        <li>비타민A로 전환되지 않음 → 과잉 섭취에 의한 비타민A 독성 없음.</li>
+        <li>핵심 기전: MMP-1(콜라겐 분해 효소) 억제 → 기존 콜라겐이 파괴되지 않게 보호.</li>
+        <li>피부 임상: 메타분석 (MDPI Nutrients 2021) — 보습 유의미 개선 (p=0.03), 탄력 유의미 개선 (p=0.009). 주름 깊이는 개선 추세이나 유의성 미달 (p=0.11). Tominaga et al. (PMC 2017) RCT — 65명, 16주, 6~12mg/일 → 플라시보 그룹 악화, 아스타잔틴 그룹 유지 (악화 방지 효과).</li>
+        <li>FDA GRAS 상태. 87건 인간 연구에서 안전성 우려 없음 (ScienceInsights 2026).</li>
+        <li>GLP-1 상호작용: 확인된 것 없음.</li>
+        <li>GI 부작용: 4mg에서 거의 없음. 12mg 이상에서 ~10% 경미한 팽만.</li>
+        <li>천연(Haematococcus pluvialis) 사용 필수. 합성은 효과↓ 부작용↑.</li>
+        <li>지용성 → 액상에서 유화 처리 필요 → OEM 확인.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p><strong>3원료 시너지 구조:</strong></p>
+  <ul class="feature-list">
+    <li>VERISOL = 새 콜라겐 생산 촉진 (섬유아세포 신호 전달)</li>
+    <li>CoQ10 = 세포 에너지 공급 + 항산화 (섬유아세포가 일할 에너지)</li>
+    <li>아스타잔틴 = 기존 콜라겐 분해 방지 (MMP-1 억제) + 항산화</li>
+    <li>= <strong>"만들고 + 에너지 주고 + 지키는" 3단 구조</strong></li>
+  </ul>
+
+  <p><strong>포뮬러:</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>원료</th><th>함량</th><th>역할</th></tr></thead>
+      <tbody>
+        <tr><td><strong>VERISOL F 콜라겐</strong></td><td><strong>5,000mg</strong></td><td>콜라겐 생산 촉진 (신호 전달). 풀 임상 도즈.</td></tr>
+        <tr><td>비타민C</td><td>100mg</td><td>콜라겐 합성 필수 보조인자</td></tr>
+        <tr><td>히알루론산</td><td>100mg</td><td>피부 보습</td></tr>
+        <tr><td>L-프롤린</td><td>300mg</td><td>콜라겐 구성 아미노산 직접 보충</td></tr>
+        <tr><td>글리신</td><td>300mg</td><td>콜라겐 구성 아미노산 직접 보충</td></tr>
+        <tr><td>CoQ10 (수용성)</td><td>50mg</td><td>세포 에너지 + 항산화. 임상 유효 최소 용량.</td></tr>
+        <tr><td>아스타잔틴 (천연)</td><td>4mg</td><td>MMP-1 억제 = 콜라겐 분해 방지 + 항산화</td></tr>
+        <tr><td>비타민E</td><td>15mg</td><td>항산화</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>총 고형분: ~5,869mg ≈ 5.9g<br>제형: <strong>25g 액상 스틱</strong> (고형분 5.9g / 25g = 23.6% → 제조·맛 여유)<br>가격: 35,000~39,000원/15포</p>
+  <p>포지셔닝: 급격한 체중감소 후 피부 탄력 회복. "만들고 + 에너지 주고 + 지키는" 3단 콜라겐 케어.<br>마케팅: "독일 GELITA의 임상 검증 콜라겐 VERISOL® 5,000mg" "4주 만에 피부 탄력 개선 확인" "300+ 브랜드 선택"<br>OEM 확인 필요: 수용성 CoQ10 + 천연 아스타잔틴의 액상 유화 처리 가능 여부.</p>
+
+  <h3>3 SKU 보완 구조</h3>
+  <p>각 SKU 경쟁 아닌 보완. 어떤 것을 먼저 사든 나머지로 크로스셀 가능.</p>
+  <ul class="feature-list">
+    <li>AFTER-SKIN 구매자 → "전체적으로도 챙기세요" → AFTER-1 크로스셀</li>
+    <li>AFTER-HAIR 구매자 → "피부도 걱정되시면" → AFTER-SKIN 크로스셀</li>
+    <li>AFTER-1 구매자 → "특히 걱정되는 부분이 있으시면" → 전용 SKU 크로스셀</li>
+  </ul>
+
+  <h3>3 SKU 포뮬러 설계 5대 체크</h3>
+  <p>포뮬러 확정 전 다음 5가지를 검증했다.</p>
+
+  <p><strong>체크 1: 맛 / 섭취 후 GI</strong></p>
+  <ul class="feature-list">
+    <li>AFTER-1 (액상): 고형분 28.9% → 맛 잡기 여유. OEM 맛 테스트 필요.</li>
+    <li>AFTER-HAIR (정제): 토코트리에놀이 지용성 오일 → 위에서 분해 시 트림·구역감 가능. GLP-1 사용자는 이미 메스꺼움이 있으므로 방지 필수. → 장용 코팅(위에서 안 녹고 장에서 녹음) 또는 건조 분말형으로 해결 가능. OEM 미팅 확인 사항: "토코트리에놀 정제의 트림 방지를 위한 장용 코팅 또는 분말형 가능 여부 및 비용."</li>
+    <li>AFTER-SKIN (액상): CoQ10은 수용성 형태(Q10Vital® 등) 사용 시 맛 영향 없음. 아스타잔틴 4mg은 극소량으로 맛 영향 없음. 색상이 약간 붉어질 수 있으나 베리/파인애플 맛이면 어울림.</li>
+  </ul>
+
+  <p><strong>체크 2: 타 SKU와의 융합 (중복·과잉)</strong> → 아래 "동시 복용 안전성" 섹션에서 상세 검증 완료. 모든 조합에서 안전 상한 이내.</p>
+
+  <p><strong>체크 3: 주사제 사용자 부작용 악화 여부</strong></p>
+  <ul class="feature-list">
+    <li>토코트리에놀 50mg: GLP-1 상호작용 없음. 호르몬 영향 없음. GI 부작용 거의 없음 (트림 제외 → 코팅으로 해결). ✓</li>
+    <li>CoQ10 50mg: Drugs.com "세마글루타이드와 상호작용 없음." 소량에서 GI 거의 없음. ✓</li>
+    <li>아스타잔틴 4mg: GLP-1 상호작용 확인된 것 없음. 4mg에서 부작용 거의 없음. ✓</li>
+    <li>3개 전부 부작용 악화 요인 아님.</li>
+  </ul>
+
+  <p><strong>체크 4: SKU 포트폴리오 확장이 스스로 제한되는지</strong></p>
+  <ul class="feature-list">
+    <li>현재 추가한 원료(토코트리에놀, CoQ10, 아스타잔틴)는 각 SKU의 타겟 기전에 특화.</li>
+    <li>향후 확장 가능 SKU와 겹침 분석:
+      <ul style="padding-left:20px;margin-top:8px;">
+        <li style="padding:4px 0;color:var(--text-secondary);font-size:14px;">AFTER-MUSCLE (크레아틴, HMB 등): 겹치지 않음.</li>
+        <li style="padding:4px 0;color:var(--text-secondary);font-size:14px;">AFTER-GUT (프로바이오틱스, 소화효소 등): 겹치지 않음.</li>
+        <li style="padding:4px 0;color:var(--text-secondary);font-size:14px;">AFTER-CORE (멀티비타민): 토코트리에놀·CoQ10이 일부 겹칠 수 있으나 용량 합산이 안전 범위 → 문제 없음.</li>
+        <li style="padding:4px 0;color:var(--text-secondary);font-size:14px;">AFTER-OMEGA (오메가-3 고용량): 겹치지 않음.</li>
+      </ul>
+    </li>
+    <li>베타카로틴(비타민A)은 AFTER-HAIR에서 제외 → 향후 AFTER-CORE에 넣을 여지 보존.</li>
+    <li>★ 포트폴리오 확장을 제한하지 않음.</li>
+  </ul>
+
+  <p><strong>체크 5: 벤치마크 전략에서 벗어나지 않는지</strong></p>
+  <ul class="feature-list">
+    <li>GLPH가 따르는 모델 = BeMe ("General한 제품을 만들지 않고 타겟별 전문 포뮬러").</li>
+    <li>토코트리에놀: 탈모 단독 RCT 있음 (Beoy 2010) + JAMA 최고 품질 근거. 탈모 SKU에 적합. ✓</li>
+    <li>CoQ10: 피부 RCT 있음 (Žmitek 2017, JAAD 2023) + 콜라겐 병용 임상 존재. 피부 SKU에 적합. ✓</li>
+    <li>아스타잔틴: 피부 메타분석 있음 (MDPI 2021) + MMP-1 억제 기전. 피부 SKU에 적합. ✓</li>
+    <li>베타카로틴: 탈모 단독 근거 없음 → AFTER-HAIR에서 제외 = "탈모 전문" 원칙 유지. ✓</li>
+    <li>Nutrafol(21종 올인원)과 다른 접근 유지: GLPH는 각 SKU에 10~11종 타겟 원료만. ✓</li>
+    <li>★ BeMe 모델에서 벗어나지 않음.</li>
+  </ul>
+
+  <h3>3 SKU 동시 복용 안전성 — 크로스 체크</h3>
+  <p>GLP-1 사용자가 GLPH 제품을 2개 이상 동시에 복용할 경우의 안전성을 검토.</p>
+
+  <p><strong>조합 1: AFTER-1 + AFTER-HAIR (올인원 + 탈모)</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>원료</th><th>AFTER-1</th><th>AFTER-HAIR</th><th>합산</th><th>1일 상한(UL)</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td>비오틴</td><td>2,500mcg</td><td>10,000mcg</td><td>12,500mcg</td><td>상한 미설정</td><td style="color:var(--amber);">⚠ 아래 참조</td></tr>
+        <tr><td>비타민D</td><td>1,000IU</td><td>1,000IU</td><td>2,000IU</td><td>4,000IU</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>아연</td><td>&mdash;</td><td>8mg</td><td>8mg</td><td>40mg</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>셀레늄</td><td>&mdash;</td><td>55mcg</td><td>55mcg</td><td>400mcg</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>마그네슘</td><td>270mg</td><td>&mdash;</td><td>270mg</td><td>보충제 350mg</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>철분</td><td>&mdash;</td><td>14mg</td><td>14mg</td><td>45mg</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>비타민C</td><td>&mdash;</td><td>100mg</td><td>100mg</td><td>2,000mg</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>토코트리에놀</td><td>&mdash;</td><td>50mg</td><td>50mg</td><td>1,000mg (비타민E 상한)</td><td style="color:var(--green);">✓ 안전</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-amber">
+    <div class="callout-title">비오틴 12,500mcg 주의사항</div>
+    <p>비오틴 자체의 독성 상한은 설정되어 있지 않으나, FDA는 고용량 비오틴(5,000mcg+)이 일부 혈액 검사(트로포닌, 갑상선 호르몬 등)에 간섭할 수 있다고 경고. GLP-1 사용자는 정기적으로 혈액 검사를 받을 수 있으므로, 두 제품을 동시 복용하는 경우 "혈액 검사 전 2~3일 비오틴 복용 중단" 안내 필요.</p>
+  </div>
+
+  <p><strong>조합 2: AFTER-1 + AFTER-SKIN (올인원 + 피부)</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>원료</th><th>AFTER-1</th><th>AFTER-SKIN</th><th>합산</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td>VERISOL F</td><td>2,500mg</td><td>5,000mg</td><td>7,500mg</td><td style="color:var(--green);">✓ 콜라겐 상한 없음</td></tr>
+        <tr><td>비타민D</td><td>1,000IU</td><td>&mdash;</td><td>1,000IU</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>비타민E</td><td>&mdash;</td><td>15mg</td><td>15mg</td><td style="color:var(--green);">✓ 상한 1,000mg</td></tr>
+        <tr><td>CoQ10</td><td>&mdash;</td><td>50mg</td><td>50mg</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>아스타잔틴</td><td>&mdash;</td><td>4mg</td><td>4mg</td><td style="color:var(--green);">✓ 안전</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>→ 중복·과잉 원료 없음. 가장 안전한 조합.</p>
+
+  <p><strong>조합 3: AFTER-HAIR + AFTER-SKIN (탈모 + 피부)</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>원료</th><th>AFTER-HAIR</th><th>AFTER-SKIN</th><th>합산</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td>비타민C</td><td>100mg</td><td>100mg</td><td>200mg</td><td style="color:var(--green);">✓ 안전 (상한 2,000mg)</td></tr>
+        <tr><td>비타민E (토코트리에놀+E)</td><td>50mg</td><td>15mg</td><td>65mg</td><td style="color:var(--green);">✓ 안전 (상한 1,000mg)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>→ 중복은 비타민C(200mg)와 비타민E계열(65mg) = 모두 안전 범위. 철분 14mg + 비타민C 200mg = 오히려 철분 흡수 향상 (긍정적 시너지).</p>
+
+  <p><strong>조합 4: 3개 전부 (AFTER-1 + AFTER-HAIR + AFTER-SKIN)</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>원료</th><th>합산</th><th>상한</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td>비오틴</td><td>12,500mcg</td><td>미설정</td><td style="color:var(--amber);">⚠ 혈액 검사 간섭 (위와 동일)</td></tr>
+        <tr><td>비타민D</td><td>2,000IU</td><td>4,000IU</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>비타민C</td><td>200mg</td><td>2,000mg</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>VERISOL F</td><td>7,500mg</td><td>없음</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>마그네슘</td><td>270mg</td><td>350mg</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>아연</td><td>8mg</td><td>40mg</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>셀레늄</td><td>55mcg</td><td>400mcg</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>철분</td><td>14mg</td><td>45mg</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>CoQ10</td><td>50mg</td><td>없음</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>아스타잔틴</td><td>4mg</td><td>없음</td><td style="color:var(--green);">✓ 안전</td></tr>
+        <tr><td>비타민E계열(토코트리에놀+E)</td><td>65mg</td><td>1,000mg</td><td style="color:var(--green);">✓ 안전</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>→ 3개 전부 복용해도 모든 원료가 1일 안전 상한 이내.<br>→ 유일한 주의: 비오틴 12,500mcg = 혈액 검사 간섭 가능 → 검사 전 복용 중단 안내.</p>
+
+  <div class="callout callout-green">
+    <div class="callout-title">결론</div>
+    <p><strong>3 SKU 동시 복용 시 안전성 문제 없음.</strong> 유일한 주의사항은 AFTER-1 + AFTER-HAIR 동시 복용 시 비오틴 합산 12,500mcg가 혈액 검사에 간섭할 수 있다는 것이며, 이는 제품 안내에 "혈액 검사 전 2~3일 비오틴 함유 제품 복용 중단"으로 대응 가능.</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Section 10 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">10</div>
+    <h2>오프라인 → 온라인 전략</h2>
+  </div>
+
+  <h3>벤치마크 A: Nutrafol (의사→DTC)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Phase</th><th>Nutrafol</th><th>GLPH 적용</th></tr></thead>
+      <tbody>
+        <tr><td>1. 신뢰 구축</td><td>의사 4,000명 네트워크</td><td>제휴 의원/약국</td></tr>
+        <tr><td>2. 마케팅 자산</td><td>"#1 Dermatologist-Recommended"</td><td>"의사 추천 GLP-1 전용 케어"</td></tr>
+        <tr><td>3. DTC 성장</td><td>자사몰+아마존 → 매출 90%</td><td>자사몰(재구매)→아마존(미국)</td></tr>
+        <tr><td>4. 재구매</td><td>DTC 재구매율 80%</td><td>오프라인 첫구매→자사몰 정기배송</td></tr>
+        <tr><td>5. 리테일</td><td>Sephora (프리미엄만)</td><td>프리미엄 채널만 (올리브영 X)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>핵심: 오프라인 = 신규 획득 채널 / 온라인 = 재구매 채널. 역할 분리.<br>CEO: "리테일은 브랜드를 소개하는 곳. 재구매는 온라인."</p>
+
+  <h3>벤치마크 B: 정관장 (한국 오프라인→온라인)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>데이터</th><th>출처</th></tr></thead>
+      <tbody>
+        <tr><td>자사몰 2030세대 매출 비중</td><td>2018년 40.5% → 2022년 56.2%</td><td>매일일보 2023.01</td></tr>
+        <tr><td>카카오톡 선물하기 연 매출</td><td>약 775억 원 (전년 대비 26% 성장)</td><td>매일일보 2023.01</td></tr>
+        <tr><td>카카오 성장률</td><td>2016년 서비스 시작 후 연평균 60%+</td><td>매일일보 2023.01</td></tr>
+        <tr><td>카카오 2030세대 구매 비중</td><td>50%+</td><td>매일일보 2023.01</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>→ 오프라인 신뢰(면세점+백화점+약국) → 온라인(자사몰+쿠팡+카카오) → 젊은 타겟 확장 → 정기배송 → 재구매 안정화.</p>
+
+  <h3>GLPH 로드맵</h3>
+  <p><strong>Phase 1 (런칭~6개월): 오프라인 신뢰 구축</strong></p>
+  <ul class="feature-list">
+    <li>채널: 제휴 의원/약국 전용. 온라인 미오픈.</li>
+    <li>목표: "의사가 추천하는 GLP-1 전용 제품" 인식 확립</li>
+    <li>자산: SNS에 의원 현장·의사 인터뷰 콘텐츠 축적 → 나중에 온라인 마케팅 핵심 소구</li>
+  </ul>
+
+  <p><strong>Phase 2 (6~12개월): 자사몰 재구매</strong></p>
+  <ul class="feature-list">
+    <li>오프라인 첫구매 환자에게 "다음부터 자사몰에서 편하게 주문하세요" 안내 (제품 안 카드 동봉)</li>
+    <li>자사몰 = 재구매 편의. 신규 유치는 여전히 의원. 정기배송 옵션.</li>
+    <li>의원 마진 훼손 방지: 자사몰 가격 = 오프라인 동일가 또는 소폭 할인.</li>
+  </ul>
+
+  <p><strong>Phase 3 (12~18개월): 아마존 US</strong></p>
+  <ul class="feature-list">
+    <li>"Physician-recommended GLP-1 aftercare" 포지셔닝</li>
+    <li>GLP-1 전용 보충제 시장이 형성 중 (The Vitamin Shoppe 진입 등)</li>
+    <li>GLPH = "전용(specialized)" 포지션 선점이 유리한 환경</li>
+  </ul>
+
+  <h3>온라인에서 단일 vs 복수</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th></th><th>단일</th><th>복수</th></tr></thead>
+      <tbody>
+        <tr><td>아마존 SEO</td><td>리스팅 1개</td><td><strong>3개 = 검색 노출 3배</strong></td></tr>
+        <tr><td>Brand Store</td><td>제품 1개 = 빈약</td><td><strong>3개 라인업 = 브랜드 신뢰감</strong></td></tr>
+        <tr><td>크로스셀</td><td>불가</td><td><strong>"함께 본 제품" = 자사 제품끼리 연결</strong></td></tr>
+        <tr><td>객단가</td><td>단일 가격</td><td><strong>번들·크로스셀 → 객단가↑</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Section 11 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">11</div>
+    <h2>최종 비교</h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>기준</th><th>단일 SKU</th><th>복수 SKU (3개)</th></tr></thead>
+      <tbody>
+        <tr><td>제조·맛 리스크</td><td>높음 (37.7% 고형분)</td><td><strong>낮음 (각 SKU 여유)</strong></td></tr>
+        <tr><td>임상 유효 용량</td><td>타협 필요</td><td><strong>각 SKU 풀 도즈</strong></td></tr>
+        <tr><td>전환율 (심리학 3건)</td><td>"whether-to-buy" → 거절 쉬움</td><td><strong>"which-to-buy" → 거절 어려움</strong></td></tr>
+        <tr><td>탈모 차별화</td><td>Nutrafol 대비 기전 차이 있으나 풀도즈 불가</td><td><strong>기전 차별(호르몬 vs 영양) + 풀도즈 + 철분(GI 안전)</strong></td></tr>
+        <tr><td>콜라겐 차별화</td><td>VERISOL 포함이나 절반 용량</td><td><strong>VERISOL F 5g 풀 임상 + 마케팅 자산(임상 검증 스토리)</strong></td></tr>
+        <tr><td>가격 유연성</td><td>37,500원 단일</td><td><strong>25,000~39,000원 범위</strong></td></tr>
+        <tr><td>아마존</td><td>리스팅 1개</td><td><strong>3배 노출 + Brand Store + 크로스셀</strong></td></tr>
+        <tr><td>한국 선례</td><td>상위 단일 0</td><td><strong>상위 전부 복수</strong></td></tr>
+        <tr><td>hero 결정</td><td>런칭 전 고정 (검증 없음)</td><td><strong>시장이 결정 (데이터 기반)</strong></td></tr>
+        <tr><td>포트폴리오 역할</td><td>올인원이 모든 역할</td><td><strong>공격(전용) + 수비(올인원) 분업</strong></td></tr>
+        <tr><td>실패 리스크</td><td>맛 실패 = 전체 실패</td><td><strong>1개 실패 = 나머지 유지</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>판단</h3>
+  <p>OEM 맛 테스트가 분기점.</p>
+  <ul class="feature-list">
+    <li>올인원 50g 맛 성립 → 올인원 1개로 런칭 → 6개월 내 SKU 확장 (AG1 모델)</li>
+    <li>올인원 50g 맛 불성립 → 3 SKU 동시 런칭 → hero를 시장이 결정</li>
+  </ul>
+  <p>올인원이 되더라도 복수 확장이 필요한 이유:</p>
+  <ol style="padding-left:20px;color:var(--text-secondary);font-size:14px;margin-bottom:16px;">
+    <li style="padding:4px 0;">심리학 3건: 1개 → 거절 쉬움, 복수 → 전환율 높음</li>
+    <li style="padding:4px 0;">GLP-1 전용 보충제 시장 형성 중 (The Vitamin Shoppe 등 진입) → 빠른 라인업 구축 유리</li>
+    <li style="padding:4px 0;">아마존: 복수 = 노출 3배 + Brand Store + 크로스셀</li>
+    <li style="padding:4px 0;">한국: 상위 3사 전부 복수, 단일 성공 사례 0</li>
+    <li style="padding:4px 0;">크로스셀: 객단가↑ + LTV↑</li>
+  </ol>
+</div>
+
+<div class="divider"></div>
+
+<!-- Section 12 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">12</div>
+    <h2>근거 출처 종합</h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>근거</th><th>출처</th><th>유형</th></tr></thead>
+      <tbody>
+        <tr><td>Single Option Aversion</td><td>Mochon (2013), Journal of Consumer Research</td><td>학술</td></tr>
+        <tr><td>Which-to-buy 마인드셋</td><td>Tian, Chen, He (2019), Frontiers in Psychology</td><td>학술</td></tr>
+        <tr><td>단일 대안 거부</td><td>Zakay (1984)</td><td>학술</td></tr>
+        <tr><td>3 vs 5 실측</td><td>Dr. Scholl's 이메일 A/B</td><td>비즈니스</td></tr>
+        <tr><td>메타분석 (반박)</td><td>Scheibehenne et al. (2010), JCR</td><td>학술</td></tr>
+        <tr><td>GLP-1 탈모 TE+AGA</td><td>Gupta et al. (2026), 시스템적 리뷰, PMC</td><td>학술</td></tr>
+        <tr><td>GLP-1 탈모 실세계</td><td>GWU (EADV 2025), Medscape 보도</td><td>학술+업계</td></tr>
+        <tr><td>GLP-1 탈모 스코핑 리뷰</td><td>PMC (2025)</td><td>학술</td></tr>
+        <tr><td>쏘팔메토 GI 부작용</td><td>Remedys Nutrition, Doctronic, WebMD</td><td>의료</td></tr>
+        <tr><td>쏘팔메토 여성 안전성</td><td>Healthline, SingleCare, Wimpole Clinic, MNT</td><td>의료</td></tr>
+        <tr><td>쏘팔메토 고용량 안전</td><td>BGG Japan (2019)</td><td>업계 연구</td></tr>
+        <tr><td>쏘팔메토 탈모 효과</td><td>PMC 시스템적 리뷰 (2020), VISPO RCT (PMC 2023)</td><td>학술</td></tr>
+        <tr><td>철분 GI OR 2.32</td><td>Tolkien et al. (2015), PLOS ONE, 43건 RCT</td><td>학술 메타분석</td></tr>
+        <tr><td>철분 GI 40~50% 중단</td><td>StatPearls (NIH, 2023)</td><td>의학 교과서</td></tr>
+        <tr><td>비스글리시네이트 GI 안전</td><td>GoodRx (2024), ClinicalTrials NCT03378791</td><td>의료+임상</td></tr>
+        <tr><td>VERISOL 주름 감소 RCT</td><td>Proksch et al. (2014), Skin Pharmacology</td><td>학술</td></tr>
+        <tr><td>VERISOL B RCT</td><td>MDPI Cosmetics (2025)</td><td>학술</td></tr>
+        <tr><td>VERISOL 한계</td><td>NMI Review</td><td>학술 리뷰</td></tr>
+        <tr><td>VERISOL 마케팅</td><td>GELITA 공식, AlgaeCal, TechLabs, H&amp;B</td><td>기업+업계</td></tr>
+        <tr><td>비브랜드 콜라겐 RCT</td><td>CollaSel Pro, PMC 11432272</td><td>학술</td></tr>
+        <tr><td>VERISOL vs 비브랜드 기전</td><td>ScienceInsights (2025)</td><td>업계 분석</td></tr>
+        <tr><td>VP 아마존 1위</td><td>Amazon Best Sellers, ASInsight (2026)</td><td>시장 데이터</td></tr>
+        <tr><td>Nutrafol 성장</td><td>Modern Retail (2022), Unilever (2025)</td><td>업계+기업</td></tr>
+        <tr><td>Nutrafol 원료</td><td>Nutrafol 공식 + PMC 8944288</td><td>공식+학술</td></tr>
+        <tr><td>Nutrafol GLP-1</td><td>Amazon (2026.03)</td><td>직접 확인</td></tr>
+        <tr><td>Nutrafol SKU 확장</td><td>Retail Dive (2024.02)</td><td>업계</td></tr>
+        <tr><td>GLP-1 보충제 경쟁</td><td>NutraIngredients (The Vitamin Shoppe, 2025.04)</td><td>업계</td></tr>
+        <tr><td>AG1 단일→복수</td><td>AdExchanger (2024)</td><td>업계</td></tr>
+        <tr><td>한국 건기식 시장</td><td>건기식협회 (2024-2025), 전자신문, 푸드투데이</td><td>협회+업계</td></tr>
+        <tr><td>정관장 온라인 전환</td><td>매일일보 (2023.01)</td><td>업계 보도</td></tr>
+        <tr><td>BeMe VERISOL 액상 사셰</td><td>Amazon 리스팅 직접 확인, BeMe 공식 (bemewellness.com)</td><td>직접 확인</td></tr>
+        <tr><td>BeMe 전략·인증</td><td>FinancialContent (2025.09), Amazon 4.3★</td><td>업계+시장</td></tr>
+        <tr><td>Primabiotic 액상 콜라겐</td><td>Amazon 리스팅 직접 확인</td><td>직접 확인</td></tr>
+        <tr><td>Revive Collagen 사셰</td><td>Amazon 리스팅 직접 확인</td><td>직접 확인</td></tr>
+        <tr><td>NatureWise Liquid Collagen</td><td>Amazon Best Sellers 등재 확인</td><td>직접 확인</td></tr>
+        <tr><td>액상 콜라겐 시장 트렌드</td><td>Accio (2025), KUDU Nutrition (2025)</td><td>업계 분석</td></tr>
+        <tr><td>CoQ10 피부 RCT</td><td>Žmitek et al. (2017), ClinicalTrials NCT02604641</td><td>학술</td></tr>
+        <tr><td>CoQ10 피부 RCT</td><td>JAAD (2023), 41명 이중맹검</td><td>학술</td></tr>
+        <tr><td>CoQ10 피부 리뷰</td><td>JCAD (2025)</td><td>학술 리뷰</td></tr>
+        <tr><td>CoQ10+콜라겐 병용 임상</td><td>ClinicalTrials NCT03811756</td><td>임상</td></tr>
+        <tr><td>CoQ10 세마글루타이드 상호작용</td><td>Drugs.com</td><td>의료</td></tr>
+        <tr><td>CoQ10 GI 안전성</td><td>ScienceDirect 리뷰 (용량 비의존적)</td><td>학술</td></tr>
+        <tr><td>아스타잔틴 메타분석</td><td>MDPI Nutrients (2021)</td><td>학술 메타분석</td></tr>
+        <tr><td>아스타잔틴 RCT</td><td>Tominaga et al. (PMC 2017), 65명 16주</td><td>학술</td></tr>
+        <tr><td>아스타잔틴 시스템적 리뷰</td><td>PubMed (2020), 11건 임상</td><td>학술</td></tr>
+        <tr><td>아스타잔틴 안전성</td><td>ScienceInsights (2026), 87건 리뷰, FDA GRAS</td><td>학술+규제</td></tr>
+        <tr><td>아스타잔틴 부작용</td><td>WebMD, Drugs.com, Apollo Hospitals</td><td>의료</td></tr>
+        <tr><td>토코트리에놀 탈모 RCT</td><td>Beoy et al. (2010), Tropical Life Sciences Research</td><td>학술</td></tr>
+        <tr><td>탈모 보충제 시스템적 리뷰</td><td>JAMA Dermatology (2023), 30건 분석</td><td>학술</td></tr>
+        <tr><td>TE 보충제 비교</td><td>PMC 6136400, 여성 대상 2그룹 비교</td><td>학술</td></tr>
+        <tr><td>TE 콜라겐+비타민 유도·유지</td><td>ResearchGate (2025.12), 다기관</td><td>학술</td></tr>
+        <tr><td>베타카로틴 폐암 리스크</td><td>ATBC Study, CARET Study</td><td>학술</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="color:var(--text-muted);font-size:13px;font-style:italic;">GLPH R&amp;D 내부 문서 | 2026.05.09 SKU 포트폴리오 전략 리포트 (최종)</p>
+</div>
+
+</div><!-- end panel-sku -->
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TAB 2: KOREA LAUNCH — placeholder (will continue)     -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-korea">
+  <div class="hero">
+    <div class="hero-eyebrow">Korea Strategy</div>
+    <h1>GLPH 국내 런칭 전략<br>오프라인 &amp; 온라인 동시</h1>
+    <p class="hero-desc">제품 생산 완료: 7월 1째주 | 런칭: 7월 2째주. 오프라인과 온라인을 동시에 열어 상호 강화하는 구조.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><div class="hero-meta-dot"></div>의원 6곳 + 약국 3곳</div>
+      <div class="hero-meta-item"><div class="hero-meta-dot"></div>89.9% 소비자 온라인 정보탐색</div>
+      <div class="hero-meta-item"><div class="hero-meta-dot"></div>동시 런칭 = 오프라인 강화 인프라</div>
+    </div>
+  </div>
+<!-- Section: 왜 "동시 런칭"인가 -->
+<div class="section">
+  <div class="section-eyebrow">Strategic Rationale</div>
+  <h2>왜 "동시 런칭"인가 — 전략 변경의 근거</h2>
+
+  <h3>기존 계획: 오프라인 선런칭 → 3개월 후 온라인</h3>
+  <p>기존 계획은 Nutrafol 모델(의사 네트워크 → DTC 확장)을 따른 것이었다. 의원 6곳에서 "의사 추천" 신뢰를 먼저 쌓고, 3개월 후 온라인으로 확장하는 순서를 고려했다.</p>
+  <p><strong>이 계획의 전제:</strong> 오프라인에서 충분한 신뢰를 쌓은 후 온라인에 진출해야 브랜드 포지셔닝이 단단해진다.</p>
+
+  <h3>왜 바꿨는가: 한국 소비자의 구매 행동이 이 전제를 깨뜨린다</h3>
+  <h4>데이터 근거</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>한국 건기식 소비자 행동</th><th>수치</th><th>출처</th></tr></thead>
+      <tbody>
+        <tr><td>구매 전 온라인 정보탐색 비율</td><td><strong>89.9%</strong></td><td>오픈서베이 2025</td></tr>
+        <tr><td>정보탐색 1순위 채널</td><td>인터넷 포털 검색 (46.4%)</td><td>건기식협회 2024</td></tr>
+        <tr><td>온라인 구매 비중</td><td>68.3%</td><td>오픈서베이 2026</td></tr>
+        <tr><td>모바일 결제 비중</td><td>72.4%</td><td>오픈서베이 2026</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>소비자의 90%가 사기 전에 검색한다.</strong> 의원에서 소개받고 바로 사는 사람은 소수다. 대부분은 집에 가서 검색한다.</p>
+
+  <h4>오프라인만 있고 온라인이 없을 때 벌어지는 일</h4>
+  <div class="code-block"><pre>의원에서 소개받음 → 집에서 "GLPH" 또는 "GLP-1 보충제" 검색
+  → 검색 결과: 아무것도 안 나옴
+    → 소비자 판단: "이거 안 유명한데?", "정식 제품 맞나?"
+      → 이탈. 다시 돌아오지 않음.</pre></div>
+
+  <h4>Nutrafol(2016 미국)과 GLPH(2026 한국)의 결정적 차이</h4>
+  <ul>
+    <li>2016년 미국: 소비자가 의사 추천을 받으면 검색 없이 수용하는 비율이 높았음</li>
+    <li>2026년 한국: <strong>소비자가 의사 추천을 받아도 무조건 검색함.</strong> 검색에서 확인이 안 되면 신뢰하지 않음</li>
+  </ul>
+  <div class="callout"><strong>"온라인에 없는 제품 = 존재하지 않는 제품"</strong>이 2026년 한국 소비자의 인식이다.</div>
+
+  <h3>동시 런칭이 오프라인 파트너를 해치는가?</h3>
+  <p><strong>해치지 않는다. 오히려 돕는다.</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>우려</th><th>현실</th></tr></thead>
+      <tbody>
+        <tr><td>"온라인이 더 싸면 의원에서 안 사겠지"</td><td>온라인이 더 비싸다 (49,000원 vs 39,000원). 의원이 가장 싼 채널.</td></tr>
+        <tr><td>"환자가 온라인으로 빠지면 의원 매출 감소"</td><td>자사몰 코드 시스템으로, 온라인 구매해도 의원에 리워드.</td></tr>
+        <tr><td>"온라인 존재가 의원의 희소성을 낮춤"</td><td>반대. 온라인에도 있는 제품 = "정식 브랜드" 인식 → 의원 추천의 신뢰도 상승.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>의사 입장에서:</strong></p>
+  <ul>
+    <li>온라인 없을 때: "내가 추천한 제품이 검색해도 안 나온다" → 체면 리스크 → 추천 꺼림</li>
+    <li>온라인 있을 때: "검색하시면 쿠팡에도 있어요. 근데 여기서 사시면 더 싸요" → 추천이 쉬워짐</li>
+  </ul>
+
+  <h3>비유: 명함 없이 영업하는 것</h3>
+  <p>오프라인만 열고 온라인을 안 여는 건 — 미팅은 잡았는데 명함과 회사 홈페이지가 없는 것이다. 상대방이 "이 회사 뭐하는 곳이지?" 검색했을 때 아무것도 안 나오면 신뢰가 깨진다. 온라인 존재 자체가 오프라인 영업의 신뢰 인프라.</p>
+
+  <h3>결론</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>시나리오</th><th>의원 환자 중 "검색 후 이탈"</th><th>의원 추천 신뢰도</th><th>재구매 경로</th></tr></thead>
+      <tbody>
+        <tr><td>오프라인만 (기존)</td><td>높음</td><td>낮음 ("검색해도 안 나오는 제품")</td><td>없음 (의원 방문해야만)</td></tr>
+        <tr><td><strong>동시 런칭 (변경)</strong></td><td><strong>낮음</strong></td><td><strong>높음</strong> ("쿠팡에도 있는 정식 제품")</td><td><strong>자사몰 코드 → 집에서 재구매</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><strong>동시 런칭은 오프라인을 약화시키는 게 아니라, 오프라인을 강화하는 인프라다.</strong></div>
+</div>
+
+<!-- Section: 전략 구조 -->
+<div class="section">
+  <div class="section-eyebrow">Architecture</div>
+  <h2>전략 구조 — 오프라인과 온라인의 역할 분리</h2>
+  <div class="code-block"><pre>[오프라인] 의원 6곳 + 약국 3곳
+  역할: 신규 고객 획득 + 의사 추천 신뢰 구축
+  가격: 39,000원 (최저가)
+
+[온라인] 자사몰 + 쿠팡 + 네이버
+  역할: 신뢰 확인(검색 시 존재 증명) + 재구매 편의(자사몰 코드)
+  가격: 49,000원 (프리미엄). 코드 시 39,000원.
+
+[연결고리] 의원/약국 코드 → 자사몰
+  오프라인에서 획득한 고객을 온라인 재구매로 전환
+  의원/약국은 온라인 매출에서도 리워드 수취</pre></div>
+</div>
+
+<!-- Section: Part 1 오프라인 전략 -->
+<div class="section">
+  <div class="section-eyebrow">Part 1 — Offline</div>
+  <h2>오프라인 전략</h2>
+
+  <h3>핵심 테제: 왜 의사가 이걸 팔겠는가?</h3>
+  <p><strong>문제 인식</strong></p>
+  <ul>
+    <li>GLP-1 처방 마진: 건당 10,000~20,000원</li>
+    <li>의사에게 보충제 "판매"를 요청하는 것은 부담</li>
+    <li>프레이밍 전환: "판매"가 아니라 "GLP-1 환자 부작용 케어의 자연스러운 연장선"</li>
+  </ul>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>핵심 수치</th><th>값</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td>의원/약국 마진</td><td>45-50%</td><td>즉각적 수익. 건기식 치고 높은 마진.</td></tr>
+        <tr><td>의사 리스크</td><td>0원</td><td>위탁 구조 = 초기 투자 0, 재고 부담 0</td></tr>
+        <tr><td>전환 트리거</td><td>1줄</td><td>의사의 한 마디("이거 드셔보세요")로 전환율 10%+</td></tr>
+        <tr><td>온라인 리워드</td><td>지속</td><td>환자가 자사몰에서 코드로 재구매해도 의원에 리워드</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section: 도매 레버리지 -->
+<div class="section">
+  <div class="section-eyebrow">Competitive Advantage</div>
+  <h2>도매 레버리지: 불공정한 경쟁우위</h2>
+
+  <h3>한아원의 구조적 포지션</h3>
+  <ul>
+    <li>GLP-1 약물(위고비, 마운자로 등) 콜드체인 도매처를 직접 보유</li>
+    <li>의원과 이미 거래 관계가 형성되어 있음</li>
+    <li>GLPH 영업이 콜드 세일즈가 아닌 기존 관계의 자연스러운 확장</li>
+  </ul>
+
+  <p><strong>운영 우위:</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>우위</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>기존 거래 관계</td><td>콜드 아웃리치 불필요. 이미 신뢰 관계 존재.</td></tr>
+        <tr><td>풀 패키지 포지셔닝</td><td>"위고비 공급하는데, 부작용 케어 제품도 있습니다" = 냉소가 아닌 자연스러운 수용</td></tr>
+        <tr><td>동일 물류 루트</td><td>약물 배송 루트에 GLPH를 얹으면 별도 물류비 거의 0</td></tr>
+        <tr><td>데이터 우위</td><td>어느 의원이 GLP-1을 얼마나 처방하는지 자사 데이터로 파악 → 영업 대상 선별</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>3단계 세일즈 레버리지:</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>단계</th><th>활동</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>의원 발굴</td><td>도매 네트워크에서 GLP-1 처방 의원 식별</td></tr>
+        <tr><td>2</td><td>관계 형성</td><td>약물 공급을 통해 신뢰 구축 (이미 완료된 상태)</td></tr>
+        <tr><td>3</td><td>GLPH 제안</td><td>"부작용 케어 제품도 같이 놓으시겠어요?" — 자연스러운 확장</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section: 판매 모델 -->
+<div class="section">
+  <div class="section-eyebrow">Sales Model</div>
+  <h2>판매 모델: 위탁 선행 → 매입 전환</h2>
+
+  <h3>3단계 전환 구조</h3>
+  <div class="flow-steps">
+    <div class="flow-step">
+      <div class="flow-step-num">Phase 1</div>
+      <h4>위탁 판매</h4>
+      <ul>
+        <li>제품을 의원/약국에 배치</li>
+        <li>팔린 만큼만 정산</li>
+        <li>의사 리스크 0</li>
+        <li>"한번 놓아보세요" 수준의 장벽</li>
+      </ul>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">Phase 2</div>
+      <h4>데이터 증명</h4>
+      <ul>
+        <li>월 평균 판매량 추적</li>
+        <li>검증된 숫자를 신규 의원 영업에 활용</li>
+        <li>"옆 의원은 월 20개씩 나갑니다" = 강력한 클로징</li>
+      </ul>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">Phase 3</div>
+      <h4>매입 전환</h4>
+      <ul>
+        <li>안정적으로 팔리는 의원에 매입 제안</li>
+        <li>매입 시 마진 추가 우대 가능</li>
+        <li>자연스러운 전환 인센티브</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout"><strong>왜 위탁부터인가:</strong> 브랜드 인지도 0인 상태에서 "사서 놓으세요"는 거절당한다. "우리가 놓을 테니 팔리면 정산하겠습니다"는 거절할 이유가 없다. <strong>진입점 최대화가 이 단계의 우선순위.</strong></div>
+</div>
+
+<!-- Section: 위탁 운영 디테일 -->
+<div class="section">
+  <div class="section-eyebrow">Operations</div>
+  <h2>위탁 운영 디테일</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>기준</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>정산 주기</td><td>월말 마감, 익월 초 지급</td><td>주간 = 관리비 과다. 분기 = 의원 체감 약함.</td></tr>
+        <tr><td>재고 확인</td><td>월 1회 방문 실사</td><td>초기에는 의원 자체 기록 미신뢰. 직접 카운팅 정확.</td></tr>
+        <tr><td>초기 비치 — 의원</td><td>15~20개</td><td>1개월 판매 데이터 보고 조정</td></tr>
+        <tr><td>초기 비치 — 약국</td><td>20~30개</td><td>유동인구 많아 소진 빠름</td></tr>
+        <tr><td>보충 방식</td><td>방문 시 판매분 보충</td><td>FIFO 원칙: 신규 재고는 기존 뒤에 배치</td></tr>
+        <tr><td>유통기한 관리</td><td>잔여 X개월 미만 시 회수</td><td>계약서에 기준 명시</td></tr>
+        <tr><td>훼손/분실</td><td>위탁 기간 중 의원 책임</td><td>합리적 범위 내, 계약서에 명시</td></tr>
+        <tr><td>계약 형태</td><td>A4 1장 이내</td><td>핵심 조건만: 수량, 정산주기, 마진율, 반품 조건, 해지 조건</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><strong>물류 시너지:</strong> 위고비/마운자로 배송 루트가 이미 존재. 약물 공급 방문 + GLPH 재고 확인 + 보충을 한 번에 = 별도 물류비 거의 0. <strong>위탁의 최대 비용(방문 물류)이 도매 네트워크로 상쇄됨.</strong></div>
+
+  <p><strong>스케일 로드맵:</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>단계</th><th>규모</th><th>운영 방식</th><th>시스템</th></tr></thead>
+      <tbody>
+        <tr><td>Micro</td><td>~10곳</td><td>1인 직접 순회. 도매 루트 통합. 스프레드시트 관리.</td><td>수동</td></tr>
+        <tr><td>Growth</td><td>10~30곳</td><td>권역 분리. 격주 방문 또는 도매팀 협업.</td><td>재고관리 시스템 도입</td></tr>
+        <tr><td>Scale</td><td>30곳+</td><td>물류 파트너 위탁 OR 매입 전환</td><td>증명된 파트너는 매입, 신규는 위탁 유지</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section: VMD & 터치포인트 -->
+<div class="section">
+  <div class="section-eyebrow">Touchpoint Design</div>
+  <h2>VMD &amp; 터치포인트 설계: 환경이 판다</h2>
+
+  <h3>3-Point 환자 노출 전략</h3>
+  <div class="flow-steps">
+    <div class="flow-step">
+      <div class="flow-step-num">1st</div>
+      <h4>진료실 데스크</h4>
+      <ul>
+        <li>진료실 내 VMD 피규어 배치</li>
+        <li>의사가 부작용 설명 중 자연스럽게 제품을 가리킬 수 있는 위치</li>
+        <li>진료 대화에 seamless하게 녹아드는 구조</li>
+      </ul>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">2nd</div>
+      <h4>수납 카운터</h4>
+      <ul>
+        <li>카운터에 VMD + 리플렛 비치</li>
+        <li>의사가 언급하지 않았더라도 수납 시 자연 노출</li>
+        <li>환자가 독립적으로 발견하는 구조</li>
+      </ul>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">3rd</div>
+      <h4>건물 내 약국</h4>
+      <ul>
+        <li>약국 카운터에 VMD + 제품 진열</li>
+        <li>처방전 수령 시 추가 노출</li>
+        <li>약사 추천이 전환을 완성</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout"><strong>환자 노출 이론:</strong> 최소 3회 노출 (진료실 → 수납 → 약국). 의사가 적극적으로 권하지 않더라도 환자가 독립적으로 관심을 갖도록 환경 설계. 리플렛은 "광고"가 아닌 "GLP-1 부작용 관리 정보 자료" 형태로 제작.</div>
+</div>
+
+<!-- Section: 인증 라벨 -->
+<div class="section">
+  <div class="section-eyebrow">Blue Ribbon Model</div>
+  <h2>인증 라벨: Blue Ribbon 모델</h2>
+
+  <h3>컨셉: 돈으로 못 사는 "선정"</h3>
+  <p>미쉐린 스타를 레스토랑이 돈으로 살 수 없듯, GLPH Certified도 신청 → 심사 → 승인 과정을 거친 "선정"이다.</p>
+  <div class="code-block"><pre>GLPH Certified
+GLP-1 Full-stack Care</pre></div>
+  <p><strong>배치:</strong> 의원 입구 (스티커 또는 메탈 플레이트)<br>
+  <strong>환자 인식:</strong> 건물에 들어가기 전에 "GLP-1 케어 가능한 곳"이라는 인식 형성</p>
+
+  <p><strong>의사 동기부여:</strong></p>
+  <ul>
+    <li>GLPH 판매가 의원 아이덴티티/포지셔닝의 일부가 됨</li>
+    <li>인증 유지를 위해 지속적 케어 프로그램 운영 → 유기적 행동 인센티브</li>
+  </ul>
+
+  <p><strong>희소성 무기:</strong></p>
+  <ul>
+    <li>지역당 인증 수 제한</li>
+    <li>"이 지역에 아직 인증 파트너가 없습니다" = FOMO 유발</li>
+    <li>신규 영업 시 강력한 클로징 라인</li>
+  </ul>
+
+  <p><strong>옴니채널 연동:</strong></p>
+  <ul>
+    <li>오프라인: 입구 플레이트</li>
+    <li>온라인: 브랜드 페이지 인증 뱃지</li>
+    <li>케어맵: 인증 마커 표시</li>
+    <li>SNS: 파트너 피처링</li>
+  </ul>
+</div>
+
+<!-- Section: Value Stack -->
+<div class="section">
+  <div class="section-eyebrow">Value Proposition</div>
+  <h2>Value Stack: 마진 그 이상의 가치</h2>
+  <p>의사에게 제공하는 5단계 가치. 단순 제품 거래가 아닌 구조적 이점.</p>
+
+  <div class="card-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+    <div class="card">
+      <div class="card-title">Layer 1 — 즉시: 마진 45-50%</div>
+      <ul>
+        <li>건기식 치고 높은 마진율</li>
+        <li>GLP-1 처방 수익에 추가 수익원</li>
+        <li>기본적 경제 인센티브</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Layer 2 — 중기: 환자 케어 완결</div>
+      <ul>
+        <li>부작용 불만에 "이거 드셔보세요" 한 마디로 대응</li>
+        <li>환자 만족도 상승</li>
+        <li>재방문율 향상</li>
+        <li>진료 품질 업그레이드</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Layer 3 — 장기: GLP-1 Full-Stack Care 포지셔닝</div>
+      <ul>
+        <li>의원 인식: "처방 + 부작용 케어를 한 곳에서"</li>
+        <li>확장되는 GLP-1 시장에서 환자 풀 선점</li>
+        <li>GLPH 마진보다 훨씬 큰 가치</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Layer 4 — 환경 셋업: VMD + 리플렛 완비</div>
+      <ul>
+        <li>한아원이 모든 VMD 피규어, 리플렛 제작/배치</li>
+        <li>진료실, 카운터, 약국 전부</li>
+        <li>의사/약사는 공간만 제공</li>
+        <li>턴키(Turnkey) 환경 솔루션</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Layer 5 — 아이덴티티: GLPH Certified 인증</div>
+      <ul>
+        <li>Blue Ribbon 모델 (돈으로 못 사는 "선정")</li>
+        <li>의원 입구 권위 표시</li>
+        <li>의원 아이덴티티 방어 = 비금전적 동기</li>
+        <li>지역 희소성으로 배타적 가치 유지</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>세일즈 피치 리프레이밍</h3>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-header" style="background:var(--danger);">기존</div>
+      <p>"이 제품 팔아주세요, 마진 45%입니다"</p>
+    </div>
+    <div class="compare-col">
+      <div class="compare-header" style="background:var(--success);">변경</div>
+      <p>"선생님 의원을 GLP-1 전문 케어 의원으로 포지셔닝합니다. 제품, 진열, 자재 전부 저희가 세팅합니다. 선생님은 진료 끝에 한 마디만 하시면 됩니다. 리스크 0이고, 온라인에서 환자가 재구매해도 선생님께 리워드가 갑니다."</p>
+    </div>
+  </div>
+</div>
+
+<!-- Section: 생태계 설계 -->
+<div class="section">
+  <div class="section-eyebrow">Ecosystem</div>
+  <h2>생태계 설계: 콘텐츠 → 의원 퍼널</h2>
+
+  <div class="card-grid" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="card">
+      <div class="card-title">SNS — 정보 허브</div>
+      <ul>
+        <li>GLP-1 정보, 부작용 관리, 후속 케어를 카드피드 형태로</li>
+        <li>GLPH = 정보 제공자 (광고주가 아닌) 인식</li>
+        <li>일관된 트렌디한 콘텐츠로 자연스러운 신뢰 구축</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">케어맵 — O2O 퍼널</div>
+      <ul>
+        <li>SNS 바이오 링크에 파트너 의원 찾기 맵 연결</li>
+        <li>환자가 가까운 참여 의원을 검색 가능</li>
+        <li>맵의 풍성함 = 네트워크 강도 지표</li>
+        <li>의원 수 증가에 따라 유기적 성장</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">GLPH 브랜드 페이지</div>
+      <ul>
+        <li>전체 참여 의원 리스트</li>
+        <li>네트워크 규모 자체가 신뢰 근거</li>
+        <li>제품 라인 확장 시 "플랫폼" 인식 강화</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout"><strong>네트워크 효과:</strong> 의원 증가 → 맵 풍성 → 환자 유입 증가 → 신규 의원이 참여 희망 → 자기 강화 성장. 일정 규모 이후: 영업 없이 "저희도 참여하고 싶습니다" 인바운드 발생. <strong>이것이 4곳 → 24곳 → 그 이상으로의 진짜 성장 엔진.</strong></div>
+</div>
+
+<!-- Section: 약국 전략 -->
+<div class="section">
+  <div class="section-eyebrow">Pharmacy Strategy</div>
+  <h2>약국 전략: 의원과 다른 동기 구조</h2>
+
+  <h3>약사에게만 작동하는 4가지 동기</h3>
+  <div class="card-grid" style="grid-template-columns: repeat(2, 1fr);">
+    <div class="card">
+      <div class="card-title">1. 반복 수익 (Recurring)</div>
+      <ul>
+        <li>GLP-1 처방은 주간/월간 리필</li>
+        <li>약사는 같은 환자를 반복적으로 만남</li>
+        <li>1회 추천 기회 = 반복적 추천 기회로 전환</li>
+        <li>의사: 방문당 1회 기회. 약사: 환자 생애주기 동안 다수 기회.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">2. 가격 우위 보장 (Price Advantage)</div>
+      <ul>
+        <li>온라인은 프리미엄 가격 (49,000원)</li>
+        <li>약국은 39,000원 = 온라인보다 10,000원 저렴</li>
+        <li>"여기서 사는 게 제일 싸요" = 약사가 말할 수 있는 사실</li>
+        <li>가격 경쟁 구조적으로 제거됨</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">3. 프리셀(Pre-sold) 제품</div>
+      <ul>
+        <li>환자가 약국에 올 때: "의사 선생님이 이거 먹어보라고 했어요"</li>
+        <li>약사는 새 제품 설명/설득 불필요</li>
+        <li>의사가 프리셀 → 약사는 확인하고 전달만</li>
+        <li>가장 쉬운 형태의 판매</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">4. 전문가 권위 도구 (Authority)</div>
+      <ul>
+        <li>약사가 "GLP-1 영양 관리 전문가"로 포지셔닝 가능</li>
+        <li>성분, 효능, 복용법 = 약사의 전문 영역</li>
+        <li>의사보다 더 상세한 상담 가능</li>
+        <li>약사의 전문성을 무기화</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout"><strong>핵심:</strong> 온라인 가격(49,000원) > 약국 가격(39,000원)이므로, 약사 입장에서 "온라인에서 더 싸게 팔까 봐" 걱정이 구조적으로 제거됨.</div>
+
+  <h3>의원 내 약국 vs 독립 약국 — 접근 차이</h3>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-header">의원 내 약국 (같은 건물)</div>
+      <p><strong>환자 흐름:</strong> 의사 → 수납 → 약국 (자연 퍼널 존재)<br>
+      <strong>약사 역할:</strong> 퍼널 최종단계 클로저</p>
+      <p><strong>영업 스크립트:</strong><br>
+      "약사님, 위층 OO의원에서 GLP-1 환자분들에게 이 제품 추천하고 있어요. 처방전 받으러 내려오시는 분들이 같이 구매하세요. 약국에도 놓으시면 추가 수익이 됩니다. 온라인에서는 49,000원인데 여기선 39,000원이라 가격 경쟁 없어요."</p>
+    </div>
+    <div class="compare-col">
+      <div class="compare-header">독립 약국 (별도 위치)</div>
+      <p><strong>도전:</strong> 의사 프리셀 없음. 약사가 발견→설명→판매 전체 담당.<br>
+      <strong>해결:</strong> 선별 배치 + 약사 전문성 포지셔닝</p>
+      <p><strong>영업 스크립트:</strong><br>
+      "약사님, GLP-1 리필 환자분 많으시잖아요. 부작용 상담도 많이 하시고요. 지금은 추천할 전문 제품이 없으신 거잖아요. 이거 의원 전용 GLP-1 케어 보충제인데, 약국에 놓으시면 상담 마무리가 달라져요. 온라인에서는 49,000원이고 여기선 39,000원이에요."</p>
+    </div>
+  </div>
+
+  <h4>독립 약국 선별 기준</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>기준</th><th>확인 방법</th><th>왜 중요</th></tr></thead>
+      <tbody>
+        <tr><td>GLP-1 리필 빈도</td><td>도매 배송 데이터 (위고비/마운자로 볼륨)</td><td>빈도 낮으면 환자 접점 부족</td></tr>
+        <tr><td>약사 상담 수준</td><td>도매 영업 대화에서 관찰</td><td>적극적 상담형 약사 필요</td></tr>
+        <tr><td>인증 의원 근접성</td><td>지역 내 인증 의원 현황</td><td>근처 의원 존재 = "OO의원에서도 쓰고 있어요" 멘션 가능</td></tr>
+        <tr><td>지역 독점</td><td>기존 GLPH 약국 현황</td><td>다수 배치 = 희소성 상실. 지역당 1곳 원칙.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout"><strong>도매 데이터 = 선별 인텔리전스:</strong> 한아원은 어느 약국에 위고비/마운자로가 얼마나 들어가는지 자사 데이터로 알고 있다. 이 네트워크가 동시에 영업 채널 + 파트너 선별 데이터 소스로 기능.</div>
+
+  <h3>약국 인증</h3>
+  <p>의원 인증과 동일 구조, 약국 전용 타이틀:</p>
+  <div class="code-block"><pre>GLPH Certified
+GLP-1 Care Pharmacy</pre></div>
+  <ul>
+    <li>"GLP-1 케어 약국" 타이틀 (의원의 "Certified"와 구분)</li>
+    <li>약사를 GLP-1 상담 전문가로 포지셔닝</li>
+    <li>케어맵에 의원/약국 구분 표시</li>
+    <li>환자가 약국 직접 구매 가능함을 인지</li>
+  </ul>
+</div>
+
+<!-- Section: 파트너 티어 -->
+<div class="section">
+  <div class="section-eyebrow">Partner Tiers</div>
+  <h2>파트너 티어: Founding vs Network</h2>
+
+  <h3>이중 구조 — 초기 파트너 프리미엄 + 후기 네트워크 가치</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>차원</th><th>Founding Partner (1-10번째)</th><th>Network Partner (11번째+)</th></tr></thead>
+      <tbody>
+        <tr><td>대상</td><td>초기 10곳</td><td>이후 가입</td></tr>
+        <tr><td>의사 인터뷰/사진</td><td>촬영 + 브랜드 페이지 게재</td><td>제공 안 함</td></tr>
+        <tr><td>브랜드 페이지</td><td>상단 고정</td><td>리스트 배치</td></tr>
+        <tr><td>SNS 피처링</td><td>정기 소개 콘텐츠</td><td>네트워크 전체 피처링에 포함</td></tr>
+        <tr><td>케어맵 표시</td><td>우선 노출</td><td>표준 노출</td></tr>
+        <tr><td>VMD/피규어</td><td>데스크 + 카운터 + 약국 풀 세팅</td><td>카운터 기본 세팅</td></tr>
+        <tr><td>인증 라벨</td><td>메탈 플레이트 + 온라인 뱃지</td><td>온라인 뱃지만</td></tr>
+        <tr><td>마진 구조</td><td>45-50% (위탁/매입 동일)</td><td>표준 위탁. 매입 전환 시 마진 우대.</td></tr>
+        <tr><td>핵심 가치</td><td>"초기 파트너 프리미엄" — 장기 유지</td><td>네트워크 멤버십 자체 = 충분한 가치</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section: 전환 플레이북 -->
+<div class="section">
+  <div class="section-eyebrow">Playbook</div>
+  <h2>전환 플레이북: 개별 관리 → 네트워크 브랜딩</h2>
+
+  <h3>언제 개별 관리를 네트워크 마케팅으로 전환하는가</h3>
+  <div class="card-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+    <div class="card">
+      <div class="card-title">트리거 1: 자연 유입 발생</div>
+      <ul>
+        <li>초기 콘텐츠가 검색에 랭킹됨</li>
+        <li>SNS 팔로워 축적</li>
+        <li>능동적 의원 마케팅 없이도 환자가 유입</li>
+        <li>개별 지원이 선택사항이 됨</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">트리거 2: 인바운드 영업 문의</div>
+      <ul>
+        <li>"저희도 참여하고 싶습니다" 요청이 옴</li>
+        <li>한아원이 "요청하는 쪽"에서 "선택하는 쪽"으로 전환</li>
+        <li>가장 강력한 포지셔닝 전환 신호</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">트리거 3: 인증 희소성 활성화</div>
+      <ul>
+        <li>"이 지역에 아직 인증 파트너가 없습니다"에 의사가 반응</li>
+        <li>인증 자체가 영업 무기로 독립 작동</li>
+        <li>개별 마케팅 불필요</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout"><strong>현실적 자원 한계: ~10곳.</strong> 1인이 인터뷰 + 콘텐츠 기획 + 촬영을 10곳 이상 유지하면 품질이 떨어짐. 전환 시점: (a) 위 트리거 중 하나 발생, (b) 자원 포화 — 둘 중 빠른 시점.</div>
+</div>
+
+<!-- Section: 세일즈 프레임워크 -->
+<div class="section">
+  <div class="section-eyebrow">Sales Framework</div>
+  <h2>세일즈 프레임워크: 피치 순서</h2>
+
+  <h3>의사 피치 — 기존 도매 거래처</h3>
+  <div class="callout">"원장님, 저희가 위고비 공급하고 있잖아요. GLP-1 환자분들 부작용 케어 보충제를 출시했습니다. 저희가 놓을 테니 추천만 해주세요. 팔린 만큼 정산하고, 마진 45-50%입니다."</div>
+
+  <h3>의사 피치 — 풀 프레젠테이션 (순서가 중요)</h3>
+  <div class="checklist">
+    <div class="checklist-item">
+      <span class="checklist-num">1</span>
+      <strong>포지셔닝 제안:</strong> "원장님 의원을 GLP-1 전문 케어 의원으로 포지셔닝합니다."
+    </div>
+    <div class="checklist-item">
+      <span class="checklist-num">2</span>
+      <strong>인증 라벨:</strong> "GLP-1 Full-stack Care Certified 인증을 받으실 수 있습니다. 이 지역에 아직 인증 파트너가 없습니다."
+    </div>
+    <div class="checklist-item">
+      <span class="checklist-num">3</span>
+      <strong>환경 셋업:</strong> "진료실, 카운터, 약국 VMD 전부 저희가 설치합니다."
+    </div>
+    <div class="checklist-item">
+      <span class="checklist-num">4</span>
+      <strong>최소 부담:</strong> "진료 끝에 한 마디면 충분합니다. 적극적 판매 필요 없습니다."
+    </div>
+    <div class="checklist-item">
+      <span class="checklist-num">5</span>
+      <strong>제로 리스크:</strong> "저희가 재고를 놓고, 안 팔리면 회수합니다. 투자 0입니다."
+    </div>
+    <div class="checklist-item">
+      <span class="checklist-num">6</span>
+      <strong>마진 (보너스):</strong> "45-50% 정산 마진. 환자가 온라인에서 재구매해도 리워드가 갑니다."
+    </div>
+  </div>
+  <div class="callout"><strong>핵심:</strong> 마진을 마지막에. 포지셔닝 → 인증(희소성) → 환경 → 낮은 부담 → 리스크 0 → 마진 순서. 이 순서가 "성장 파트너십"과 "제품 판매" 인식의 차이를 만든다.</div>
+</div>
+
+<!-- Section: 3단 터치 + 카운터 SOP -->
+<div class="section">
+  <div class="section-eyebrow">Field Sales</div>
+  <h2>현장 세일즈 구조: 3단 터치 + 카운터 SOP</h2>
+  <p>의원/약국에 GLPH를 배치한 후, <strong>현장에서 실제로 어떻게 팔리는가</strong>의 설계. 의사 의존도를 최소화하고, 카운터 SOP를 매출 엔진으로 운영하는 구조.</p>
+
+  <h3>세일즈 플로우: 3단 터치</h3>
+  <div class="code-block"><pre>환자 입장 → 진료(의사) → 카운터(결제) → 귀가(리플렛)
+              ↓              ↓               ↓
+           1단 터치        2단 터치         3단 터치
+          (씨앗 심기)     (전환 시도)      (시간차 전환)
+           부스터           엔진             그물</pre></div>
+
+  <h3>1단 터치: 의사 — 진료실 (3초)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>역할</td><td>씨앗 심기 (seed)</td></tr>
+        <tr><td>중요도</td><td>부스터 (없어도 카운터 SOP가 커버)</td></tr>
+        <tr><td>시간</td><td>3초</td></tr>
+        <tr><td>톤</td><td>쿨하게, 가볍게, 처방 흐름의 끝에 한 마디 얹기</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>3초 스크립트:</strong></p>
+  <div class="callout">"케어 제품 같이 받아가세요."</div>
+  <ul>
+    <li>부작용 고지는 이 멘트와 별개로 진료 흐름 안에서 의사가 수행</li>
+    <li>제품 추천은 부작용 고지 이후에 자연스럽게 한 마디</li>
+    <li>의사가 안 해도 카운터 SOP가 돌아가므로 매출에 치명적이지 않음</li>
+    <li>의사가 하면 전환율 상승 (5% → 10~15% 추정)</li>
+  </ul>
+
+  <p><strong>15초 스크립트:</strong> 부작용 고지 + 제품 추천 통합</p>
+  <div class="callout">"주사 맞으시면 속이 좀 안 좋을 수 있고,<br>
+피부나 머리카락 쪽에도 변화가 올 수 있어요.<br>
+자세한 건 나가실 때 리플렛 드리니까 읽어보시고요.<br>
+거기에 맞춰서 나온 케어 제품도 있으니까 같이 받아가세요."</div>
+  <ul>
+    <li>→ 문장 1: 위장장애 고지 (법적 의무)</li>
+    <li>→ 문장 2: 피부+탈모 고지 (법적 의무 + 감정 환기)</li>
+    <li>→ 문장 3: 리플렛으로 상세 설명 위임 (시간 절약)</li>
+    <li>→ 문장 4: 제품 추천 (자연스러운 연결)</li>
+    <li>→ 4문장, 15초, 부작용 고지 의무 완수 + 세일즈 동시 완료</li>
+  </ul>
+
+  <p><strong>두 버전의 사용 상황:</strong></p>
+  <ul>
+    <li>3초: 의사가 부작용 고지를 이미 따로 했을 때 / 바쁜 시간대</li>
+    <li>15초: 신규 환자(첫 처방) / 여유 있는 진료 / 의사가 세일즈에 적극적</li>
+    <li>둘 다 의원에 제공. 의사가 상황에 따라 선택. 어느 쪽을 쓰든 카운터 SOP가 받아줌.</li>
+  </ul>
+
+  <h3>2단 터치: 카운터 직원 — 결제 시점 (5초) ★ 매출 엔진</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>역할</td><td>전환 (conversion)</td></tr>
+        <tr><td>중요도</td><td>★ 가장 중요. 매출의 기본선을 만드는 엔진.</td></tr>
+        <tr><td>시간</td><td>5초</td></tr>
+        <tr><td>톤</td><td>친근하게, 자동으로, 판단 없이</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>스크립트 상세는 아래 "카운터 SOP" 섹션에서 설명.</p>
+
+  <h3>3단 터치: 리플렛 + 제품카드 — 환자 귀가 후</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>역할</td><td>시간차 전환 (delayed conversion)</td></tr>
+        <tr><td>대상</td><td>1~2단에서 안 산 환자</td></tr>
+        <tr><td>시간</td><td>환자가 집에서 읽는 시간 (수 분)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul>
+    <li>리플렛: GLP-1 사용자 영양 가이드 (순수 의료 정보)</li>
+    <li>제품카드: 리플렛에 끼워진 별도 인쇄물 (제품 소개 + 자사몰 QR + 의원 코드 안내)</li>
+    <li>환자가 리플렛 읽다가 제품카드 발견 → 자사몰에서 코드 구매 또는 다음 방문 시 오프라인 구매</li>
+    <li>리플렛 ≠ 광고. 제품카드 = 광고. 분리되어 있으므로 신뢰 유지.</li>
+  </ul>
+  <div class="callout"><strong>3단 터치와 온라인의 연결:</strong> 리플렛/제품카드를 받은 환자가 집에서 검색 → 쿠팡/네이버에서 존재 확인 → 자사몰에서 코드 구매. 이것이 오프라인과 온라인을 잇는 4번째 터치.</div>
+
+  <h3>보조: POP (카운터 디스플레이) — 무인 세일즈</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>역할</td><td>직원 피로 백업. 직원이 안 물어봐도 환자 눈에 보임.</td></tr>
+        <tr><td>위치</td><td>카운터 결제 대기 구역</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>POP 문구 예시:</p>
+  <div class="callout">GLP-1 주사 맞으시나요?<br>GLPH AFTER-1<br>주사 후 영양 케어 — 하루 한 포</div>
+  <ul>
+    <li>환자가 보고 "이거 뭐예요?" → 직원 응대 → 세일즈</li>
+    <li>직원이 안 물어봐도 POP가 시각적으로 작동</li>
+    <li>직원 피로도, 교체, 망각과 무관하게 돌아가는 안전장치</li>
+  </ul>
+</div>
+
+<!-- Section: 의사 의존도 구조 -->
+<div class="section">
+  <div class="section-eyebrow">Dependency Design</div>
+  <h2>의사 의존도 구조 — 왜 매출을 의사에게 걸면 안 되는가</h2>
+  <div class="code-block"><pre>의사는 하루 200명을 봄
+→ 환자 1명당 2~3분
+→ 매번 "케어 제품 받아가세요" 기억하기 어려움
+→ 처음 몇 주는 하다가 점점 안 할 가능성 높음
+→ 의사가 안 하면 매출 0? → 구조적 리스크
+
+[올바른 의존도 구조]
+
+카운터 SOP = 엔진 (매출의 기본선, 5%)
+의사 멘트  = 부스터 (전환율 상승, +5~10%p)
+POP       = 백업 (직원 피로 시 무인 세일즈)
+리플렛     = 그물 (미전환 환자 시간차 회수)
+
+→ 의사가 안 해도: 카운터 SOP + POP → 5% 유지
+→ 의사가 하면: 5% → 10~15%로 상승
+→ 어느 한 지점이 실패해도 다른 지점이 커버
+→ 단일 실패점(single point of failure) 없음
+→ ★ 유일한 단일 실패점 = 맛</pre></div>
+</div>
+
+<!-- Section: 카운터 SOP -->
+<div class="section">
+  <div class="section-eyebrow">Counter SOP</div>
+  <h2>카운터 SOP — 상세 설계</h2>
+
+  <h3>SOP 원칙</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>원칙</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>예외 없음</strong></td><td>모든 GLP-1 환자에게 자동으로 물어봄. 직원이 "이 사람한테 말할까?" 판단하지 않음.</td></tr>
+        <tr><td><strong>스크립트 고정</strong></td><td>매번 같은 말. 변형 없음. 입에 붙을 때까지 반복.</td></tr>
+        <tr><td><strong>5초 이내</strong></td><td>결제 프로세스에 5초를 추가하는 것. 별도 대화가 아님.</td></tr>
+        <tr><td><strong>거절 수용</strong></td><td>"아뇨" 하면 즉시 수용. 재설득 없음. 리플렛만 전달.</td></tr>
+        <tr><td><strong>판단 제거</strong></td><td>직원이 생각할 것 없음. 흐름도(flowchart)대로만 진행.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>SOP 흐름도</h3>
+  <div class="code-block"><pre>GLP-1 환자 결제 시작
+       │
+       ▼
+"케어 제품 같이 하실까요? 39,000원이에요."
+       │
+       ├── "네" ──────────→ 결제에 추가
+       │                    + 리플렛·제품카드 동봉
+       │                    "감사합니다~ 냉장보관 하시고
+       │                     식후에 드세요~"
+       │                           │
+       │                           ▼ [완료]
+       │
+       ├── 머뭇거림 ──────→ "주사 맞으시는 분들이 많이 찾으세요~"
+       │                           │
+       │                    ├── "네" → 결제 추가 [완료]
+       │                    │
+       │                    └── "아뇨" → 리플렛 전달 [완료]
+       │
+       └── "아뇨" ────────→ "네~ 리플렛은 드릴게요.
+                                 읽어보세요~"
+                                       │
+                                       ▼ [완료]</pre></div>
+
+  <h3>상황별 대응 — 추가 멘트 (10초 이내)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>상황</th><th>직원 대응</th></tr></thead>
+      <tbody>
+        <tr><td>"이게 뭐예요?"</td><td>"주사 맞으시는 분들 전용 영양 케어 제품이에요. 콜라겐이랑 아미노산 다 들어있어요."</td></tr>
+        <tr><td>"저 영양제 이미 먹는데요"</td><td>"이건 주사 전용 배합이라 일반 영양제랑 달라요. 속에 부담 안 되게 맞춰져 있어요."</td></tr>
+        <tr><td>"효과 있어요?"</td><td>"드시는 분들 반응이 좋아요. 2주분이니까 한번 드셔보세요."</td></tr>
+        <tr><td>"비싸네요"</td><td>"하루로 치면 2,500원이에요. 한번 드셔보시고 괜찮으시면 한 달분은 더 할인돼요."</td></tr>
+        <tr><td>"나중에 살게요"</td><td>"네~ 리플렛 읽어보시고 다음에 말씀해 주세요."</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>SOP 교육 자료 — 카운터에 부착하는 A4 한 장</h3>
+  <div class="code-block"><pre>━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GLPH AFTER-1 카운터 세일즈 가이드
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+■ 언제: GLP-1 주사 환자 결제 시 (모든 환자, 예외 없음)
+
+■ 기본 멘트:
+  "케어 제품 같이 하실까요? 39,000원이에요."
+
+■ 머뭇거리면:
+  "주사 맞으시는 분들이 많이 찾으세요~"
+
+■ 거절하면:
+  "네~ 리플렛은 드릴게요. 읽어보세요~"
+
+■ 구매하면:
+  결제 추가 + 리플렛·제품카드 동봉
+  "냉장보관 하시고 식후에 드세요~"
+
+■ 자주 나오는 질문:
+  "뭐예요?" → "주사 전용 영양 케어예요"
+  "영양제 먹는데요" → "주사 전용 배합이라 달라요"
+  "비싸요" → "하루 2,500원이에요"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━</pre></div>
+  <p>직원 교체 시에도 이 A4를 보고 바로 따라할 수 있음. "이거 보고 그대로 하세요"면 교육 완료.</p>
+</div>
+
+<!-- Section: SOP 실행률 유지 장치 -->
+<div class="section">
+  <div class="section-eyebrow">SOP Maintenance</div>
+  <h2>SOP 실행률 유지 장치</h2>
+  <p>직원이 하루 200명에게 같은 말을 반복하면 피로가 쌓이고, 교체되면 전달이 끊기고, 바쁘면 넘기게 된다. 이를 방지하는 4가지 장치:</p>
+
+  <div class="card-grid" style="grid-template-columns: repeat(2, 1fr);">
+    <div class="card">
+      <div class="card-title">장치 1: POP 디스플레이 (무인 백업)</div>
+      <ul>
+        <li>카운터 위 아크릴 스탠드 또는 미니 배너</li>
+        <li>직원이 안 물어봐도 환자가 먼저 "이거 뭐예요?" → 세일즈</li>
+        <li>직원 피로, 교체, 망각과 무관하게 24시간 작동</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">장치 2: 결제 시스템 연동 (강제 노출) — Phase 3에서 도입</div>
+      <ul>
+        <li>POS/EMR에 GLP-1 처방 환자 결제 시 "AFTER-1 추가?" 팝업</li>
+        <li>직원이 까먹어도 시스템이 리마인드</li>
+        <li>EMR 업체 협조 필요 → 가능한 의원부터 단계적 적용</li>
+        <li>가장 강력한 SOP 강제 장치</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">장치 3: SOP 가이드 카운터 부착</div>
+      <ul>
+        <li>위 A4 가이드를 카운터 안쪽(직원만 보는 곳)에 부착</li>
+        <li>새 직원이 와도 보고 바로 따라할 수 있음</li>
+        <li>비용 거의 0</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">장치 4: 월간 세일즈 리포트 공유</div>
+      <ul>
+        <li>의원별 월 판매량을 의원장/매니저에게 공유</li>
+        <li>"이번 달 OO건 판매 / 마진 OO원 / 전환율 O%"</li>
+        <li>숫자가 보이면 의원이 자체적으로 직원을 독려</li>
+        <li>GLPH가 직접 직원을 관리하지 않아도 의원장이 마진 보고 알아서 점검</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Section: 재구매 매칭 -->
+<div class="section">
+  <div class="section-eyebrow">Repurchase</div>
+  <h2>재구매 매칭: GLP-1 처방 주기와 동기화</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>GLP-1 처방 주기</th><th>AFTER-1 옵션</th><th>가격</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>첫 방문</td><td>15포 (2주분)</td><td>39,000원</td><td>부담 낮게 진입</td></tr>
+        <tr><td>재방문 (1개월 후)</td><td>30포 (1개월분)</td><td>가격 미정 (할인 적용)</td><td>처방 주기(1개월)와 일치</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>재구매 카운터 SOP:</strong></p>
+  <div class="code-block"><pre>GLP-1 재방문 환자 결제 시
+       │
+       ├── 기존 구매자 ──→ "지난번 드신 거 한 달분으로 하실까요?"
+       │
+       └── 미구매자 ────→ 기본 SOP 반복
+                           "케어 제품 같이 하실까요?"</pre></div>
+</div>
+
+<!-- Section: 소구 전략: 적응형 세일즈 -->
+<div class="section">
+  <div class="section-eyebrow">Adaptive Sales</div>
+  <h2>소구 전략: 적응형 세일즈</h2>
+
+  <h3>왜 하나의 훅에 고정하면 안 되는가</h3>
+  <p>GLP-1 처방 의원에는 두 종류의 환자가 온다:</p>
+  <ul>
+    <li><strong>A. 신규 환자:</strong> 아직 부작용 미경험. 구체적 불안 없음.</li>
+    <li><strong>B. 기존 환자:</strong> 이미 특정 부작용을 겪고 있음. 본인의 문제가 명확함.</li>
+  </ul>
+  <p>모든 환자에게 같은 멘트를 하면:</p>
+  <ul>
+    <li>→ "머리 빠질 수 있어요" → 피부가 걱정인 환자에게는 어긋남</li>
+    <li>→ "피부 처질 수 있어요" → 탈모가 걱정인 환자에게는 어긋남</li>
+    <li>→ 어긋난 멘트 = "내 걱정이 아닌데" = 구매 안 함</li>
+  </ul>
+  <p>올인원 제품이기 때문에 가능한 것:</p>
+  <ul>
+    <li>→ 피부 → "콜라겐 5,000mg" ✓</li>
+    <li>→ 탈모 → "비오틴 10,000mcg" ✓</li>
+    <li>→ 근육 → "아미노산 6,000mg" ✓</li>
+    <li>→ 전부 이 제품 안에 있음 = 유연한 세일즈 가능</li>
+  </ul>
+
+  <p><strong>적응형 세일즈 구조:</strong></p>
+  <div class="code-block"><pre>Step 1: 파악 — 환자가 뭘 걱정하는지 듣기
+Step 2: 매칭 — 그 걱정에 맞는 원료를 첫 멘트로
+Step 3: 확장 — "이것도 들어있어요" → 올인원 가치 전달
+Step 4: 클로징 — "하루 한 포, 39,000원"</pre></div>
+
+  <h3>환자 유형별 멘트</h3>
+
+  <div class="card-grid" style="grid-template-columns: repeat(2, 1fr);">
+    <div class="card">
+      <div class="card-title">[유형 A] 피부 쳐짐이 걱정인 환자</div>
+      <p style="font-size:12px;color:var(--text-muted);">소비자 관심도 1위. "Ozempic face" 검색이 부작용 전체를 추월. GLPH 제품 매칭 최강 (VERISOL 임상 근거).</p>
+      <p><strong>의사/약사:</strong><br>"주사로 살 빠지면 피부가 좀 처질 수 있거든요. 이 안에 독일 콜라겐이 5,000mg 들어있어서 피부 탄력에 도움이 돼요. 아미노산이랑 비오틴도 같이 들어있어서 머리카락이랑 영양도 챙겨지고요. 하루 한 포, 39,000원이에요."</p>
+    </div>
+    <div class="card">
+      <div class="card-title">[유형 B] 탈모가 걱정인 환자</div>
+      <p style="font-size:12px;color:var(--text-muted);">발생률 2.5~10%로 낮지만, 겪는 사람에게는 감정 강도 최상. 여성 환자에서 특히 민감.</p>
+      <p><strong>의사/약사:</strong><br>"주사 맞으시면 머리카락이 좀 빠질 수 있어요. 이 안에 비오틴 만 마이크로그램에 시스테인, 아연도 들어있어요. 콜라겐이랑 아미노산도 같이 들어있어서 피부랑 근육도 챙겨지고요. 하루 한 포, 39,000원이에요."</p>
+    </div>
+    <div class="card">
+      <div class="card-title">[유형 C] 특별히 걱정하는 게 없는 신규 환자</div>
+      <p style="font-size:12px;color:var(--text-muted);">아직 부작용 미경험. "올인원" 자체가 진입점.</p>
+      <p><strong>의사/약사:</strong><br>"주사 시작하시면 영양소가 좀 빠져나갈 수 있어요. 이거 하루 한 포 드시면 아미노산, 콜라겐, 비타민 다 채워져요. 주사 맞는 분들한테 필요한 것만 모아놓은 거예요. 39,000원이고 맛도 괜찮아요."</p>
+    </div>
+    <div class="card">
+      <div class="card-title">[유형 D] 이미 특정 부작용을 겪고 있는 기존 환자</div>
+      <p style="font-size:12px;color:var(--text-muted);">환자의 말에 반응 → 해당 원료 먼저 → 나머지 확장</p>
+      <ul>
+        <li>"피부가 처졌어요" → "콜라겐 5,000mg 들어있는 거 있어요."</li>
+        <li>"머리가 빠져요" → "비오틴이랑 시스테인 들어있는 거 있어요."</li>
+        <li>"몸이 약해진 것 같아요" → "아미노산 6,000mg이에요."</li>
+        <li>"속이 안 좋아요" → "액상이라 속에 부담 없이 드실 수 있어요."</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Section: 소구 톤 설계 -->
+<div class="section">
+  <div class="section-eyebrow">Tone Design</div>
+  <h2>소구 톤 설계: 위화감 없이 전환하는 법</h2>
+
+  <h3>하지 말 것</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>금지</th><th>이유</th></tr></thead>
+      <tbody>
+        <tr><td>"빠집니다" (단정)</td><td>공포 조성 → 거부감</td></tr>
+        <tr><td>"반드시 드셔야 합니다" (강요)</td><td>환자 자율성 침해 → 저항</td></tr>
+        <tr><td>"부작용이 심각합니다" (과장)</td><td>주사 자체에 대한 불안 유발</td></tr>
+        <tr><td>"이거 안 드시면 큰일 납니다" (위협)</td><td>영양제에서 위협 = 신뢰 하락</td></tr>
+        <tr><td>부작용 여러 개 나열 (정보 폭격)</td><td>"그렇게 많아?" → 공포 → 구매 안 함</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>해야 할 것</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>권장</th><th>효과</th></tr></thead>
+      <tbody>
+        <tr><td>"~할 수 있어요" (가능성)</td><td>단정이 아닌 가능성 → 방어적 반응 없음</td></tr>
+        <tr><td>"한번 드셔보세요" (제안)</td><td>강요가 아닌 제안 → 환자가 선택한 느낌</td></tr>
+        <tr><td>"이거 하나면 돼요" (간결)</td><td>즉시 이해 → 구매 허들 낮음</td></tr>
+        <tr><td>"맛있어요" / "속도 편해요" (감각)</td><td>기능이 아닌 경험 → 거부감 제거</td></tr>
+        <tr><td>환자의 말을 먼저 듣기 (경청)</td><td>"내 걱정을 알아주네" → 신뢰 → 추천 수용</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>텐션 수준 — 최적점</h3>
+  <div class="code-block"><pre>너무 낮음 ─────── ★ 최적 ─────── 너무 높음
+"별거 아니에요"    "도움이 돼요"    "큰일 나요"
+→ 동기 없음       → 자연스러운     → 거부감
+                    행동 유도
+
+최적 = "관심을 주되 공포를 주지 않는" 수준
+
+✗ "머리가 다 빠질 수 있어요" (너무 높음)
+✗ "뭐 그냥 영양제예요" (너무 낮음)
+✓ "머리카락이 좀 빠질 수 있어요. 이거 드시면 도움이 돼요."
+  → 가능성 언급 + 솔루션 즉시 제시 = 불안이 행동으로 전환</pre></div>
+</div>
+
+<!-- Section: 가격 저항 해소 -->
+<div class="section">
+  <div class="section-eyebrow">Price Objection</div>
+  <h2>가격 저항 해소 — 올인원의 역할</h2>
+  <div class="code-block"><pre>단일 성분 제품과 비교될 때:
+"탈모 영양제" 39,000원 → "판토가가 35,000원인데..."
+"콜라겐 드링크" 39,000원 → "이너비가 30,000원인데..."
+
+올인원으로 인식될 때:
+"탈모 + 피부 + 근육 + 영양 올인원" 39,000원
+→ "따로 사면 10만 원 넘을 텐데 이거 하나면 되네"
+→ 비교 대상이 없어짐 (이런 제품이 시장에 없으니까)
+
+= 첫 멘트(매칭)가 관심을 만들고
+= 올인원 확장이 가격을 정당화하고
+= "하나면 된다"가 구매를 결정함</pre></div>
+</div>
+
+<!-- Section: 매출 시뮬레이션 -->
+<div class="section">
+  <div class="section-eyebrow">Revenue Simulation</div>
+  <h2>매출 시뮬레이션</h2>
+
+  <h3>의원 1곳 기준 (일 GLP-1 처방 규모에 따라)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>일 처방 수</th><th>전환율 5%</th><th>전환율 10%</th><th>전환율 15%</th></tr></thead>
+      <tbody>
+        <tr><td>50명</td><td>월 50건 / 195만 원</td><td>월 100건 / 390만 원</td><td>월 150건 / 585만 원</td></tr>
+        <tr><td>100명</td><td>월 100건 / 390만 원</td><td>월 200건 / 780만 원</td><td>월 300건 / 1,170만 원</td></tr>
+        <tr><td>200명</td><td>월 200건 / 780만 원</td><td>월 400건 / 1,560만 원</td><td>월 600건 / 2,340만 원</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>※ 39,000원 기준 (15포). 의원 마진 45-50% 별도.</p>
+  <ul>
+    <li>→ 전환율 5%만 유지해도 의원 1곳에서 유의미한 매출 발생</li>
+    <li>→ 전환율을 올리는 핵심 = 카운터 SOP의 실행률 + 맛</li>
+    <li>→ <strong>유일한 단일 실패점 = 맛.</strong> 맛이 없으면: 첫 구매 → 불만 → 재구매 없음 → 의사 피드백 → 추천 중단 → 전체 붕괴.</li>
+  </ul>
+</div>
+
+<!-- Section: 세일즈 도구 체크리스트 -->
+<div class="section">
+  <div class="section-eyebrow">Launch Checklist</div>
+  <h2>세일즈 도구 체크리스트 — 런칭 전 준비물</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>도구</th><th>용도</th><th>수량 (초기 9곳 기준)</th><th>우선순위</th></tr></thead>
+      <tbody>
+        <tr><td>카운터 SOP 가이드 (A4)</td><td>직원 교육 + 카운터 부착</td><td>의원당 2~3장</td><td>필수</td></tr>
+        <tr><td>POP 디스플레이</td><td>무인 세일즈 백업</td><td>의원당 1개</td><td>필수</td></tr>
+        <tr><td>리플렛 (GLP-1 가이드)</td><td>부작용 교육 + 시간차 전환</td><td>월 추정 소요량 확인 후</td><td>필수</td></tr>
+        <tr><td>제품카드 (리플렛 삽입용)</td><td>제품 소개 + 자사몰 QR + 코드 안내</td><td>리플렛과 동수</td><td>필수</td></tr>
+        <tr><td>의사용 브리프 (1장)</td><td>제품·마진·멘트 한 장 요약</td><td>의원당 1장</td><td>필수</td></tr>
+        <tr><td>코드 카드 (의원/약국용)</td><td>환자에게 전달. 자사몰 코드 + QR.</td><td>의원당 200장/월</td><td>필수</td></tr>
+        <tr><td>월간 세일즈 리포트 템플릿</td><td>의원장에게 매출·전환율 공유</td><td>의원당 1세트</td><td>Phase 1 후</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section: 런칭 후 고도화 로드맵 -->
+<div class="section">
+  <div class="section-eyebrow">Post-Launch Roadmap</div>
+  <h2>런칭 후 고도화 로드맵</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Phase</th><th>기간</th><th>목표</th><th>핵심 액션</th></tr></thead>
+      <tbody>
+        <tr><td>1: 구조 돌리기</td><td>런칭~3개월</td><td>전환율 5% 안정, SOP 실행률 80%+</td><td>SOP 배포, POP 설치, 직원 교육, 월간 리포트 시작</td></tr>
+        <tr><td>2: 전환율 올리기</td><td>3~6개월</td><td>전환율 10%</td><td>의사 멘트 부스터 활성화, 환자 후기 수집, 리플렛 v2, 직원 인센티브 검토</td></tr>
+        <tr><td>3: 스케일</td><td>6개월~</td><td>전환율 15-20%, 입점 확대</td><td>의원 수 확대, 후속 SKU 투입, POS 연동 (가능한 의원), 30포 전환율 60%+</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Part 2: 온라인 전략 -->
+<div class="section">
+  <div class="section-eyebrow">Part 2 — Online</div>
+  <h2>온라인 전략</h2>
+
+  <h3>가격/채널 구조</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>채널</th><th>소비자가</th><th>역할</th></tr></thead>
+      <tbody>
+        <tr><td>의원/약국</td><td><strong>39,000원</strong> (최저가)</td><td>신규 획득 + 신뢰</td></tr>
+        <tr><td>자사몰 (코드)</td><td><strong>39,000원</strong> + 무료배송</td><td>재구매</td></tr>
+        <tr><td>자사몰 (코드 없음)</td><td><strong>49,000원</strong></td><td>일반 방문자 → 코드 유도</td></tr>
+        <tr><td>쿠팡</td><td><strong>49,000원</strong></td><td>신뢰 플래그</td></tr>
+        <tr><td>네이버 스마트스토어</td><td><strong>49,000원</strong></td><td>신뢰 플래그 + 검색 노출</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>코드 시스템 — 오프라인↔온라인 연결고리</h3>
+  <h4>작동 원리</h4>
+  <div class="code-block"><pre>의원/약국에서 환자에게 고유 코드 전달 (카드, 브로셔 등)
+  → 환자가 자사몰 방문
+    → 코드 입력 → 49,000원 → 39,000원 (의원 가격과 동일)
+      → 자사몰 시스템이 코드별 매출 추적
+        → 월 1회 해당 의원/약국에 리워드 정산</pre></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>코드 발급</td><td>의원/약국별 고유 코드</td></tr>
+        <tr><td>할인 적용</td><td>49,000원 → 39,000원</td></tr>
+        <tr><td>배송</td><td>코드 사용 시 무료배송</td></tr>
+        <tr><td>추적</td><td>코드별 사용 건수 → 의원/약국 기여도 측정</td></tr>
+        <tr><td>정산</td><td>월 1회 리워드 지급</td></tr>
+        <tr><td>유출 대응</td><td>코드 유출되어도 구조적 문제 없음 (자사몰 매출이고 의원에 리워드 가므로)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>이 시스템이 만드는 구조:</strong></p>
+  <ul>
+    <li>의사: 추천하면 할수록 리워드 축적 → 추천 중단할 이유 0</li>
+    <li>환자: 코드가 있으니 자사몰로 감 → 쿠팡/네이버로 이탈 없음</li>
+    <li>GLPH: 어느 의원이 얼마나 기여하는지 데이터 확보</li>
+  </ul>
+</div>
+
+<!-- Section: 소비자 여정 퍼널 -->
+<div class="section">
+  <div class="section-eyebrow">Consumer Journey</div>
+  <h2>소비자 여정 퍼널</h2>
+  <div class="code-block"><pre>[1] 의원/약국에서 제품 소개받음
+      │
+      ├── 즉시 구매 (소수) → 오프라인 매출
+      │
+      └── 안 사고 나옴 (다수) → QR 또는 코드 카드 소지
+              │
+[2] 집에서 검색
+              │
+              ├── 쿠팡: "있네, 49,000원, 리뷰 50건" → 정식 제품 확인
+              ├── 네이버: 블로그 후기 + 스마트스토어 존재 → 신뢰
+              └── 자사몰: 상세정보 + 의사 추천 문구 → 확신
+                    │
+[3] 코드 입력 → 39,000원 + 무료배송 → 구매
+              │
+[4] 복용 → 만족
+              │
+[5] 자사몰 정기배송 전환</pre></div>
+</div>
+
+<!-- Section: 플랫폼별 상세 -->
+<div class="section">
+  <div class="section-eyebrow">Platform Details</div>
+  <h2>플랫폼별 상세</h2>
+
+  <div class="card-grid" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="card">
+      <div class="card-title">자사몰</div>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><td><strong>플랫폼</strong></td><td>카페24 또는 Shopify</td></tr>
+            <tr><td><strong>핵심 기능</strong></td><td>코드 할인 + 정기배송</td></tr>
+            <tr><td><strong>콘텐츠</strong></td><td>제품 상세 + 성분 근거 + 의사 추천 인용 + FAQ</td></tr>
+            <tr><td><strong>매거진</strong></td><td>월 1-2편 (성분 설명, 복용 가이드). 네이버 인덱싱 목적.</td></tr>
+            <tr><td><strong>배송</strong></td><td>코드 시 무료.</td></tr>
+            <tr><td><strong>KPI</strong></td><td>정기배송 가입 수</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">쿠팡</div>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><td><strong>방식</strong></td><td>로켓그로스 (로켓배송 배지 = 신뢰↑)</td></tr>
+            <tr><td><strong>가격</strong></td><td>49,000원</td></tr>
+            <tr><td><strong>리뷰</strong></td><td>런칭 1-2주 내 지인 네트워크로 50건 확보</td></tr>
+            <tr><td><strong>광고</strong></td><td>검색광고 일 5,000-10,000원 (최소 노출 유지)</td></tr>
+            <tr><td><strong>매출 기대</strong></td><td>안 함. 월 5-10건 자연 발생 수준.</td></tr>
+            <tr><td><strong>역할</strong></td><td>"쿠팡에도 있다" = 정식 제품 확인용</td></tr>
+            <tr><td><strong>필수 서류</strong></td><td>사업자등록증 + 통신판매업신고증 + 건기식 영업허가증</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">네이버 스마트스토어</div>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><td><strong>가격</strong></td><td>49,000원</td></tr>
+            <tr><td><strong>리뷰</strong></td><td>구매(대행) 검토 중</td></tr>
+            <tr><td><strong>광고</strong></td><td>쇼핑검색광고 월 30-80만 원</td></tr>
+            <tr><td><strong>키워드</strong></td><td>"GLP-1 보충제", "비만치료제 영양제"</td></tr>
+            <tr><td><strong>역할</strong></td><td>네이버 검색 시 쇼핑 영역에 GLPH 노출</td></tr>
+            <tr><td><strong>심의</strong></td><td>건기식 광고 심의 필수 (6월 초 신청)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section: 대행사 바이럴 -->
+<div class="section">
+  <div class="section-eyebrow">Viral Marketing</div>
+  <h2>대행사 바이럴 — 핵심 마케팅 채널</h2>
+  <p>GLPH가 직접 콘텐츠를 대량 생산할 수 없으므로, 대행사 바이럴이 온라인 인지도의 주력.</p>
+
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-header">블로그 체험단</div>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><td><strong>방식</strong></td><td>대행사가 블로거 섭외 → 제품 발송 → 사용 후 포스팅</td></tr>
+            <tr><td><strong>키워드</strong></td><td>"비만주사 영양제", "GLP-1 보충제", "위고비 부작용 관리", "마운자로 탈모 영양제", "VERISOL 콜라겐"</td></tr>
+            <tr><td><strong>단가</strong></td><td>제품 원가 + 대행비 3-10만 원/건</td></tr>
+            <tr><td><strong>월 물량</strong></td><td>10-20건</td></tr>
+            <tr><td><strong>월 예산</strong></td><td>50-150만 원</td></tr>
+            <tr><td><strong>블로거 기준</strong></td><td>일 방문자 500+, 건강/다이어트/뷰티 주제</td></tr>
+            <tr><td><strong>최초 발송</strong></td><td>7월 1째주 (생산 직후) → 7월 3째주부터 게시</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="compare-col">
+      <div class="compare-header">카페 침투</div>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><td><strong>방식</strong></td><td>대행사가 타겟 카페에 자연스러운 후기 글</td></tr>
+            <tr><td><strong>타겟</strong></td><td>다이어트 카페, 맘카페, 위고비/마운자로 카페, 뷰티 카페</td></tr>
+            <tr><td><strong>글 톤</strong></td><td>"비만주사 맞고 머리 빠져서 찾아봤는데 ○○○ 먹고 있어요"</td></tr>
+            <tr><td><strong>단가</strong></td><td>건당 5-15만 원</td></tr>
+            <tr><td><strong>월 물량</strong></td><td>5-10건</td></tr>
+            <tr><td><strong>월 예산</strong></td><td>30-100만 원</td></tr>
+            <tr><td><strong>시작</strong></td><td>7월 3째주 (런칭 후 1주 뒤)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h3>대행사 선정 기준</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>기준</th><th>확인 방법</th></tr></thead>
+      <tbody>
+        <tr><td>건기식 경험</td><td>포트폴리오</td></tr>
+        <tr><td>퀄리티</td><td>실제 게시글 샘플 3-5개 확인</td></tr>
+        <tr><td>심의 지식</td><td>"건기식 금지 표현 아시죠?" → 모르면 탈락</td></tr>
+        <tr><td>리포팅</td><td>월별 URL + 조회수 + 검색 노출 보고</td></tr>
+        <tr><td>계약</td><td>초기 건별 3개월 → 성과 확인 후 정기 전환</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section: 자체 콘텐츠 -->
+<div class="section">
+  <div class="section-eyebrow">Content</div>
+  <h2>자체 콘텐츠 (최소 리소스)</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>채널</th><th>콘텐츠</th><th>빈도</th><th>담당</th><th>주당 시간</th></tr></thead>
+      <tbody>
+        <tr><td>인스타 (GLPH 브랜드)</td><td>제품 사진, 후기 리그램, 카드뉴스</td><td>주 2-3회</td><td>내부</td><td>1-2시간</td></tr>
+        <tr><td>인스타 (약사)</td><td>릴스 60초</td><td>주 1-2회</td><td>약사</td><td>1-2시간</td></tr>
+        <tr><td>자사몰 매거진</td><td>성분 설명, FAQ</td><td>월 1-2편</td><td>내부</td><td>월 2-3시간</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section: 월 예산 -->
+<div class="section">
+  <div class="section-eyebrow">Budget</div>
+  <h2>월 예산 (기본안: 300만 원)</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>금액</th><th>비중</th></tr></thead>
+      <tbody>
+        <tr><td>블로그 체험단 (12건)</td><td>100만 원</td><td>33%</td></tr>
+        <tr><td>카페 침투 (8건)</td><td>70만 원</td><td>23%</td></tr>
+        <tr><td>네이버 쇼핑검색광고</td><td>60만 원</td><td>20%</td></tr>
+        <tr><td>쿠팡 검색광고</td><td>20만 원</td><td>7%</td></tr>
+        <tr><td>인스타 릴스 부스팅</td><td>30만 원</td><td>10%</td></tr>
+        <tr><td>예비/네이버 리뷰</td><td>20만 원</td><td>7%</td></tr>
+        <tr><td><strong>합계</strong></td><td><strong>300만 원</strong></td><td>100%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Part 3: 통합 타임라인 -->
+<div class="section">
+  <div class="section-eyebrow">Part 3 — Timeline</div>
+  <h2>통합 타임라인</h2>
+
+  <h3>6월: 사전 준비 (제품 없이 가능한 것)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>주차</th><th>오프라인</th><th>온라인</th></tr></thead>
+      <tbody>
+        <tr><td>6월 1주</td><td>의원/약국 계약 마무리</td><td>건기식 광고 심의 신청 + 대행사 선정</td></tr>
+        <tr><td>6월 2주</td><td>VMD/리플렛 디자인</td><td>쿠팡 셀러 등록 + 네이버 스마트스토어 등록</td></tr>
+        <tr><td>6월 3주</td><td>코드 카드/브로셔 인쇄</td><td>자사몰 구축 (코드 시스템 포함)</td></tr>
+        <tr><td>6월 4주</td><td>VMD 제작 완료</td><td>쿠팡/네이버 리스팅 초안 + 지인 50명 사전 연락</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>7월 1째주: 제품 도착 → 시딩</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>일자</th><th>오프라인</th><th>온라인</th></tr></thead>
+      <tbody>
+        <tr><td>Day 1-2</td><td>—</td><td>실물 촬영 + 지인 50명 발송 + 대행사 체험단 발송</td></tr>
+        <tr><td>Day 2-3</td><td>—</td><td>자사몰/쿠팡/네이버 실물 사진 반영 + 최종 점검</td></tr>
+        <tr><td>Day 3-5</td><td>의원 6곳 + 약국 3곳 납품</td><td>—</td></tr>
+        <tr><td>Day 5</td><td>코드 카드 배포 + VMD 설치</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>7월 2째주: D-Day — 동시 런칭</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>채널</th><th>액션</th></tr></thead>
+      <tbody>
+        <tr><td>오프라인</td><td>의원 6곳 + 약국 3곳 판매 개시</td></tr>
+        <tr><td>자사몰</td><td>공개 (코드 시스템 라이브)</td></tr>
+        <tr><td>쿠팡</td><td>리스팅 공개 (49,000원) + 검색광고 시작</td></tr>
+        <tr><td>네이버</td><td>리스팅 공개 (49,000원) + 쇼핑검색광고 시작</td></tr>
+        <tr><td>인스타</td><td>런칭 공지</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>7월 3-4째주: 리뷰/바이럴 축적</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>액션</th><th>목표</th></tr></thead>
+      <tbody>
+        <tr><td>쿠팡 지인 리뷰</td><td>50건 완료</td></tr>
+        <tr><td>블로그 체험단 후기 게시</td><td>5-10건</td></tr>
+        <tr><td>카페 침투</td><td>5건</td></tr>
+        <tr><td>약사 릴스 시작</td><td>주 1-2개</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>8-9월: 안정화</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>액션</th><th>목표</th></tr></thead>
+      <tbody>
+        <tr><td>블로그 체험단 월 10-15건</td><td>네이버 검색 시 후기 20건+</td></tr>
+        <tr><td>카페 침투 월 5-10건</td><td>카페 언급 누적</td></tr>
+        <tr><td>오프라인→자사몰 전환</td><td>코드 사용 추적, 정기배송 유도</td></tr>
+        <tr><td>위탁 판매 데이터 축적</td><td>의원별 월 평균 판매 파악</td></tr>
+        <tr><td>신규 의원 영업</td><td>초기 6곳 데이터 활용한 2차 영업</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>10-12월: 성장</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>액션</th><th>목표</th></tr></thead>
+      <tbody>
+        <tr><td>자사몰 정기배송</td><td>50명+</td></tr>
+        <tr><td>의원/약국 확장</td><td>10-15곳</td></tr>
+        <tr><td>올리브베러 MD 컨택</td><td>입점 제안</td></tr>
+        <tr><td>2차 SKU 국내 런칭 검토</td><td></td></tr>
+        <tr><td>아마존 US 런칭</td><td>12월 또는 Q1 2027</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Part 4: 규제 / 측정 / 요약 -->
+<div class="section">
+  <div class="section-eyebrow">Part 4 — Compliance &amp; KPIs</div>
+  <h2>규제 / 측정 / 요약</h2>
+
+  <h3>건기식 광고 규제</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>표현</th><th>가능 여부</th></tr></thead>
+      <tbody>
+        <tr><td>"탈모 치료/예방"</td><td>X 금지</td></tr>
+        <tr><td>"피부 재생/개선"</td><td>X 금지</td></tr>
+        <tr><td>"부작용을 없앤다"</td><td>X 금지</td></tr>
+        <tr><td>"모발 건강에 도움을 줄 수 있는"</td><td>O 가능</td></tr>
+        <tr><td>"피부 건강 유지에 도움"</td><td>O 가능</td></tr>
+        <tr><td>"부족할 수 있는 영양소 보충"</td><td>O 가능</td></tr>
+        <tr><td>"의사가 추천하는"</td><td>△ (사실이면 가능)</td></tr>
+        <tr><td>성분/함량 표기</td><td>O 가능</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>체험단/카페 바이럴 가이드 대행사에 필수 전달.</p>
+
+  <h3>성과 측정</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>지표</th><th>1개월</th><th>3개월</th><th>6개월</th></tr></thead>
+      <tbody>
+        <tr><td>자사몰 코드 사용</td><td>20건+</td><td>80건+</td><td>200건+</td></tr>
+        <tr><td>자사몰 정기배송</td><td>10명</td><td>50명</td><td>150명</td></tr>
+        <tr><td>쿠팡 리뷰</td><td>50건</td><td>60건+</td><td>70건+</td></tr>
+        <tr><td>네이버 블로그 후기</td><td>10건+</td><td>30건+</td><td>60건+</td></tr>
+        <tr><td>의원 재주문율</td><td>60%+</td><td>70%+</td><td>75%+</td></tr>
+        <tr><td>오프라인 거점 수</td><td>9곳</td><td>12-15곳</td><td>20곳+</td></tr>
+        <tr><td>월 온라인 매출</td><td>100-200만</td><td>300-600만</td><td>600-1,200만</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><strong>핵심 KPI 2개:</strong><br>1. 자사몰 정기배송 수 (온라인 건강도)<br>2. 의원 재주문율 (오프라인 건강도)</div>
+
+  <h3>전략 요약</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>#</th><th>원칙</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>가격: 온라인 49,000원 > 오프라인 39,000원. 역전 없음.</td></tr>
+        <tr><td>2</td><td>코드: 의원/약국 코드 → 자사몰 39,000원 + 무료배송. 의원 리워드.</td></tr>
+        <tr><td>3</td><td>쿠팡/네이버: 판매 목적 아님. 존재 증명 + 검색 노출.</td></tr>
+        <tr><td>4</td><td>리뷰: 쿠팡 50건(지인), 블로그(대행사).</td></tr>
+        <tr><td>5</td><td>마케팅: 대행사 바이럴 (체험단 + 카페 침투). 직접 운영 최소.</td></tr>
+        <tr><td>6</td><td>자체 콘텐츠: 약사 릴스 + 브랜드 인스타. 최소만.</td></tr>
+        <tr><td>7</td><td>자사몰: 최종 목적지. 정기배송 = 핵심 KPI.</td></tr>
+        <tr><td>8</td><td>런칭: 7월 2째주 동시. 생산(7월 1째주) 즉시 시딩.</td></tr>
+        <tr><td>9</td><td>오프라인: 위탁 → 데이터 증명 → 매입 전환. 도매 레버리지.</td></tr>
+        <tr><td>10</td><td>예산: 월 200-500만 원 (대행 바이럴 + 검색광고).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section: 현실성·시장성 검토 -->
+<div class="section">
+  <div class="section-eyebrow">Feasibility Review</div>
+  <h2>현실성·시장성 검토</h2>
+
+  <h3>현실성 평가</h3>
+  <p>이 전략에서 "안 될 수도 있는 것"이 거의 없다. 각 요소가 검증되었거나, 실패해도 구조가 버텨주도록 설계되어 있다.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>요소</th><th>현실성</th><th>근거</th></tr></thead>
+      <tbody>
+        <tr><td>위탁 판매로 의원 진입</td><td><strong>높음</strong></td><td>리스크 0 + 기존 도매 관계. 거절할 이유가 구조적으로 없다.</td></tr>
+        <tr><td>카운터 SOP 5% 전환</td><td><strong>높음</strong></td><td>스타벅스 "사이즈업" 수준의 1줄 스크립트. 직원 난이도 최하.</td></tr>
+        <tr><td>쿠팡/네이버 49,000원 리스팅</td><td><strong>높음</strong></td><td>리스팅 자체는 1-2일이면 끝. 판매 기대 없으므로 실패도 없다.</td></tr>
+        <tr><td>쿠팡 리뷰 50건</td><td><strong>높음</strong></td><td>지인 네트워크 + MD 용인 확인됨.</td></tr>
+        <tr><td>대행사 블로그/카페 바이럴</td><td><strong>높음</strong></td><td>업계 표준 관행. 건당 3-10만 원. 집행 자체에 불확실성 없다.</td></tr>
+        <tr><td>코드→자사몰 재구매</td><td><strong>중-높</strong></td><td>Nutrafol Professional Partner 모델과 동일 구조. 다만 한국에서 이 정확한 구조의 검증 선례는 확인 안 됨.</td></tr>
+        <tr><td>자사몰 정기배송 50명 (3개월)</td><td><strong>중</strong></td><td>의원 환자 → 코드 사용 → 정기배송 전환까지 퍼널 몇 단계. 각 단계에서 이탈 발생.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout"><strong>"안 될 리스크"가 있는 건 2가지:</strong><br>
+  1. <strong>맛.</strong> 문서에서도 "유일한 단일 실패점"으로 명시. 전략이 아니라 제품의 문제. 전략은 맛이 OK라는 전제 위에 서 있다.<br>
+  2. <strong>전환율 5%가 실제로 나오는가.</strong> 카운터 SOP를 설계했지만 현장 직원이 진짜 매번 하는지는 운영의 영역. 다만 SOP + POP + 리플렛 + 월간 리포트의 4중 장치가 이걸 보완한다.</div>
+
+  <h3>시장성 평가</h3>
+  <h4>시장 자체는 크고 성장 중이다</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>지표</th><th>수치</th><th>출처</th></tr></thead>
+      <tbody>
+        <tr><td>마운자로 월 처방 건수 (2026.04)</td><td><strong>20만 건+</strong></td><td>약사공론</td></tr>
+        <tr><td>한국 비만치료제 시장 규모</td><td>~2,000억 원+ (2025 Q3)</td><td>데일리팜</td></tr>
+        <tr><td>GLP-1 부작용 관리 보충제 (한국)</td><td><strong>0</strong> (카테고리 자체가 없음)</td><td>—</td></tr>
+        <tr><td>한국 건기식 시장 온라인 비중</td><td>68.3%</td><td>오픈서베이 2026</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><strong>GLPH가 진입하려는 "GLP-1 부작용 관리 보충제" 카테고리는 한국에 아직 존재하지 않는다.</strong> 경쟁자 0. 선점 기회.</div>
+</div>
+
+<!-- Section: 매출 시뮬레이션 상세 -->
+<div class="section">
+  <div class="section-eyebrow">Revenue Projections</div>
+  <h2>매출 시뮬레이션 — 두 가지 시나리오</h2>
+
+  <h3>시나리오 A: 보수적 (일 접객 150명 기준)</h3>
+  <h4>의원 1곳 기준:</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>전환율</th><th>일 판매</th><th>월 판매 (20영업일)</th><th>월 매출 (총)</th><th>GLPH 몫 (50-55%)</th></tr></thead>
+      <tbody>
+        <tr><td>5%</td><td>7.5건</td><td>150건</td><td>585만 원</td><td>~300만 원</td></tr>
+        <tr><td>10%</td><td>15건</td><td>300건</td><td>1,170만 원</td><td>~600만 원</td></tr>
+        <tr><td>15%</td><td>22.5건</td><td>450건</td><td>1,755만 원</td><td>~900만 원</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>의원 6곳 (초기 런칭 규모):</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>전환율</th><th>월 총 판매</th><th>월 총 매출</th><th>GLPH 월 매출</th><th>GLPH 연 매출</th></tr></thead>
+      <tbody>
+        <tr><td>5%</td><td>900건</td><td>3,510만 원</td><td>~1,800만 원</td><td>~2.2억 원</td></tr>
+        <tr><td>10%</td><td>1,800건</td><td>7,020만 원</td><td>~3,600만 원</td><td>~4.3억 원</td></tr>
+        <tr><td>15%</td><td>2,700건</td><td>1.05억 원</td><td>~5,400만 원</td><td>~6.5억 원</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>의원 10곳 (3-6개월 후):</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>전환율</th><th>월 총 판매</th><th>GLPH 월 매출</th><th>GLPH 연 매출</th></tr></thead>
+      <tbody>
+        <tr><td>5%</td><td>1,500건</td><td>~2,900만 원</td><td>~3.5억 원</td></tr>
+        <tr><td>10%</td><td>3,000건</td><td>~5,900만 원</td><td>~7.0억 원</td></tr>
+        <tr><td>15%</td><td>4,500건</td><td>~8,800만 원</td><td>~10.5억 원</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>시나리오 B: 현실적 (일 접객 200명 기준)</h3>
+  <h4>의원 1곳 기준:</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>전환율</th><th>일 판매</th><th>월 판매 (20영업일)</th><th>월 매출 (총)</th><th>GLPH 몫 (50-55%)</th></tr></thead>
+      <tbody>
+        <tr><td>5%</td><td>10건</td><td>200건</td><td>780만 원</td><td>~400만 원</td></tr>
+        <tr><td>10%</td><td>20건</td><td>400건</td><td>1,560만 원</td><td>~800만 원</td></tr>
+        <tr><td>15%</td><td>30건</td><td>600건</td><td>2,340만 원</td><td>~1,200만 원</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>의원 6곳 (초기 런칭 규모):</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>전환율</th><th>월 총 판매</th><th>월 총 매출</th><th>GLPH 월 매출</th><th>GLPH 연 매출</th></tr></thead>
+      <tbody>
+        <tr><td>5%</td><td>1,200건</td><td>4,680만 원</td><td>~2,400만 원</td><td>~2.9억 원</td></tr>
+        <tr><td>10%</td><td>2,400건</td><td>9,360만 원</td><td>~4,800만 원</td><td>~5.8억 원</td></tr>
+        <tr><td>15%</td><td>3,600건</td><td>1.4억 원</td><td>~7,200만 원</td><td>~8.6억 원</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>의원 10곳 (3-6개월 후):</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>전환율</th><th>월 총 판매</th><th>GLPH 월 매출</th><th>GLPH 연 매출</th></tr></thead>
+      <tbody>
+        <tr><td>5%</td><td>2,000건</td><td>~3,900만 원</td><td>~4.7억 원</td></tr>
+        <tr><td>10%</td><td>4,000건</td><td>~7,800만 원</td><td>~9.4억 원</td></tr>
+        <tr><td>15%</td><td>6,000건</td><td>~1.17억 원</td><td>~14.0억 원</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>시뮬레이션 해석</h3>
+  <p><strong>가장 보수적인 경우 (시나리오 A, 6곳, 5%):</strong></p>
+  <ul>
+    <li>GLPH 월 매출 ~1,800만 원, 연 ~2.2억 원</li>
+    <li>"큰 사업"은 아니지만 <strong>0이 아니고, 구조가 돌아간다는 증명</strong></li>
+  </ul>
+  <p><strong>현실적 기대 (시나리오 B, 6곳, 5% → 10% 성장):</strong></p>
+  <ul>
+    <li>런칭 초기 3개월: 전환율 5% → 월 ~2,400만 원</li>
+    <li>6개월 후 (전환율 10%): 월 ~4,800만 원</li>
+    <li><strong>여기에 온라인 매출 + 의원 확장이 추가</strong></li>
+  </ul>
+  <p><strong>스케일 변수 2개:</strong></p>
+  <ol>
+    <li><strong>의원 수</strong> — 6곳 → 10곳 → 20곳 → 30곳</li>
+    <li><strong>전환율</strong> — 5% → 10% → 15% (SOP 최적화 + 의사 부스터)</li>
+  </ol>
+  <p>둘 다 시간이 지나면 올라간다. 도매 네트워크로 의원 확장이 가능하고, SOP 데이터 축적으로 전환율이 올라간다.</p>
+</div>
+
+<!-- Section: 약점 -->
+<div class="section">
+  <div class="section-eyebrow">Weaknesses</div>
+  <h2>약점 — 솔직하게</h2>
+
+  <h3>1. 카테고리가 없다 = 교육 비용이 든다</h3>
+  <p>"GLP-1 부작용 관리 보충제"를 한국 소비자에게 인식시켜야 한다. "위고비 맞으면서 보충제도 먹어야 하는 거였어?"라는 인식 자체를 만드는 데 시간이 걸린다.</p>
+  <p>대행사 바이럴이 이걸 담당하지만, 카테고리 교육은 1-2개월 만에 되지 않는다. 3-6개월의 바이럴 축적이 필요.</p>
+
+  <h3>2. 온라인 매출은 초기에 매우 적다</h3>
+  <p>쿠팡/네이버는 판매 목적이 아니고, 자사몰은 코드 기반이라 오프라인 구매자만 유입. 순수 온라인 신규 고객(오프라인 미경유)은 대행사 바이럴에서 소량 발생할 뿐.</p>
+  <p><strong>초기 6개월 매출 구조: 오프라인 80% + 온라인 20% (추정).</strong></p>
+
+  <h3>3. 의원 확장 속도 = 매출 천장</h3>
+  <p>6곳 → 15곳 → 30곳으로 가는 속도가 곧 매출 성장 속도. 도매 네트워크가 있어서 확장 자체는 가능하지만, 위탁 운영(재고 관리, 정산, 방문)의 인력 한계가 병목.</p>
+</div>
+
+<!-- Section: 결론 -->
+<div class="section">
+  <div class="section-eyebrow">Conclusion</div>
+  <h2>결론</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>질문</th><th>답</th></tr></thead>
+      <tbody>
+        <tr><td>이 전략대로 하면 런칭이 되는가?</td><td><strong>된다.</strong> 실행 불가능한 요소가 없다.</td></tr>
+        <tr><td>초기에 돈이 되는가?</td><td><strong>작지만 된다.</strong> 6곳 × 5% = 월 ~1,800-2,400만 원(GLPH).</td></tr>
+        <tr><td>스케일이 되는가?</td><td><strong>된다. 의원 확장 속도에 달려있다.</strong></td></tr>
+        <tr><td>대기업이 들어오면?</td><td>국내는 아직 이 카테고리가 없으므로 당분간 GLPH 독점. 대기업 진입 시 "의사 추천 네트워크"가 방어벽.</td></tr>
+        <tr><td>이 전략의 진짜 가치는?</td><td><strong>국내 매출 자체 + 아마존 런칭을 위한 "의사 추천 + 임상 경험 + 한국 판매 데이터" 축적.</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout">국내 오프라인/온라인은 그 자체로 사업이면서, 동시에 아마존에서 "Physician-Recommended in Korea"를 말할 수 있는 근거를 만드는 기간이다. 이 두 가지가 동시에 진행되는 구조.</div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TAB 3: GLOBAL PLAN — placeholder (will continue)       -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-global">
+  <div class="hero">
+    <div class="hero-eyebrow">Execution Plan</div>
+    <h1>GLPH Global Plan<br>Offline &rarr; Online &rarr; Amazon</h1>
+    <p class="hero-desc">SKU 포트폴리오 전략 리포트 기반. 실제 마켓 스캔 데이터(SerpAPI + Keepa + DataForSEO)로 전면 수정된 v2.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><div class="hero-meta-dot"></div>81개 키워드 전수 스캔</div>
+      <div class="hero-meta-item"><div class="hero-meta-dot"></div>Amazon + Google 검증</div>
+      <div class="hero-meta-item"><div class="hero-meta-dot"></div>Keepa 실측 데이터</div>
+    </div>
+  </div>
+  <!-- Section: 신뢰도 범례 -->
+<div class="section">
+  <div class="section-eyebrow">Read This First</div>
+  <h2>신뢰도 범례 — 이 문서를 읽기 전에</h2>
+  <div class="callout">이 문서의 모든 전략 판단에는 아래 신뢰도 등급이 붙어있다.<br>
+  <strong>[검증됨]</strong> = API 데이터(SerpAPI/Keepa/DataForSEO)로 직접 확인된 사실<br>
+  <strong>[가설]</strong> = 데이터에서 유추했으나 실제 전환/매출로 검증되지 않은 판단<br>
+  <strong>[미검증]</strong> = 데이터 자체가 없거나 접근 불가. 런칭 후 실측 필요</div>
+</div>
+
+<!-- Section: 시장 데이터 -->
+<div class="section">
+  <div class="section-eyebrow">Market Data [검증됨]</div>
+  <h2>시장 데이터 — 모든 전략의 근거</h2>
+  <p><strong>아래 데이터 없이 전략을 짜면 내러티브에 끌려간다. 데이터 먼저.</strong></p>
+
+  <h3>Amazon 검색량 (DataForSEO Labs Amazon, 미국, 2026.05) — 81개 키워드 전수 스캔</h3>
+
+  <h4>Tier 1: 메가 키워드 (10,000+/월)</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>키워드</th><th>Amazon 월간</th><th>시사점</th></tr></thead>
+      <tbody>
+        <tr><td>ozempic side effects</td><td>77,231</td><td>1위. 부작용 정보 → 보충제 전환 가능</td></tr>
+        <tr><td><strong>ozempic face</strong></td><td><strong>55,202</strong></td><td>2위. <strong>전용 보충제 0 = 최대 기회</strong></td></tr>
+        <tr><td>mounjaro side effects</td><td>33,884</td><td>3위. Mounjaro 사용자 유입</td></tr>
+        <tr><td>wegovy side effects</td><td>28,611</td><td>4위. Wegovy 사용자 유입</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><strong>"side effects" 3개 합산 = 139,726/월.</strong> GLP-1 사용자가 Amazon에서 부작용을 검색하는 규모가 월 14만. 이 사람들이 다음 단계로 검색하는 것이 "ozempic face" (55K), "ozempic hair loss" (673), "ozempic nausea" (261) 등.</div>
+
+  <h4>Tier 2: 중형 키워드 (1,000~10,000/월)</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>키워드</th><th>Amazon 월간</th><th>시사점</th></tr></thead>
+      <tbody>
+        <tr><td>biotin supplement</td><td>6,619</td><td>대형 범용</td></tr>
+        <tr><td>liquid collagen</td><td>5,497</td><td>AFTER-SKIN 제형 매칭</td></tr>
+        <tr><td>collagen supplement</td><td>4,450</td><td>대형 범용</td></tr>
+        <tr><td>biotin 10000mcg</td><td>2,281</td><td>구체적 용량 = 구매 의도 높음</td></tr>
+        <tr><td><strong>verisol collagen</strong></td><td><strong>1,720</strong></td><td>원료 브랜드 검색. 경쟁 약함</td></tr>
+        <tr><td>glp-1 support</td><td>1,645</td><td>GLP-1 관련 상위</td></tr>
+        <tr><td>glp-1 supplement</td><td>1,122</td><td>대기업 전쟁터</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Tier 3: 니치 키워드 (100~1,000/월)</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>키워드</th><th>Amazon 월간</th><th>시사점</th></tr></thead>
+      <tbody>
+        <tr><td><strong>glp-1 hair loss</strong></td><td><strong>785</strong></td><td>AFTER-HAIR 핵심 키워드</td></tr>
+        <tr><td><strong>ozempic hair loss</strong></td><td><strong>673</strong></td><td>AFTER-HAIR 보조 키워드</td></tr>
+        <tr><td>glp-1 face</td><td>486</td><td>AFTER-SKIN 보조 키워드</td></tr>
+        <tr><td><strong>ozempic muscle loss</strong></td><td><strong>448</strong></td><td>근손실 니치 — 향후 SKU 기회</td></tr>
+        <tr><td><strong>ozempic constipation</strong></td><td><strong>448</strong></td><td>소화 니치 — 향후 SKU 기회</td></tr>
+        <tr><td><strong>glp-1 constipation</strong></td><td><strong>411</strong></td><td>소화 니치 2위</td></tr>
+        <tr><td>semaglutide hair loss</td><td>411</td><td>AFTER-HAIR 보조</td></tr>
+        <tr><td>hair skin nails supplement</td><td>336</td><td>범용</td></tr>
+        <tr><td><strong>glp-1 protein</strong></td><td><strong>336</strong></td><td>근보존 니치</td></tr>
+        <tr><td><strong>glp-1 muscle loss</strong></td><td><strong>336</strong></td><td>근손실 니치</td></tr>
+        <tr><td>ozempic nausea</td><td>261</td><td>메스꺼움 니치</td></tr>
+        <tr><td>glp-1 companion</td><td>224</td><td>Nature Made, DietWorks 선점</td></tr>
+        <tr><td>glp-1 fatigue</td><td>187</td><td>피로 니치</td></tr>
+        <tr><td>glp-1 nausea</td><td>112</td><td>메스꺼움</td></tr>
+        <tr><td>glp-1 nausea relief</td><td>112</td><td>메스꺼움</td></tr>
+        <tr><td>semaglutide nausea</td><td>112</td><td>메스꺼움</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Tier 4: 마이크로/제로 (0~100/월)</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>키워드</th><th>Amazon 월간</th><th>시사점</th></tr></thead>
+      <tbody>
+        <tr><td>semaglutide muscle loss</td><td>74</td><td>—</td></tr>
+        <tr><td>glp-1 multivitamin</td><td>74</td><td>—</td></tr>
+        <tr><td>glp-1 fiber</td><td>74</td><td>—</td></tr>
+        <tr><td>glp-1 gut health</td><td>74</td><td>—</td></tr>
+        <tr><td>bariatric supplement</td><td>37</td><td>—</td></tr>
+        <tr><td><strong>glp-1 aftercare</strong></td><td><strong>0</strong></td><td>아무도 검색 안 함</td></tr>
+        <tr><td>glp-1 companion supplement</td><td>0</td><td>—</td></tr>
+        <tr><td>glp-1 collagen</td><td>0</td><td>—</td></tr>
+        <tr><td>glp-1 biotin</td><td>0</td><td>—</td></tr>
+        <tr><td>mounjaro supplement</td><td>0</td><td>—</td></tr>
+        <tr><td>ozempic collagen</td><td>0</td><td>—</td></tr>
+        <tr><td>glp-1 recovery</td><td>0</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>부작용별 시장 크기 — SKU 우선순위 결정 근거</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>부작용 카테고리</th><th>Amazon 검색량 합산</th><th>현재 SKU</th><th>경쟁 수준</th></tr></thead>
+      <tbody>
+        <tr><td><strong>얼굴/피부</strong></td><td><strong>55,688</strong> (ozempic face + glp-1 face)</td><td>AFTER-SKIN</td><td>전용 제품 0</td></tr>
+        <tr><td><strong>탈모</strong></td><td><strong>1,869</strong> (glp-1/ozempic/semaglutide hair loss)</td><td>AFTER-HAIR</td><td>BariMelts 1개</td></tr>
+        <tr><td><strong>근손실</strong></td><td><strong>1,194</strong> (muscle loss + protein 합산)</td><td>미정 (AFTER-MUSCLE?)</td><td>범용 프로틴만</td></tr>
+        <tr><td><strong>소화(변비+메스꺼움)</strong></td><td><strong>1,356</strong> (constipation + nausea 합산)</td><td>미정 (AFTER-GUT?)</td><td>일부 있음</td></tr>
+        <tr><td><strong>피로</strong></td><td><strong>187</strong> (glp-1 fatigue)</td><td>미정</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><strong>얼굴/피부가 2위(탈모)의 30배.</strong> SKU 우선순위가 데이터로 확정됨.</div>
+
+  <h3>Google 검색량 비교 (DataForSEO Google Ads, 미국, 2026.05)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>키워드</th><th>Google 월간</th><th>Amazon 월간</th><th>Google→Amazon 전환 비율</th></tr></thead>
+      <tbody>
+        <tr><td>Ozempic face</td><td>246,000</td><td>55,202</td><td>22% — <strong>Google 검색자의 1/5이 Amazon에서도 검색</strong></td></tr>
+        <tr><td>GLP-1 supplement</td><td>33,100</td><td>1,122</td><td>3.4% — 대부분 정보 검색</td></tr>
+        <tr><td>VERISOL collagen</td><td>6,600</td><td>1,720</td><td>26% — <strong>높은 구매 전환율</strong></td></tr>
+        <tr><td>semaglutide hair loss</td><td>2,900</td><td>411</td><td>14%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Amazon 검색 결과 (SerpAPI, 2026.05)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>검색어</th><th>결과 수</th><th>GLP-1 전용 제품</th></tr></thead>
+      <tbody>
+        <tr><td>GLP-1 hair loss supplement</td><td>48</td><td>BariMelts 1개만 전용</td></tr>
+        <tr><td>hair loss after Ozempic</td><td><strong>3</strong></td><td>전용 없음</td></tr>
+        <tr><td><strong>Ozempic face supplement</strong></td><td><strong>0</strong></td><td><strong>없음 — 24만 검색에 제품 0</strong></td></tr>
+        <tr><td>GLP-1 aftercare</td><td><strong>0</strong></td><td>없음</td></tr>
+        <tr><td>GLP-1 companion supplement</td><td>48</td><td>DietWorks, Vitafusion 등 다수</td></tr>
+        <tr><td>collagen GLP-1</td><td>48</td><td>"GLP Friendly" 콜라겐 2-3개</td></tr>
+        <tr><td>skin sagging after weight loss supplement</td><td>48</td><td>대부분 토피컬 크림. 경구 보충제 거의 없음</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>실제 월 판매량 (Keepa, 2026.05)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>제품</th><th>월 판매</th><th>가격</th><th>포지셔닝</th></tr></thead>
+      <tbody>
+        <tr><td>Vitafusion GLP-1 Support</td><td><strong>10,000</strong></td><td>$8.29</td><td>대기업 범용 멀티비타민</td></tr>
+        <tr><td>Centrum GLP-1 Nutrient Replenish</td><td><strong>5,000</strong></td><td>$20.98</td><td>대기업 멀티비타민</td></tr>
+        <tr><td>BariMelts Hair Health+ (GLP-1 전용)</td><td><strong>1,000</strong></td><td>$25.49</td><td>유일한 GLP-1 탈모 전용</td></tr>
+        <tr><td>Liquid Collagen GLP Friendly</td><td>400</td><td>$22.99</td><td>소형 브랜드</td></tr>
+        <tr><td>DietWorks GLP-1 Companion</td><td>100</td><td>$19.99</td><td>고전 중</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>데이터가 말하는 기회 지도</h3>
+  <div class="code-block"><pre>"ozempic side effects" (Amazon 77K)  → 퍼널 최상단. 모든 SKU의 진입점 [검증됨]
+"Ozempic face" (Amazon 55K)          → 전용 제품 0 → ★★★ AFTER-SKIN [검증됨]
+"mounjaro side effects" (Amazon 34K) → 타이틀/백엔드에 반드시 포함 [검증됨]
+"wegovy side effects" (Amazon 29K)   → 타이틀/백엔드에 반드시 포함 [검증됨]
+"VERISOL collagen" (Amazon 1.7K)     → 경쟁 약한 구매 키워드 → ★★ [검증됨]
+"GLP-1 hair loss" (Amazon 785)       → ★ AFTER-HAIR [검증됨]
+"ozempic hair loss" (Amazon 673)     → ★ AFTER-HAIR [검증됨]
+"GLP-1 supplement" (Amazon 1.1K)     → ☆ 대기업 전쟁터 [검증됨]
+"GLP-1 aftercare" (Amazon 0)         → ✗ 기회 아님 [검증됨]</pre></div>
+
+  <h3>소비자 여정 퍼널 — 키워드 전략의 뼈대</h3>
+  <div class="code-block"><pre>[퍼널 최상단] "ozempic/mounjaro/wegovy side effects" (합산 139,726/월)
+  │  "부작용이 뭐가 있지?" — 정보 탐색
+  │
+  ├──→ [퍼널 중간] "ozempic face" (55,202) → AFTER-SKIN
+  │      "내 얼굴이 이래서 그렇구나" → 해결책 검색
+  │
+  ├──→ [퍼널 중간] "ozempic hair loss" (673) → AFTER-HAIR
+  │      "머리가 빠지는 이유" → 해결책 검색
+  │
+  ├──→ [퍼널 중간] "ozempic muscle loss" (448) → 향후 AFTER-MUSCLE
+  │
+  └──→ [퍼널 중간] "ozempic constipation/nausea" (709) → 향후 AFTER-GUT</pre></div>
+  <div class="callout"><strong>전략적 시사점:</strong> "side effects" 키워드(77K+34K+29K = 140K)에서 잡아야 아래 퍼널로 내려온다. 모든 SKU의 Sponsored Products 캠페인에 "[약물명] side effects"를 포함해야 한다. 단, 이 키워드는 범위가 넓으므로(구매 의도 혼재) CPC를 낮게 잡고 노출 위주로 운영.<br><br>
+  <strong>"Ozempic face" 기회가 [가설]에서 [검증됨]으로 승격된 이유:</strong> Amazon 내부 검색량 55,202/월 확인. <strong>Amazon 구매 플랫폼에서 월 5.5만 명이 "Ozempic face"를 검색한다</strong> = 구매 의도가 포함된 검색. Google 대비 Amazon 전환 비율 22% — "VERISOL collagen"(26%)에 이어 2번째로 높은 전환율.<br><br>
+  <strong>남아있는 불확실성:</strong><br>
+  • "Ozempic face supplement" 검색량은 여전히 0 → 소비자가 "보충제"까지 연결하지는 않았을 수 있음<br>
+  • 55K 검색자가 콜라겐 보충제를 클릭/구매할 전환율은 [미검증]<br>
+  • "Ozempic" 상표를 타이틀에 넣을 수 있는지 Amazon 정책 확인 필요<br><br>
+  <strong>그럼에도 불구하고:</strong> Amazon에서 5.5만/월 검색 + 전용 보충제 0 = 명확한 수급 불일치. 이전의 "성형외과 광고주 때문에 CPC가 높은 것일 수 있다"는 우려는 Amazon 내부 데이터로 해소됨 — Amazon에서 성형외과를 검색하지는 않으므로.</div>
+</div>
+
+<!-- Section: 타임라인 총괄 -->
+<div class="section">
+  <div class="section-eyebrow">Master Timeline</div>
+  <h2>타임라인 총괄</h2>
+  <div class="code-block"><pre>2026.07     한국 오프라인 런칭 (의원 6곳 + 약국 3곳)
+2026.08-09  오프라인 데이터 수집 + 콘텐츠 축적 + 아마존 인프라 구축
+2026.10     한국 온라인 런칭 (자사몰 + 쿠팡/카카오)
+2026.10-11  아마존 사전 준비 (인증, 콘텐츠, FBA 입고)
+2026.12     아마존 US Soft Launch — AFTER-SKIN (1 SKU)
+2027.01-02  AFTER-HAIR 추가 (2nd SKU)
+2027.02-03  AFTER-1 추가 (3rd SKU)
+2027.Q2~    스케일 + Subscribe &amp; Save</pre></div>
+</div>
+
+<!-- Section: Phase 0 -->
+<div class="section">
+  <div class="section-eyebrow">Phase 0: Pre-Amazon (2026.07~11)</div>
+  <h2>Phase 0: 아마존 사전 준비</h2>
+  <p>오프라인 런칭(7월)과 <strong>동시에</strong> 시작해야 하는 것들. 아마존은 준비에 2-4개월 걸린다.</p>
+
+  <h3>0-1. cGMP 인증 — 가장 시간 오래 걸림 (최우선)</h3>
+  <p><strong>2026년부터 아마존은 모든 식이보충제에 제3자 cGMP 검증을 요구한다.</strong> 미인증 시 리스팅 자체가 불가.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>요구사항</td><td>FDA 21 CFR 111 또는 117 cGMP 준수, Amazon 승인 TIC(검사기관)의 검증</td></tr>
+        <tr><td>승인 TIC 7곳</td><td>NSF, Eurofins, Intertek, SGS, UL, Certified Labs, Merieux NutriSciences</td></tr>
+        <tr><td>소요기간</td><td>신청~완료 60-90일 (검사 일정, 서류 준비에 따라 변동)</td></tr>
+        <tr><td>비용</td><td>시설 규모·SKU 수에 따라 $3,000~15,000+</td></tr>
+        <tr><td>Fast-Track</td><td>NSF/BSCG/USP 기존 인증이 있으면 자동 검증 가능</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>실행:</strong></p>
+  <ul>
+    <li>7월 즉시: 광동헬스바이오의 현재 cGMP 인증 상태 확인</li>
+    <li>광동이 이미 FDA cGMP 또는 NSF 인증이 있으면 → Fast-Track 신청</li>
+    <li>없으면 → TIC 7곳 중 1곳에 검증 신청 (NSF 또는 SGS 권장)</li>
+    <li><strong>데드라인: 10월 말까지 인증 확보</strong> → 12월 리스팅에 반영</li>
+  </ul>
+  <div class="callout">광동헬스바이오가 이미 해외 수출 이력이 있다면 cGMP 검증이 되어있을 가능성 높음. 이 경우 Fast-Track으로 2-3주 내 처리 가능. <strong>첫 번째로 확인해야 할 사항.</strong></div>
+
+  <h3>0-2. Amazon Brand Registry 등록</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>필수 조건</td><td>미국 상표(USPTO) 출원 또는 등록</td></tr>
+        <tr><td>소요기간</td><td>IP Accelerator 통해 출원 시 2-3주 내 Brand Registry 승인 가능</td></tr>
+        <tr><td>비용</td><td>USPTO 출원 $250-350 + 변호사 $500-1,500 또는 Amazon IP Accelerator 무료 출원</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>실행:</strong></p>
+  <ul>
+    <li>7월: "GLPH" USPTO 상표 출원 (또는 IP Accelerator 활용)</li>
+    <li>8월: Brand Registry 승인</li>
+    <li>이후 A+ Content, Brand Store, Vine, Subscribe &amp; Save 모두 Brand Registry 필수</li>
+  </ul>
+
+  <h3>0-3. 미국 내 사업 등록 + 수입 구조</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>옵션</th></tr></thead>
+      <tbody>
+        <tr><td>미국 법인</td><td>LLC 설립 (Delaware 또는 Wyoming) — $500-1,500</td></tr>
+        <tr><td>FDA 시설 등록</td><td>미국 내 수입자 등록 필수 (Registered Agent 활용 가능)</td></tr>
+        <tr><td>아마존 셀러 계정</td><td>Professional Seller ($39.99/월)</td></tr>
+        <tr><td>FBA 물류</td><td>한국→미국 해상운송 + FBA 입고 (3PL 활용)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>실행:</strong></p>
+  <ul>
+    <li>7-8월: LLC 설립 + FDA 시설 등록 + 아마존 셀러 계정 개설</li>
+    <li>9-10월: 첫 FBA 물량 해상 운송 시작 (12월 입고 목표)</li>
+  </ul>
+
+  <h3>0-4. 콘텐츠 자산 제작</h3>
+  <p><strong>오프라인 운영 기간(7-11월)에 축적해야 할 콘텐츠:</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>콘텐츠</th><th>용도</th><th>제작 시기</th></tr></thead>
+      <tbody>
+        <tr><td>제품 스튜디오 촬영 (흰 배경)</td><td>아마존 메인 이미지 (필수 7장)</td><td>7-8월</td></tr>
+        <tr><td>인포그래픽 이미지 (성분, 비교표)</td><td>아마존 갤러리 이미지</td><td>8-9월</td></tr>
+        <tr><td>의사 인터뷰 영상 (30초-2분)</td><td>A+ Content + 외부 마케팅</td><td>8-10월</td></tr>
+        <tr><td>환자 후기 (익명, 동의)</td><td>A+ Content + 소셜</td><td>9-11월</td></tr>
+        <tr><td>제품 사용 영상 (스틱 뜯어 마시기)</td><td>A+ Video + TikTok</td><td>8-9월</td></tr>
+        <tr><td>브랜드 스토리 자료</td><td>A+ Brand Story module</td><td>9-10월</td></tr>
+        <tr><td>"Ozempic Face란? 왜 콜라겐인가?" 교육 콘텐츠</td><td>A+ Content + 블로그</td><td>9-10월</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout">한국 오프라인 5개월은 "아마존용 콘텐츠 공장" 기간이다. 의사 6명, 약사 3명의 피드백과 추천을 영상·텍스트로 수집. 이것이 아마존에서 "Physician-Recommended"를 말할 수 있는 유일한 근거.</div>
+</div>
+
+<!-- Section: Phase 1 -->
+<div class="section">
+  <div class="section-eyebrow">Phase 1: Soft Launch (2026.12)</div>
+  <h2>Phase 1: 아마존 Soft Launch — AFTER-SKIN</h2>
+
+  <h3>왜 AFTER-SKIN이 첫 SKU인가</h3>
+  <p>데이터가 결정했다. 감이 아니라. <strong>[가설 포함]</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>기준</th><th>AFTER-SKIN</th><th>AFTER-HAIR</th><th>AFTER-1</th></tr></thead>
+      <tbody>
+        <tr><td>관련 Google 검색량</td><td><strong>246,000</strong> ("Ozempic face") + 6,600 ("VERISOL collagen")</td><td>2,900 ("semaglutide hair loss")</td><td>33,100 ("GLP-1 supplement")</td></tr>
+        <tr><td>Amazon 전용 제품</td><td><strong>0</strong> (24만 검색에 제품 없음)</td><td>1개 (BariMelts, 1,000/월)</td><td>다수 (Vitafusion 10,000/월)</td></tr>
+        <tr><td>시장 공백 크기</td><td><strong>거대 [검증됨]</strong></td><td>소규모 [검증됨]</td><td>없음 (대기업 점령) [검증됨]</td></tr>
+        <tr><td>진입 난이도</td><td>낮음</td><td>낮음</td><td>높음</td></tr>
+        <tr><td>임상 마케팅 자산</td><td>VERISOL 풀도즈 임상 스토리 [검증됨]</td><td>영양 보충 (임상 스토리 약함)</td><td>없음</td></tr>
+        <tr><td>키워드 잠재력</td><td>"Ozempic face" Amazon 55K + "VERISOL" 1.7K [검증됨]</td><td>"GLP-1 hair loss" 785 + "Ozempic hair loss" 673 [검증됨]</td><td>"GLP-1 supplement" 1.1K (대기업 점령) [검증됨]</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><strong>AFTER-SKIN Hero 판단의 신뢰도: 높음.</strong> (Amazon 검색량 확인으로 승격)<br><br>
+  "Ozempic face" Amazon 55,202/월 [검증됨] — Google만이 아니라 <strong>구매 플랫폼에서도</strong> 압도적 검색량.<br>
+  "VERISOL collagen" Amazon 1,720/월 [검증됨] — 경쟁 약하고 구매 의도 높은 키워드.<br>
+  "liquid collagen" Amazon 5,497/월 [검증됨] — 제형 키워드로 추가 노출 가능.<br><br>
+  AFTER-HAIR: "glp-1 hair loss" 785 + "ozempic hair loss" 673 = 합산 1,458/월. 시장은 있으나 AFTER-SKIN의 1/38.<br>
+  AFTER-1: "glp-1 supplement" 1,122/월. Vitafusion 10K/월 판매 점령. 진입 비효율적.<br><br>
+  <strong>남아있는 미검증:</strong><br>
+  • "Ozempic face" 검색 → AFTER-SKIN 클릭/구매 전환율 [미검증: 런칭 후 실측]<br>
+  • "Ozempic" 타이틀 사용 가능 여부 [미검증: Amazon 정책 확인 필요]</div>
+
+  <h3>왜 1개로 시작하는가</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>요인</th><th>3 SKU 동시</th><th>1 SKU 먼저</th></tr></thead>
+      <tbody>
+        <tr><td>Vine 비용</td><td>$600×3 = $1,800+</td><td>$600</td></tr>
+        <tr><td>초기 PPC 예산</td><td>$3,000-5,000/월 × 3 = 분산</td><td>$3,000-5,000 집중</td></tr>
+        <tr><td>리뷰 속도</td><td>각 SKU 10개씩 분산</td><td>1개에 30개 집중</td></tr>
+        <tr><td>BSR 달성</td><td>3개 다 느림</td><td>1개 빠르게 올림</td></tr>
+        <tr><td>실패 비용</td><td>재고 3종 × MOQ</td><td>1종</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><strong>아마존의 현실: 리뷰 0개 제품은 안 팔린다.</strong> 1개에 집중해서 Vine 30개 + 초기 리뷰로 60일 내 50+개 달성이 목표. SKU 포트폴리오 문서의 "which-to-buy" 심리학은 맞다. 하지만 그건 리뷰가 붙은 후의 이야기. 리뷰 0개 × 3개 = "none-to-buy."</div>
+
+  <h3>AFTER-SKIN 리스팅 최적화</h3>
+  <h4>타이틀 전략 — "side effects" 퍼널 반영</h4>
+  <p>Amazon 타이틀은 200자 제한. 이 안에 최대한 많은 검색 키워드를 자연스럽게 넣어야 한다.</p>
+
+  <p><strong>타이틀 A안 (Ozempic 직접 사용 — 정책 허용 시):</strong></p>
+  <div class="code-block"><pre>GLPH AFTER-SKIN — Ozempic Face &amp; Wegovy Skin Support, VERISOL® Collagen 5,000mg + Hyaluronic Acid + Astaxanthin, GLP-1 Side Effects Skin Recovery, Liquid Stick (15 Packs)</pre></div>
+  <p>커버 키워드:</p>
+  <ul>
+    <li>"ozempic face" (55K) ✓</li>
+    <li>"wegovy skin" / "wegovy side effects" (부분 매칭) ✓</li>
+    <li>"VERISOL collagen" (1.7K) ✓</li>
+    <li>"GLP-1 side effects" ✓</li>
+    <li>"skin recovery" ✓</li>
+    <li>"collagen liquid stick" ✓</li>
+  </ul>
+
+  <p><strong>타이틀 B안 (상표 회피 — Ozempic/Wegovy 미사용):</strong></p>
+  <div class="code-block"><pre>GLPH AFTER-SKIN — GLP-1 Face &amp; Skin Recovery, VERISOL® Collagen 5,000mg + Hyaluronic Acid + Astaxanthin + Vitamin C, Semaglutide Side Effects Support, Liquid Stick (15 Packs)</pre></div>
+  <p>커버 키워드:</p>
+  <ul>
+    <li>"GLP-1 face" (486) ✓</li>
+    <li>"VERISOL collagen" (1.7K) ✓</li>
+    <li>"semaglutide side effects" (일반명이므로 상표 아님) ✓</li>
+    <li>"skin recovery" ✓</li>
+  </ul>
+
+  <p><strong>백엔드 키워드 (Search Terms, 250자):</strong></p>
+  <div class="code-block"><pre>ozempic face, mounjaro side effects, wegovy side effects, ozempic side effects skin, weight loss face sagging, collagen after weight loss, liquid collagen stick, GLP-1 skin elasticity, semaglutide face, tirzepatide skin</pre></div>
+
+  <p><strong>상표 사용 정책 — [부분 검증]:</strong></p>
+  <ul>
+    <li>"Ozempic"은 Novo Nordisk 상표. 타이틀 직접 사용 시 상표 침해 클레임 가능성.</li>
+    <li>SerpAPI 확인 결과, "Ozempic"을 타이틀에 직접 사용하는 보충제 <strong>1건 확인</strong> (B0GC739CTY: "Digestive Support <strong>for Ozempic</strong> Wegovy Mounjaro Users"). 현재 판매 활성 상태.</li>
+    <li>"Ozempic으로 치료한다"가 아니라 <strong>"Ozempic 사용자를 위한"</strong>이라는 타겟 설명 프레이밍.</li>
+    <li>Novo Nordisk이 언제든 클레임 가능 → <strong>A안(사용)과 B안(미사용) 모두 준비 필수</strong></li>
+    <li>"semaglutide", "tirzepatide"는 일반명(generic name)이므로 상표 아님 → 안전</li>
+    <li><strong>패키지에는 "Ozempic" 사용 금지</strong> — 패키지는 FDA 관할이며 Amazon 타이틀보다 규제 수준이 높음</li>
+  </ul>
+
+  <p><strong>Bullet Points (5개):</strong></p>
+  <div class="checklist">
+    <div class="checklist-item"><span class="checklist-num">1</span>OZEMPIC FACE? REBUILD FROM WITHIN — VERISOL 5,000mg 풀 임상 도즈, 4주 만에 피부 탄력 개선 확인 (Proksch 2014, 2020 RCT)</div>
+    <div class="checklist-item"><span class="checklist-num">2</span>CLINICALLY PROVEN COLLAGEN — 독일 GELITA의 어류 VERISOL F. 비브랜드 20g과 다른 기전: 섬유아세포 신호 전달로 체내 콜라겐 생산 촉진</div>
+    <div class="checklist-item"><span class="checklist-num">3</span>TRIPLE PROTECTION — VERISOL(새 콜라겐 생산) + CoQ10(세포 에너지) + 아스타잔틴(기존 콜라겐 분해 방지). "만들고 + 에너지 주고 + 지키는" 3단 구조</div>
+    <div class="checklist-item"><span class="checklist-num">4</span>PHYSICIAN-RECOMMENDED — 한국 GLP-1 처방 의사들이 체중감소 후 피부 탄력 회복을 위해 환자에게 권장</div>
+    <div class="checklist-item"><span class="checklist-num">5</span>LIQUID STICK = INSTANT — 물 없이 뜯어서 바로. 분말 스쿱·세척 필요 없음. 휴대 간편</div>
+  </div>
+
+  <p><strong>A+ Content 구성:</strong></p>
+  <ul>
+    <li>Module 1: "What is Ozempic Face?" — 체중감소 후 얼굴 볼륨 손실 교육</li>
+    <li>Module 2: "VERISOL vs Generic Collagen" — 기전 차이 인포그래픽</li>
+    <li>Module 3: "Triple Protection" — VERISOL + CoQ10 + 아스타잔틴 3단 구조</li>
+    <li>Module 4: 의사 추천 인용 (한국 임상 경험, 이름·소속 포함)</li>
+    <li>Module 5: Before/After (사용자 피부 사진, 동의 하에)</li>
+    <li>Module 6: FAQ (GLP-1 약물 상호작용, 복용법, 효과 기대 시점)</li>
+  </ul>
+
+  <h3>Phase 1 PPC 전략 (12월~2월) — "side effects" 퍼널 반영</h3>
+  <p><strong>예산: 월 $3,000-5,000</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>캠페인</th><th>타입</th><th>키워드</th><th>Amazon 검색량</th><th>입찰</th><th>예산 비중</th><th>목적</th></tr></thead>
+      <tbody>
+        <tr><td>방어</td><td>SP Exact</td><td>"GLPH", "GLPH AFTER-SKIN"</td><td>—</td><td>$0.50</td><td>5%</td><td>브랜드 방어</td></tr>
+        <tr><td><strong>퍼널 상단</strong></td><td>SP Broad/Phrase</td><td>"ozempic side effects", "mounjaro side effects", "wegovy side effects"</td><td>77K+34K+29K</td><td>$0.80-1.50</td><td><strong>20%</strong></td><td>노출+인지</td></tr>
+        <tr><td><strong>핵심</strong></td><td>SP Exact</td><td>"ozempic face", "VERISOL collagen", "GLP-1 face"</td><td>55K+1.7K+486</td><td>$2.00-3.50</td><td><strong>35%</strong></td><td>전환 핵심</td></tr>
+        <tr><td>제형</td><td>SP Exact/Phrase</td><td>"liquid collagen", "collagen stick"</td><td>5.5K</td><td>$1.50-2.50</td><td>15%</td><td>포맷 매칭</td></tr>
+        <tr><td>범용</td><td>SP Phrase</td><td>"collagen supplement", "skin elasticity"</td><td>4.5K</td><td>$1.50-2.50</td><td>15%</td><td>노출 확대</td></tr>
+        <tr><td>경쟁자</td><td>SP Product</td><td>Vital Proteins ASIN, BeMe ASIN</td><td>—</td><td>$2.00-3.00</td><td>10%</td><td>경쟁자 고객 확보</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>v1과 달라진 점:</h4>
+  <div class="checklist">
+    <div class="checklist-item"><span class="checklist-num">1</span><strong>"side effects" 퍼널 상단 캠페인 신설</strong> (20% 예산)<br>
+    "ozempic side effects" 77K/월 = 아마존 전체에서 가장 큰 GLP-1 키워드. 이 검색자는 아직 특정 부작용(face, hair)을 모를 수 있음 → AFTER-SKIN이 먼저 노출. <strong>Broad/Phrase Match + 낮은 입찰($0.80-1.50)</strong> = 저비용 노출. 전환 기대 낮지만 인지 확보. ACoS 높을 것 → 예산 상한(daily cap) 설정 필수</div>
+    <div class="checklist-item"><span class="checklist-num">2</span><strong>Mounjaro/Wegovy 키워드 포함</strong> — 합산 63K/월을 무시할 수 없음</div>
+    <div class="checklist-item"><span class="checklist-num">3</span><strong>"liquid collagen" (5.5K) 제형 캠페인 분리</strong> — 콜라겐 시장에서 제형 차별화로 노출</div>
+  </div>
+
+  <h4>핵심 원칙:</h4>
+  <ul>
+    <li>첫 30일은 ACoS 무시. BSR 올리는 것이 목표.</li>
+    <li>"side effects" 캠페인은 노출(impression) 위주 — 클릭당 전환 낮지만 검색량이 압도적이라 소수 전환만으로도 유의미</li>
+    <li>"VERISOL collagen" + "ozempic face" = 전환 캠페인 핵심. 여기에 예산 35%.</li>
+    <li>"GLP-1 supplement" (대기업 전쟁터)은 Phase 1에서 <strong>건드리지 않음.</strong></li>
+    <li>30일 후 Search Term Report 분석 → "side effects"에서 전환되는 서브키워드 발굴 → Exact로 승격</li>
+  </ul>
+
+  <h4>외부 트래픽과 연계:</h4>
+  <ul>
+    <li>Google Ads에서 "Ozempic face" (246K/월, CPC $7.53) → 비싸므로 소규모 테스트만</li>
+    <li>TikTok에서 "Ozempic side effects" 콘텐츠가 이미 대량 → 여기에 올라타는 것이 비용 효율적</li>
+  </ul>
+
+  <h3>외부 트래픽 전략</h3>
+  <p><strong>Amazon Brand Referral Bonus: 외부 트래픽 매출의 10% 환급.</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>채널</th><th>전략</th><th>예산/월</th></tr></thead>
+      <tbody>
+        <tr><td>TikTok</td><td>"Ozempic face" 콘텐츠 크리에이터 (마이크로, 1K-50K) 시딩</td><td>$1,000-2,000</td></tr>
+        <tr><td>Instagram</td><td>GLP-1 커뮤니티 + 피부과/성형외과 의사 계정 협업</td><td>$500-1,000</td></tr>
+        <tr><td>Google Ads</td><td>"Ozempic face supplement", "skin after weight loss" → Amazon 랜딩</td><td>$500-1,000</td></tr>
+        <tr><td>Reddit</td><td>r/Ozempic, r/Mounjaro, r/Semaglutide — 커뮤니티 참여 (광고 아님)</td><td>$0 (시간 투자)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><strong>TikTok이 핵심이다.</strong> "Ozempic face"는 이미 TikTok에서 수백만 뷰 콘텐츠. 이 대화에 자연스럽게 AFTER-SKIN을 끼워넣는 것.<br><br>
+  <strong>콘텐츠 방향:</strong><br>
+  • "Ozempic face가 진짜인가요?" (교육 → 문제 인식)<br>
+  • "체중은 빠졌는데 얼굴이…" (공감 → 솔루션 제시)<br>
+  • "의사가 추천한 GLP-1 전용 피부 보충제" (신뢰)<br>
+  • "VERISOL 콜라겐 4주 후" (임상 근거 기반 기대치)</div>
+
+  <h3>Soft Launch 실행 타임라인</h3>
+  <div class="code-block"><pre>2026.12 W1: FBA 입고 완료, 리스팅 라이브
+2026.12 W1: Amazon Vine 등록 (30개 유닛)
+2026.12 W2: PPC 시작 — Exact Match + VERISOL 키워드
+2026.12 W2: Google Ads "Ozempic face" 테스트 시작
+2026.12 W3-W4: TikTok 인플루언서 시딩 시작
+2027.01: Vine 리뷰 도착 시작 (보통 2-4주)
+2027.01: PPC 키워드 확장
+2027.02: 리뷰 30-50개 도달 → 전환율 안정화</pre></div>
+</div>
+
+<!-- Section: Phase 2 -->
+<div class="section">
+  <div class="section-eyebrow">Phase 2: AFTER-HAIR (2027.01-02)</div>
+  <h2>Phase 2: AFTER-HAIR 추가</h2>
+
+  <h3>진입 조건: AFTER-SKIN이 다음을 달성한 후</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>지표</th><th>최소 기준</th></tr></thead>
+      <tbody>
+        <tr><td>리뷰 수</td><td>30개+ (평점 4.3+)</td></tr>
+        <tr><td>월 매출</td><td>$3,000+</td></tr>
+        <tr><td>전환율</td><td>8%+</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>AFTER-HAIR의 실제 시장 기회</h3>
+  <p>데이터 기준:</p>
+  <ul>
+    <li>"semaglutide hair loss" = 2,900/월 (Google)</li>
+    <li>"hair loss weight loss" = 2,900/월 (Google)</li>
+    <li>BariMelts Hair Health+ GLP-1 전용 = 1,000/월 판매, $25.49 = 월 $25,490 매출</li>
+    <li>"hair loss after Ozempic"으로 아마존 검색 시 결과 3개만 → 경쟁 거의 없음</li>
+  </ul>
+  <div class="callout"><strong>기회는 있지만 AFTER-SKIN보다 작다.</strong> 2번째 SKU로 적합.</div>
+
+  <p><strong>타이틀 A안 (약물명 직접 사용):</strong></p>
+  <div class="code-block"><pre>GLPH AFTER-HAIR — Ozempic &amp; Wegovy Hair Loss Support, Biotin 10,000mcg + Iron Bisglycinate + Zinc + Tocotrienol, GLP-1 Side Effects Hair Recovery, No Hormones, 60 Tablets (30-Day)</pre></div>
+
+  <p><strong>타이틀 B안 (상표 회피):</strong></p>
+  <div class="code-block"><pre>GLPH AFTER-HAIR — GLP-1 &amp; Semaglutide Hair Loss Support, Biotin 10,000mcg + Iron Bisglycinate + Zinc + Tocotrienol, Weight Loss Hair Thinning Recovery, No Hormones, 60 Tablets (30-Day)</pre></div>
+
+  <p><strong>백엔드 키워드:</strong></p>
+  <div class="code-block"><pre>ozempic hair loss, mounjaro hair loss, wegovy hair loss, semaglutide hair thinning, GLP-1 hair loss supplement, hair loss after weight loss, biotin hair growth, bariatric hair loss vitamin</pre></div>
+
+  <p>커버 키워드:</p>
+  <ul>
+    <li>"ozempic hair loss" (673) ✓</li>
+    <li>"GLP-1 hair loss" (785) ✓</li>
+    <li>"semaglutide hair loss" (411) ✓</li>
+    <li>"biotin 10000mcg" (2,281) ✓</li>
+    <li>"GLP-1 side effects" (퍼널 상단 매칭) ✓</li>
+    <li>"wegovy/mounjaro" (백엔드로 34K+29K 커버) ✓</li>
+  </ul>
+
+  <h3>AFTER-HAIR PPC</h3>
+  <p>AFTER-SKIN과 다른 키워드 풀이므로 예산 충돌 없음.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>캠페인</th><th>키워드</th><th>CPC 예상</th></tr></thead>
+      <tbody>
+        <tr><td>핵심</td><td>"hair loss supplement women", "biotin 10000"</td><td>$2.00-3.50</td></tr>
+        <tr><td>니치</td><td>"semaglutide hair loss", "GLP-1 hair"</td><td>$1.50-2.50</td></tr>
+        <tr><td>경쟁자</td><td>Nutrafol ASIN, Viviscal ASIN, BariMelts ASIN</td><td>$2.50-4.00</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section: Phase 3 -->
+<div class="section">
+  <div class="section-eyebrow">Phase 3: 3-SKU Completion (2027.02-03)</div>
+  <h2>Phase 3: AFTER-1 추가 + 3 SKU 완성</h2>
+
+  <h3>AFTER-1의 역할 = 리바운더</h3>
+  <p>"GLP-1 supplement" (33K/월)은 대기업 전쟁터. AFTER-1은 이 전쟁에 직접 뛰어들지 않는다.</p>
+  <p>AFTER-1의 실제 역할:</p>
+  <ul>
+    <li>AFTER-SKIN/HAIR를 본 고객이 "전체적으로 챙기고 싶다"면 → AFTER-1</li>
+    <li>Brand Store에서 라인업 완성 → 브랜드 신뢰도</li>
+    <li>"Frequently Bought Together"에서 자사 제품끼리 연결</li>
+  </ul>
+
+  <p><strong>타이틀:</strong></p>
+  <div class="code-block"><pre>GLPH AFTER-1 — GLP-1 All-in-One Support, Amino Acids 5,000mg + VERISOL Collagen + Magnesium + Biotin + Vitamin D, Liquid Stick (15 Packs)</pre></div>
+
+  <h3>3 SKU Brand Store 구성</h3>
+  <div class="code-block"><pre>GLPH Brand Store
+├── Hero Banner: "Built for the generation that chose change"
+├── [AFTER-SKIN] Ozempic Face Recovery — "Rebuild your skin"
+│     → "Ozempic face", "VERISOL collagen" 키워드 매칭
+├── [AFTER-HAIR] GLP-1 Hair Loss Support — "Save your hair"
+│     → "semaglutide hair loss", "biotin 10000" 키워드 매칭
+├── [AFTER-1] GLP-1 All-in-One — "Cover everything"
+│     → 리바운더. 크로스셀 대상
+├── [THE SCIENCE] 성분별 임상 근거 + 비교표
+└── [OUR STORY] 한국 의사 추천 → 글로벌 런칭 스토리</pre></div>
+  <p>이 시점에서 "which-to-buy" 마인드셋이 작동한다:</p>
+  <ul>
+    <li>피부가 걱정? → AFTER-SKIN</li>
+    <li>머리가 걱정? → AFTER-HAIR</li>
+    <li>전체적으로? → AFTER-1</li>
+  </ul>
+
+  <h3>크로스셀 캠페인 (Sponsored Display)</h3>
+  <ul>
+    <li>AFTER-SKIN 구매자 → AFTER-HAIR 광고 노출</li>
+    <li>AFTER-HAIR 구매자 → AFTER-SKIN 광고 노출</li>
+    <li>둘 다 구매한 고객 → AFTER-1 광고 노출</li>
+  </ul>
+</div>
+
+<!-- Section: Phase 4 -->
+<div class="section">
+  <div class="section-eyebrow">Phase 4: Scale (2027.Q2~)</div>
+  <h2>Phase 4: 스케일</h2>
+
+  <h3>Subscribe &amp; Save 등록</h3>
+  <p>조건 충족 시 (FBA + 90%+ 재고율 + Brand Registry):</p>
+  <ul>
+    <li>AFTER-SKIN: 30일 주기</li>
+    <li>AFTER-HAIR: 30일 주기</li>
+    <li>AFTER-1: 15일 주기 (15포 = 2주분이면)</li>
+  </ul>
+  <p>목표: 매출의 25-30%를 S&amp;S로 전환</p>
+
+  <h3>아마존 GLP-1 생태계 활용</h3>
+  <p><strong>2026년 4월, 아마존이 One Medical을 통해 GLP-1 프로그램을 런칭했다.</strong></p>
+  <ul>
+    <li>Wegovy/Zepbound를 아마존 약국에서 처방·배송</li>
+    <li>이 사용자들이 부작용 관리 제품을 검색할 가능성 높음</li>
+    <li>= GLPH의 타겟 고객이 아마존에 자연 유입되는 구조</li>
+  </ul>
+
+  <h3>매출 시나리오 (보수적) — [미검증: 패턴 매칭 기반]</h3>
+  <div class="callout"><strong>이 시나리오의 신뢰도: 낮음.</strong> 일반 보충제 런칭 케이스에서 패턴 매칭한 수치. GLP-1 전용 보충제라는 새로운 니치에 대한 구체적 선례가 없으므로, 실제 매출은 이보다 높을 수도, 낮을 수도 있다. 이 숫자를 재무 계획에 그대로 쓰지 말 것. 참고 범위로만 활용.</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>시점</th><th>SKU</th><th>월 매출</th><th>근거</th></tr></thead>
+      <tbody>
+        <tr><td>2026.12</td><td>SKIN</td><td>$1,000-3,000</td><td>Vine 기간, 리뷰 축적 중</td></tr>
+        <tr><td>2027.01</td><td>SKIN</td><td>$3,000-5,000</td><td>Vine 리뷰 도착, PPC 안정화</td></tr>
+        <tr><td>2027.02</td><td>SKIN+HAIR</td><td>$5,000-10,000</td><td>2nd SKU 추가, 크로스셀 시작</td></tr>
+        <tr><td>2027.03</td><td>3 SKU</td><td>$10,000-18,000</td><td>3 SKU 완성</td></tr>
+        <tr><td>2027.06</td><td>3 SKU</td><td>$18,000-35,000</td><td>S&amp;S 효과, 리뷰 100+/SKU</td></tr>
+        <tr><td>2027.12</td><td>3 SKU</td><td>$35,000-60,000</td><td>organic 안정화</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>현실적 리스크:</strong></p>
+  <ul>
+    <li>[가설] "Ozempic face" 검색자가 보충제를 사려는 의도인지 불확실 → Google Ads 테스트로 검증 필요</li>
+    <li>[미검증] 리뷰가 부정적이면 전환율 급락 → 한국 오프라인 피드백으로 사전 보완</li>
+    <li>[미검증] 대기업이 "Ozempic face" 전용 제품을 내면 경쟁 급격화 → 선점 속도가 방어</li>
+    <li>[검증됨] cGMP 인증 없으면 런칭 불가 → 7월 즉시 착수</li>
+  </ul>
+</div>
+
+<!-- Section: BariMelts 경쟁 분석 -->
+<div class="section">
+  <div class="section-eyebrow">Competitor Analysis [검증됨]</div>
+  <h2>BariMelts 경쟁 분석 + 니치 롤업 전략</h2>
+
+  <h3>BariMelts = GLPH의 실제 경쟁자이자 선행 증거</h3>
+  <p>BariMelts는 단일 제품이 아니라 <strong>GLPH와 동일한 전략(부작용별 SKU 분할)을 이미 실행 중인 브랜드.</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>제품</th><th>월 판매</th><th>가격</th><th>월 매출</th><th>타겟 부작용</th></tr></thead>
+      <tbody>
+        <tr><td>Bariatric Multivitamin (본업)</td><td>7,000</td><td>$22.94</td><td>$160,580</td><td>범용 영양</td></tr>
+        <tr><td>Iron + Vitamin C (본업)</td><td>4,000</td><td>$19.54</td><td>$78,160</td><td>철결핍</td></tr>
+        <tr><td><strong>Hair Health+</strong> (GLP-1 확장)</td><td><strong>1,000</strong></td><td>$25.49</td><td>$25,490</td><td>탈모</td></tr>
+        <tr><td><strong>HMB Muscle Shield</strong> (GLP-1 확장)</td><td><strong>400</strong></td><td>$29.99</td><td>$11,996</td><td>근손실</td></tr>
+        <tr><td><strong>Hormonal Balance+</strong> (GLP-1 확장)</td><td><strong>200</strong></td><td>$16.99</td><td>$3,398</td><td>호르몬</td></tr>
+        <tr><td>Gastro Zen (GLP-1 확장)</td><td>N/A</td><td>$19.99</td><td>—</td><td>위장</td></tr>
+        <tr><td><strong>합산</strong></td><td><strong>~12,600</strong></td><td>—</td><td><strong>~$280K/월 ($3.4M/년)</strong></td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>BariMelts의 약점 — GLPH가 공략할 지점</h3>
+
+  <h4>1. "Ozempic Face" 제품이 없다 — 가장 큰 키워드를 놓치고 있음</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>부작용 키워드</th><th>Amazon 검색량</th><th>BariMelts 제품</th><th>GLPH</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ozempic face</strong></td><td><strong>55,202</strong></td><td><strong>없음</strong></td><td>AFTER-SKIN</td></tr>
+        <tr><td>glp-1 hair loss + ozempic hair loss</td><td>1,458</td><td>Hair Health+</td><td>AFTER-HAIR</td></tr>
+        <tr><td>ozempic muscle loss + glp-1 muscle loss</td><td>784</td><td>HMB Muscle Shield</td><td>미정</td></tr>
+        <tr><td>ozempic constipation + nausea</td><td>709</td><td>Gastro Zen</td><td>미정</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>BariMelts의 가장 큰 GLP-1 SKU(Hair Health+)가 잡는 키워드 = 1,458/월. GLPH AFTER-SKIN이 잡는 키워드 = <strong>55,202/월</strong>. 38배 차이.</p>
+
+  <h4>2. "바리아트릭 + GLP-1" 이중 포지셔닝의 약점</h4>
+  <p>BariMelts 타이틀: "for GLP-1 Users <strong>or</strong> Bariatric Patients"</p>
+  <ul>
+    <li>GLP-1 사용자 입장: "이건 수술 환자용 아닌가?" → 자기 동일시(identification) 약함</li>
+    <li>GLP-1 사용자와 바리아트릭 환자는 자기 인식이 다름. GLP-1 사용자 대부분은 외모 개선 목적의 20-40대 여성. 바리아트릭 환자와 같은 카테고리에 묶이는 걸 원하지 않을 수 있음.</li>
+    <li>GLPH: "GLP-1 전용" — "이 제품은 당신을 위해 만들어졌다"는 메시지가 더 강함.</li>
+  </ul>
+
+  <h4>3. 제형이 전부 정제 (fast-dissolving tablet)</h4>
+  <p>BariMelts 전 라인 = 정제. GLPH AFTER-SKIN = 액상 스틱.</p>
+  <ul>
+    <li>"liquid collagen" Amazon 검색량 5,497/월 ← 이 키워드는 BariMelts가 잡을 수 없음</li>
+    <li>액상 = 흡수율 마케팅 스토리 + 편의성 차별화</li>
+  </ul>
+
+  <h4>4. 임상 자산이 약함</h4>
+  <p>BariMelts Hair Health+ 핵심 = AnaGain™ Nu (완두콩 추출물) + Keratin.</p>
+  <ul>
+    <li>AnaGain: in-vitro(세포 수준) 연구 위주. 대규모 인체 RCT 부족.</li>
+    <li>GLPH AFTER-HAIR: 비오틴(다수 RCT) + 토코트리에놀(Beoy 2010 RCT, 34.5% 모발 증가) + 철분(Tolkien 2015 메타분석)</li>
+    <li>GLPH AFTER-SKIN: VERISOL(Proksch 2014, 2020 RCT) — "Clinically Proven"을 말할 수 있는 근거 수준이 다름.</li>
+  </ul>
+
+  <h4>5. 의사 추천 스토리가 없음</h4>
+  <p>BariMelts는 "바리아트릭 수술 환자용"에서 출발했지만, 제품 페이지에 의사 추천이나 임상 현장 스토리가 없음. GLPH는 한국 의원 6곳 + 약국 3곳 운영 경험 → "Physician-Recommended" 마케팅 자산.</p>
+
+  <h3>GLPH vs BariMelts — 전투가 아니라 우회</h3>
+  <div class="code-block"><pre>BariMelts가 있는 전장:     GLP-1 hair (1,458) / muscle (784) / gut (709)
+BariMelts가 없는 전장:     Ozempic face (55,202) ← GLPH가 여기를 먼저 잡음</pre></div>
+  <p><strong>Hair 전투에서 BariMelts를 이기는 방법:</strong></p>
+  <ol>
+    <li>포뮬러 우위: 11종 vs 2-3종. "종합 영양 보충" vs "단일 특허 원료"</li>
+    <li>GLP-1 순수 포지셔닝: "당신을 위한 제품" vs "수술 환자와 같은 제품"</li>
+    <li>가격: GLPH $18-21 vs BariMelts $25.49 → 가격 우위 가능</li>
+    <li>크로스셀: AFTER-SKIN(55K 시장)에서 유입된 고객이 AFTER-HAIR로 → BariMelts에 없는 트래픽 소스</li>
+  </ol>
+
+  <h3>니치 롤업 전략 — 키워드별 전투 → 브랜드 전쟁 승리</h3>
+  <p><strong>원리:</strong> 각 부작용 키워드를 개별 SKU로 점령 → 누적하면 "GLP-1 부작용 케어 = GLPH" 브랜드가 됨.</p>
+  <p><strong>아마존 알고리즘이 이 전략을 보상하는 이유:</strong></p>
+  <ol>
+    <li><strong>"Frequently Bought Together"</strong> — AFTER-SKIN과 AFTER-HAIR를 같이 사는 고객이 생기면, 아마존이 자동으로 두 제품을 묶어서 추천.</li>
+    <li><strong>Brand Store 효과</strong> — 한 SKU 클릭 → "브랜드 더 보기" → 전체 라인업 노출. SKU 3개 vs 1개에서 전환율 차이 발생.</li>
+    <li><strong>구매 이력 기반 추천</strong> — "ozempic face"로 AFTER-SKIN을 산 고객이 나중에 "hair loss"를 검색하면, 아마존이 AFTER-HAIR를 우선 노출할 가능성 높아짐.</li>
+    <li><strong>Subscribe &amp; Save 바스켓</strong> — 여러 SKU를 S&amp;S로 묶으면 SKU당 이탈률 하락.</li>
+  </ol>
+
+  <div class="code-block"><pre>BariMelts 니치 롤업 현황:
+  Multivitamin    7,000/월  ← 본업 (가장 큰 조각)
+  Iron            4,000/월  ← 본업
+  Hair Health+    1,000/월  ← GLP-1 확장
+  HMB Muscle        400/월  ← GLP-1 확장
+  Hormonal          200/월  ← GLP-1 확장
+  ─────────────────────────
+  합산           12,600/월  = $280K/월
+
+GLPH 니치 롤업 계획:
+  AFTER-SKIN      ???/월   ← 55K 키워드 선점 (BariMelts에 없는 시장)
+  AFTER-HAIR      ???/월   ← BariMelts와 경쟁
+  AFTER-1         ???/월   ← 올인원 리바운더
+  ─────────────────────────
+  첫 퍼즐 조각(AFTER-SKIN)의 키워드가 BariMelts의 가장 큰 조각(멀티비타민)보다 8배 큼</pre></div>
+</div>
+
+<!-- Section: "Ozempic Face" 키워드 점령 전략 -->
+<div class="section">
+  <div class="section-eyebrow">Keyword Domination Strategy</div>
+  <h2>"Ozempic Face" 키워드 점령 전략</h2>
+
+  <h3>현재 상황 — "Ozempic face" 검색 시 아마존에 뭐가 뜨는가</h3>
+  <p><strong>"Ozempic face"로 Amazon 검색 결과: 14건. 전부 비관련 제품.</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>순위</th><th>제품</th><th>카테고리</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>"Ozempic Face" 책 ($9.99)</td><td><strong>책</strong></td></tr>
+        <tr><td>2</td><td>목 리프팅 크림</td><td>토피컬</td></tr>
+        <tr><td>3</td><td>"Ozempic face" 책 2</td><td><strong>책</strong></td></tr>
+        <tr><td>4</td><td>비타민C 세럼</td><td>토피컬</td></tr>
+        <tr><td>5</td><td>글루타치온 드롭</td><td>토피컬/경구</td></tr>
+        <tr><td>6</td><td>레드라이트 페이셜 마사저</td><td>디바이스</td></tr>
+        <tr><td>7+</td><td>페이스 세럼, 타올 등</td><td>비관련</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><strong>경구 보충제 = 0.</strong> 55K/월 검색에 경구 콜라겐/보충제가 하나도 없다. 아마존 A9 알고리즘은 검색어에 매칭되는 제품이 없으면 관련성 낮은 제품을 채운다. GLPH AFTER-SKIN이 "ozempic face"를 타이틀에 포함하고 리스팅되면, <strong>유일한 경구 보충제</strong>로서 이 검색의 상위에 노출될 가능성이 매우 높다.</div>
+
+  <h3>"Ozempic" 상표 사용 가능 여부 — 선례 확인 [검증됨]</h3>
+  <p>SerpAPI 확인 결과, 아마존에 <strong>"Ozempic"을 제품 타이틀에 직접 사용하는 보충제가 이미 존재:</strong></p>
+  <div class="code-block"><pre>B0GC739CTY | "Digestive Support for Ozempic Wegovy Mounjaro Users"</pre></div>
+  <p>이 제품이 현재 판매 중이며 리스팅이 활성 상태. 즉 Amazon이 현재 시점에서 "Ozempic"을 보충제 타이틀에 사용하는 것을 <strong>묵인하고 있다.</strong></p>
+  <p><strong>단서:</strong></p>
+  <ul>
+    <li>이 제품은 "Ozempic"을 약물 효능 주장이 아니라 <strong>타겟 사용자 설명</strong>("for Ozempic Users")으로 사용</li>
+    <li>"Ozempic으로 부작용을 치료한다"가 아니라 "Ozempic 사용자를 위한 제품"이라는 프레이밍</li>
+    <li>GLPH도 동일한 프레이밍 사용 가능: "for Ozempic &amp; Wegovy Users" (약물 효능 주장 아님)</li>
+  </ul>
+  <p><strong>리스크는 남아있음:</strong></p>
+  <ul>
+    <li>Novo Nordisk이 언제든 상표 클레임 가능</li>
+    <li>Amazon 정책이 변경될 수 있음</li>
+    <li>따라서 A안(Ozempic 사용) + B안(미사용) 모두 준비 필수</li>
+  </ul>
+
+  <h3>키워드 점령 — 5개 접점</h3>
+
+  <h4>접점 1: 아마존 제품 타이틀 [가장 중요]</h4>
+  <p>Amazon A9 알고리즘에서 타이틀의 키워드 가중치가 가장 높다. "ozempic face"가 타이틀에 있으면 이 검색에 직접 매칭.</p>
+
+  <p><strong>A안 (Ozempic 직접 사용):</strong></p>
+  <div class="code-block"><pre>GLPH AFTER-SKIN — Ozempic Face &amp; Wegovy Skin Support, VERISOL®
+Collagen 5,000mg + Hyaluronic Acid + Astaxanthin, GLP-1 Side
+Effects Recovery, Liquid Stick (15 Packs)</pre></div>
+  <p>매칭: "ozempic face" ✓ "wegovy" ✓ "VERISOL collagen" ✓ "GLP-1 side effects" ✓ "liquid" ✓</p>
+
+  <p><strong>B안 (상표 회피):</strong></p>
+  <div class="code-block"><pre>GLPH AFTER-SKIN — Semaglutide Face &amp; Skin Recovery, VERISOL®
+Collagen 5,000mg + Hyaluronic Acid + Astaxanthin, GLP-1 Side
+Effects Support, Liquid Stick (15 Packs)</pre></div>
+  <p>매칭: "semaglutide face" ✓ "VERISOL collagen" ✓ "GLP-1 side effects" ✓ — 단 "ozempic" 직접 매칭 안 됨</p>
+
+  <p><strong>권장: A안으로 시작. 클레임 받으면 B안으로 즉시 전환.</strong> 선례(B0GC739CTY)가 있으므로 A안 리스크는 수용 가능.</p>
+
+  <h4>접점 2: 아마존 백엔드 키워드 (Search Terms)</h4>
+  <p>타이틀에 못 넣은 키워드를 여기서 커버. 고객에게 보이지 않으므로 상표 리스크가 타이틀보다 낮음.</p>
+  <div class="code-block"><pre>250자 배분:
+ozempic face, ozempic side effects, mounjaro side effects, wegovy
+side effects, mounjaro face, wegovy skin, tirzepatide face,
+semaglutide skin sagging, weight loss face aging, GLP-1 collagen,
+ozempic skin elasticity, collagen after weight loss</pre></div>
+
+  <h4>접점 3: 제품 패키지 (물리적)</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>요소</th><th>넣을 수 있는가</th><th>이유</th></tr></thead>
+      <tbody>
+        <tr><td>"Ozempic"</td><td><strong>X</strong> — 넣지 마라</td><td>패키지는 FDA 관할. 약물 클레임으로 간주 가능.</td></tr>
+        <tr><td>"GLP-1 Aftercare"</td><td>O</td><td>GLP-1은 호르몬 이름(일반명). 상표 아님.</td></tr>
+        <tr><td>"For GLP-1 Users"</td><td>O</td><td>타겟 사용자 설명. 약물 효능 주장 아님.</td></tr>
+        <tr><td>"Skin Recovery After Weight Loss"</td><td>O</td><td>일반적 건강 문구.</td></tr>
+        <tr><td>"VERISOL® Collagen 5,000mg"</td><td>O</td><td>원료 브랜드 + 함량. GELITA 라이선스 하에 사용.</td></tr>
+        <tr><td>"Physician-Recommended"</td><td>△</td><td>실제 의사 추천이 있으면 가능. 근거 문서화 필수.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>패키지 전면 권장 문구:</strong></p>
+  <div class="code-block"><pre>GLPH AFTER-SKIN
+GLP-1 Skin Recovery
+VERISOL® Collagen 5,000mg
+Hyaluronic Acid · CoQ10 · Astaxanthin
+15 Liquid Sticks
+
+"Formulated for GLP-1 medication users"</pre></div>
+
+  <p><strong>패키지 후면:</strong></p>
+  <div class="code-block"><pre>Designed for women and men experiencing skin changes
+after weight loss with GLP-1 medications.
+
+Clinically studied VERISOL® collagen peptides at full
+clinical dose (5,000mg) to support skin elasticity.</pre></div>
+
+  <h4>접점 4: A+ Content (아마존 상세페이지)</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Module</th><th>헤드라인</th><th>내용</th><th>키워드 매칭</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>What is "Ozempic Face"?</td><td>체중감소 후 얼굴 변화 교육. 사진 포함.</td><td>ozempic face</td></tr>
+        <tr><td>2</td><td>Why It Happens</td><td>GLP-1 → 급격한 지방 분해 → 콜라겐 파괴 기전 설명</td><td>GLP-1 side effects</td></tr>
+        <tr><td>3</td><td>VERISOL® vs Generic Collagen</td><td>기전 차이 인포그래픽. "Clinically Proven"</td><td>VERISOL collagen</td></tr>
+        <tr><td>4</td><td>Triple Protection</td><td>VERISOL + CoQ10 + 아스타잔틴 3단 구조</td><td>collagen supplement</td></tr>
+        <tr><td>5</td><td>Recommended by Physicians</td><td>한국 GLP-1 처방 의사 인용</td><td>physician recommended</td></tr>
+        <tr><td>6</td><td>Works With Your Medication</td><td>GLP-1 약물 상호작용 없음, 안전성</td><td>ozempic supplement, wegovy</td></tr>
+        <tr><td>7</td><td>How to Use</td><td>액상 스틱 사용법 + 루틴 제안</td><td>liquid collagen</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>A+ Content에서 "Ozempic Face"를 <strong>교육 콘텐츠</strong>로 사용. 약물 효능 주장이 아닌 "현상 설명".</p>
+  <div class="code-block"><pre>Module 1 헤드라인: "What is 'Ozempic Face'?"
+본문: "Rapid weight loss from GLP-1 medications like semaglutide
+and tirzepatide can lead to facial volume loss, sagging skin,
+and accelerated aging appearance — commonly known as 'Ozempic Face.'"</pre></div>
+  <ul>
+    <li>"Ozempic Face"를 <strong>따옴표 안에</strong> 넣어 일반적으로 통용되는 용어로 사용.</li>
+    <li>약물을 "semaglutide and tirzepatide" (일반명)으로 표기.</li>
+    <li>"이 제품이 Ozempic의 부작용을 치료한다"는 표현은 절대 금지 (약물 클레임).</li>
+    <li>"이 제품은 체중 감소 후 피부 탄력을 지원한다"는 표현은 가능 (구조/기능 주장).</li>
+  </ul>
+
+  <h4>접점 5: 외부 콘텐츠 (TikTok, Instagram, Google)</h4>
+  <p>외부에서는 "Ozempic Face"를 자유롭게 사용 가능 (Amazon/FDA 규제 밖).</p>
+
+  <p><strong>TikTok/Instagram:</strong></p>
+  <ul>
+    <li>"Ozempic Face가 진짜인가요?" → 교육 → AFTER-SKIN 소개</li>
+    <li>"나도 Ozempic Face 걱정…" → 공감 → 솔루션</li>
+    <li>"의사가 추천한 Ozempic Face 보충제" → 신뢰</li>
+    <li>Amazon Attribution 링크 → Brand Referral Bonus 10%</li>
+  </ul>
+
+  <p><strong>Google Ads:</strong></p>
+  <ul>
+    <li>"Ozempic face supplement" (Google 0/월이지만 "Ozempic face" 246K에서 롱테일 매칭)</li>
+    <li>"Ozempic face collagen" → Amazon 랜딩</li>
+    <li>소규모 테스트 $300-500 → CTR/전환 확인</li>
+  </ul>
+
+  <p><strong>블로그/SEO:</strong></p>
+  <ul>
+    <li>glph.com 또는 after-1.com에 "What is Ozempic Face?" 교육 콘텐츠</li>
+    <li>Google SEO로 "Ozempic face" 246K/월의 일부 캡처</li>
+    <li>콘텐츠 하단에 Amazon 링크</li>
+  </ul>
+
+  <h3>5개 접점 요약</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>접점</th><th>"Ozempic" 사용</th><th>리스크</th><th>효과</th></tr></thead>
+      <tbody>
+        <tr><td>Amazon 타이틀</td><td>O (A안) / X (B안)</td><td>중 (상표 클레임 가능)</td><td><strong>최대</strong> — A9 직접 매칭</td></tr>
+        <tr><td>Amazon 백엔드</td><td>O</td><td>낮 (고객 비노출)</td><td>높음 — 검색 매칭</td></tr>
+        <tr><td>제품 패키지</td><td><strong>X</strong> — "GLP-1"만</td><td>없음</td><td>중 — 오프라인 신뢰</td></tr>
+        <tr><td>A+ Content</td><td>O (따옴표 안에 "Ozempic Face")</td><td>낮</td><td>높음 — 전환율</td></tr>
+        <tr><td>외부 콘텐츠</td><td>O (자유 사용)</td><td>없음</td><td>중 — 트래픽 유입</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>"Ozempic face" 키워드 점령 로드맵</h3>
+  <div class="code-block"><pre>Month 0 (런칭):
+  → 타이틀 A안 + 백엔드 풀 키워드 → "ozempic face" 검색 시 유일한 경구 보충제로 노출
+  → Vine 30개 → 초기 리뷰 확보
+  → PPC: "ozempic face" Exact Match $2.50-3.50 시작
+
+Month 1-2:
+  → Vine 리뷰 도착 → 전환율 상승 → organic 순위 상승
+  → "ozempic face" 검색 시 1-3위 목표 (현재 경쟁 제품 0이므로 달성 가능)
+  → TikTok "Ozempic Face" 콘텐츠 시작 → 외부 트래픽
+
+Month 3-6:
+  → 리뷰 50-100개 → "ozempic face" 키워드에서 organic 1위 고착
+  → S&amp;S 가입자 축적 → 이탈 방어벽
+  → A+ Content "Ozempic Face" 교육 → 전환율 최적화
+
+Month 6+:
+  → 경쟁자 진입 시 이미 리뷰 + BSR + S&amp;S로 방어
+  → 첫 번째로 "ozempic face"를 점령한 보충제 = 후발 주자 대비 구조적 우위</pre></div>
+  <div class="callout"><strong>이 키워드의 특수성:</strong> 현재 Amazon에서 "ozempic face" 검색 결과에 경구 보충제가 0이므로, GLPH가 리스팅하는 순간 <strong>경쟁 없이 organic 1위</strong>에 가까운 위치를 확보할 수 있다. 보통은 기존 1위를 밀어내야 하지만, 여기서는 빈 자리에 앉는 것이다. 이 창이 열려있는 시간이 GLPH의 가장 큰 자산.</div>
+</div>
+
+<!-- Section: 재무 모델 -->
+<div class="section">
+  <div class="section-eyebrow">Financial Model</div>
+  <h2>재무 모델</h2>
+
+  <h3>아마존 런칭 비용 (1회성)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>예상 비용</th></tr></thead>
+      <tbody>
+        <tr><td>cGMP TIC 검증</td><td>$3,000-8,000</td></tr>
+        <tr><td>USPTO 상표 출원</td><td>$750-1,500</td></tr>
+        <tr><td>미국 LLC 설립</td><td>$500-1,500</td></tr>
+        <tr><td>제품 촬영 + 인포그래픽 (3 SKU)</td><td>$2,000-5,000</td></tr>
+        <tr><td>A+ Content 디자인</td><td>$1,000-3,000</td></tr>
+        <tr><td>초기 FBA 재고 (AFTER-SKIN 500개)</td><td>COGS 의존</td></tr>
+        <tr><td>Amazon Vine (AFTER-SKIN)</td><td>~$600</td></tr>
+        <tr><td><strong>소계 (재고 제외)</strong></td><td><strong>$8,000-20,000</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>아마존 월 운영 비용</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>Phase 1 (1 SKU)</th><th>Phase 2+ (3 SKU)</th></tr></thead>
+      <tbody>
+        <tr><td>Amazon Professional Seller</td><td>$40</td><td>$40</td></tr>
+        <tr><td>PPC 광고</td><td>$3,000-5,000</td><td>$8,000-12,000</td></tr>
+        <tr><td>외부 트래픽 (TikTok + Google)</td><td>$2,000-3,000</td><td>$3,000-5,000</td></tr>
+        <tr><td>Amazon FBA 수수료</td><td>매출의 ~30%</td><td>매출의 ~30%</td></tr>
+        <tr><td>제품 COGS</td><td>매출의 ~25%</td><td>매출의 ~25%</td></tr>
+        <tr><td><strong>월 고정비</strong></td><td><strong>$5,000-8,000</strong></td><td><strong>$11,000-17,000</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>손익분기점 — [미검증: 추정치]</h3>
+  <div class="callout"><strong>이 마진 구조는 일반 FBA 보충제 평균 기반.</strong> GLPH의 실제 COGS, FBA 수수료(제품 크기·무게 의존), PPC 효율은 런칭 후에야 확정됨.</div>
+  <div class="code-block"><pre>매출               100%
+- Amazon 수수료      -30%  (레퍼럴 15% + FBA ~15%)
+- COGS              -25%  (제조+운송) [미검증: 광동 원가 확인 필요]
+- PPC               -25%  (ACoS 25% 안정화 후) [미검증: 니치 키워드 CPC 실측 필요]
+- 외부 마케팅         -5%
+- 기타               -5%
+= 순이익             ~10%  (안정화 후)</pre></div>
+  <p>월 고정비 $5,000-8,000 커버 → <strong>월 매출 $50,000-80,000 필요</strong> (순이익 10% 기준) → 시나리오 기준 <strong>2027년 하반기~말</strong></p>
+  <div class="callout">첫 6-9개월은 적자가 정상. "리뷰 + BSR + 키워드 랭킹"을 사는 투자 기간.</div>
+</div>
+
+<!-- Section: 핵심 전략 원칙 -->
+<div class="section">
+  <div class="section-eyebrow">Strategic Principles</div>
+  <h2>핵심 전략 원칙</h2>
+
+  <h3>1. 대기업과 정면 경쟁하지 마라</h3>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-header" style="background:var(--danger);">피해야 할 전쟁터</div>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><td>"GLP-1 supplement" (33K/월)</td><td>Vitafusion 10K/월, Centrum 5K/월. CPC $4+.</td></tr>
+            <tr><td>"GLP-1 multivitamin"</td><td>Nature Made, Centrum 영역</td></tr>
+            <tr><td>"GLP-1 companion"</td><td>DietWorks, Nature Made 선점</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="compare-col">
+      <div class="compare-header" style="background:var(--success);">싸울 전쟁터</div>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><td>"Ozempic face" + "VERISOL collagen"</td><td>24만 검색, 전용 제품 0, CPC 적정</td></tr>
+            <tr><td>"semaglutide hair loss"</td><td>전용 제품 1개, 경쟁 약함</td></tr>
+            <tr><td>"collagen liquid stick"</td><td>포맷 차별화</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h3>2. "Physician-Recommended"가 유일한 MOAT</h3>
+  <ul>
+    <li>가격? → 대기업이 더 싸다 (Vitafusion $8.29)</li>
+    <li>성분? → 비슷한 건 누구나 만든다</li>
+    <li>리뷰? → 시간이 필요하다</li>
+    <li><strong>의사 추천?</strong> → 이건 돈으로 못 산다</li>
+  </ul>
+  <p>한국 오프라인 5개월 = 의사 6명의 실제 사용 피드백 축적. 이것이 아마존에서 차별화의 핵심.</p>
+  <div class="callout">Nutrafol은 "#1 Dermatologist-Recommended"로 $150M+ 브랜드가 됐다. GLPH는 "Recommended by GLP-1 prescribing physicians"를 목표로.</div>
+
+  <h3>3. 한국 제조를 약점이 아닌 강점으로</h3>
+  <p>"FDA cGMP Certified Facility"를 먼저 내세우고, "Formulated by Korean GLP-1 physicians"를 브랜드 스토리로 활용. "Made in Korea"를 전면에 내세우지는 마라. 미국 소비자는 원산국보다 인증을 본다.</p>
+
+  <h3>4. "GLP-1 Aftercare"는 교육용으로만 사용 — [검증됨: 검색량 0]</h3>
+  <p>"GLP-1 aftercare" 검색량 = 0. 타이틀이나 SEO 키워드로는 쓸모없다.</p>
+  <p>하지만 A+ Content, Brand Store, 소셜 미디어에서 "GLP-1 Aftercare"라는 <strong>카테고리 개념을 교육하는 것</strong>은 유효. 장기적으로 이 용어의 검색량을 만드는 것이 목표.</p>
+  <div class="callout"><strong>주의: "카테고리를 만든다"는 것 자체가 비용이다.</strong> AG1은 "greens powder" 카테고리를 만드는 데 10년+와 수천만 달러를 썼다. GLPH가 "GLP-1 Aftercare"라는 카테고리를 만들 자원이 있는지는 별도 판단 필요. 현실적으로는 기존 검색 키워드에 올라타되, 브랜드 스토리에서만 "Aftercare"를 교육하는 것이 비용 효율적.</div>
+
+  <h3>5. 데이터로 결정하라</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>데이터</th><th>확인 시기</th><th>의사결정</th></tr></thead>
+      <tbody>
+        <tr><td>Search Term Report</td><td>매주</td><td>전환 키워드 → Exact 승격, 비전환 → Negative</td></tr>
+        <tr><td>Business Report (Sessions, CR)</td><td>매주</td><td>전환율 &lt; 8% → 리스팅 개선</td></tr>
+        <tr><td>Brand Analytics (Top Search Terms)</td><td>매주</td><td>"Ozempic face" 아마존 내 검색 추이 모니터링</td></tr>
+        <tr><td>Vine 리뷰 내용</td><td>리뷰 도착 시</td><td>부정 리뷰 패턴 → 제품/리스팅 수정</td></tr>
+        <tr><td>3 SKU 매출 비율</td><td>매월</td><td>hero 자연 결정 → 예산 재배분</td></tr>
+        <tr><td>Google Ads "Ozempic face" CTR/전환</td><td>런칭 첫 2주</td><td>전환 안 되면 키워드 전략 수정</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section: 리스크 매트릭스 -->
+<div class="section">
+  <div class="section-eyebrow">Risk Matrix</div>
+  <h2>리스크 매트릭스</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>리스크</th><th>확률</th><th>영향</th><th>대응</th><th>검증 상태</th></tr></thead>
+      <tbody>
+        <tr><td>cGMP 인증 지연</td><td>중</td><td>치명 (런칭 불가)</td><td>7월 즉시 착수. 광동 기존 인증 확인</td><td>7월 확인 예정</td></tr>
+        <tr><td>"Ozempic face" 검색자가 보충제를 안 삼</td><td>중</td><td>높음</td><td>Google Ads $300-500 테스트로 전환 의도 검증</td><td><strong>[가설] 런칭 전 검증 필수</strong></td></tr>
+        <tr><td>"Ozempic" 상표 사용 제한</td><td>중</td><td>중</td><td>대안 키워드 준비 ("GLP-1 face", "weight loss face")</td><td>Amazon 정책 확인 필요</td></tr>
+        <tr><td>리뷰가 부정적 (맛·효과)</td><td>중</td><td>높음</td><td>한국 오프라인 5개월 피드백 반영 후 출시</td><td>7-11월 오프라인에서 검증</td></tr>
+        <tr><td>대기업이 Ozempic face 전용 출시</td><td>낮-중</td><td>높음</td><td>선점 우위 + 리뷰 축적 + VERISOL 차별화</td><td>모니터링</td></tr>
+        <tr><td>PPC 비용 예상 초과</td><td>높음</td><td>중</td><td>롱테일 집중, 대형 키워드 회피</td><td><strong>[미검증] 런칭 후 실측</strong></td></tr>
+        <tr><td>FBA 재고 부족/과다</td><td>중</td><td>중</td><td>첫 주문 보수적 (500개), 60일 판매 추이 후 재주문</td><td>런칭 후</td></tr>
+        <tr><td>Google 검색량 ≠ Amazon 검색량</td><td>높음</td><td>중</td><td>Brand Analytics로 Amazon 내부 검색량 확인</td><td><strong>[미검증] 계정 개설 후 확인</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section: 체크리스트 -->
+<div class="section">
+  <div class="section-eyebrow">Execution Checklist</div>
+  <h2>체크리스트</h2>
+
+  <h3>7월 (오프라인 런칭과 동시)</h3>
+  <div class="checklist">
+    <div class="checklist-item"><span class="checklist-num">□</span>광동헬스바이오 cGMP/NSF 인증 현황 확인 → TIC 검증 일정 잡기</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>"GLPH" USPTO 상표 출원 시작</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>after-1.com 도메인 등록</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>미국 LLC 설립 시작</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>아마존 Professional Seller 계정 개설</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>제품 스튜디오 촬영 (아마존 이미지 가이드라인 준수)</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>의사 인터뷰 영상 촬영 시작 (영어 가능한 의사 우선)</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>Amazon "Ozempic" 상표 사용 정책 확인</div>
+  </div>
+
+  <h3>8-9월</h3>
+  <div class="checklist">
+    <div class="checklist-item"><span class="checklist-num">□</span>cGMP TIC 검증 진행 중 확인</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>Brand Registry 신청</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>AFTER-SKIN 리스팅 초안 (타이틀, 불릿, 백엔드 키워드)</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>A+ Content 디자인 착수</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>FBA 3PL 선정 + 첫 물량 해상운송 시작</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>TikTok "Ozempic face" 인플루언서 리스트업 (미국 기반, 마이크로)</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>Google Ads "Ozempic face supplement" 소규모 테스트 ($200-500)</div>
+  </div>
+
+  <h3>10-11월</h3>
+  <div class="checklist">
+    <div class="checklist-item"><span class="checklist-num">□</span>한국 온라인 런칭 (자사몰 + 쿠팡/카카오)</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>cGMP 인증 완료 확인</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>Brand Registry 승인 확인</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>A+ Content 완성 + Brand Store 구축</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>FBA 재고 입고 (12월 초 라이브 목표)</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>Amazon Vine 등록 준비</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>PPC 캠페인 구조 세팅</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>Amazon Attribution 설정</div>
+  </div>
+
+  <h3>12월</h3>
+  <div class="checklist">
+    <div class="checklist-item"><span class="checklist-num">□</span>AFTER-SKIN 리스팅 라이브</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>Amazon Vine 등록 (30 유닛)</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>PPC 시작 ("VERISOL collagen" Exact Match 중심)</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>Google Ads → Amazon Attribution 연결 ("Ozempic face")</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>TikTok 인플루언서 시딩 시작</div>
+    <div class="checklist-item"><span class="checklist-num">□</span>Brand Referral Bonus 등록</div>
+  </div>
+</div>
+
+<!-- Section: 데이터 출처 -->
+<div class="section">
+  <div class="section-eyebrow">Data Sources</div>
+  <h2>데이터 출처</h2>
+
+  <h3>마켓 스캔 (직접 조회, 2026.05.09)</h3>
+  <ul>
+    <li><strong>DataForSEO Labs Amazon Bulk Search Volume</strong> (US, location_code=2840): <strong>81개 키워드</strong> 전수 조회 (2회 호출). "ozempic side effects" 77,231, "ozempic face" 55,202, "mounjaro side effects" 33,884, "wegovy side effects" 28,611, "verisol collagen" 1,720, "glp-1 hair loss" 785, "ozempic muscle loss" 448, "ozempic constipation" 448, "glp-1 aftercare" 0 등</li>
+    <li><strong>DataForSEO Google Ads Search Volume</strong> (US, location_code=2840): 19개 키워드 조회. "Ozempic face" 246,000/월 (Google), "GLP-1 supplement" 33,100, "VERISOL collagen" 6,600, "semaglutide hair loss" 2,900</li>
+    <li><strong>SerpAPI Amazon Search</strong>: "GLP-1 hair loss supplement" (48건), "hair loss after Ozempic" (3건), "Ozempic face supplement" (0건), "GLP-1 aftercare" (0건), "GLP-1 companion supplement" (48건), "collagen GLP-1" (48건)</li>
+    <li><strong>Keepa Product API</strong>: B0F46N6TY9 (Vitafusion, 10K/월), B0FQW8QBKF (Centrum, 5K/월), B0DRM6CT8Q (BariMelts, 1K/월), B0GT44PRYW (Liquid Collagen GLP, 400/월), B0DLCKJ5F4 (DietWorks, 100/월)</li>
+  </ul>
+
+  <h3>외부 리서치</h3>
+  <ul>
+    <li>Amazon PPC CPC: Ad Badger 2026, SellerMetrics 2026</li>
+    <li>cGMP 요구사항: Nutraceuticals World 2025.12, NutraIngredients 2025.12</li>
+    <li>Amazon GLP-1 프로그램: CNBC 2026.04.21, Axios 2026.04.21</li>
+    <li>GLP-1 가구 비중: Circana 2026 (현재 23%, 2030년 35% 예측)</li>
+    <li>Brand Referral Bonus: Amazon Seller Central 공식</li>
+    <li>Subscribe &amp; Save: Amazon Seller Central 공식</li>
+    <li>Amazon Vine: Velocity Sellers 2026</li>
+    <li>경쟁 제품: Nature Made GLP-1 Companion, DietWorks GLP-1 Companion, BariMelts Hair Health+ (Amazon 직접 확인)</li>
+  </ul>
+</div>
+
+</div>
+
+</main>
+
+<footer style="border-top:1px solid var(--border); padding:24px 32px; text-align:center; color:var(--text-muted); font-size:12px;">
+  GLPH Strategy Hub &middot; Hanah One Co. &middot; 2026.05 &middot; Confidential
+</footer>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-tab="' + tabId + '"]').classList.add('active');
+  document.getElementById('panel-' + tabId).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleAccordion(btn) {
+  btn.parentElement.classList.toggle('open');
+}
+</script>
+</body>
+</html>
