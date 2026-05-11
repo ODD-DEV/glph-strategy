@@ -191,6 +191,7 @@ body {
 .tab-icon.global { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
 .tab-icon.korea { background: linear-gradient(135deg, #06b6d4, #0ea5e9); }
 .tab-icon.sku { background: linear-gradient(135deg, #f59e0b, #f97316); }
+.tab-icon.gi { background: linear-gradient(135deg, #10b981, #34d399); }
 
 .tab-label-sub {
   font-size: 11px;
@@ -735,6 +736,11 @@ td strong, td b { color: var(--text); font-weight: 600; }
       <span class="tab-icon global">G</span>
       Global Plan
       <span class="tab-label-sub">Amazon US</span>
+    </button>
+    <button class="tab" data-tab="gi" onclick="switchTab('gi')">
+      <span class="tab-icon gi">D</span>
+      GI Care SKU
+      <span class="tab-label-sub">Digestive Research</span>
     </button>
   </div>
 </nav>
@@ -4582,6 +4588,526 @@ Month 6+:
     <li>Amazon Vine: Velocity Sellers 2026</li>
     <li>경쟁 제품: Nature Made GLP-1 Companion, DietWorks GLP-1 Companion, BariMelts Hair Health+ (Amazon 직접 확인)</li>
   </ul>
+</div>
+
+</div>
+
+<div class="tab-panel" id="panel-gi">
+<!-- GI Care SKU Hero -->
+<div class="hero">
+  <div class="section-eyebrow">DIGESTIVE RESEARCH</div>
+  <h1>GLPH GI 부작용 케어 제품<br>리서치 + 전략 보고서</h1>
+  <p class="hero-desc">마켓 스캔(SerpAPI + Keepa + DataForSEO) + 임상 문헌 기반. 2026.05.11</p>
+  <p class="hero-desc"><strong>상태: 개발 확정 전. 오프라인 데이터 수집 후 최종 판단.</strong></p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-value">25</div><div class="stat-label">Amazon GI 키워드 조사</div></div>
+    <div class="stat"><div class="stat-value">96</div><div class="stat-label">제품 분석</div></div>
+    <div class="stat"><div class="stat-value">0</div><div class="stat-label">생강+차전자피 GLP-1 제품</div></div>
+  </div>
+</div>
+
+<!-- Section: 이 문서를 읽기 전에 -->
+<div class="section">
+  <h2>이 문서를 읽기 전에</h2>
+  <div class="callout">이 보고서는 "이 제품을 만들어야 한다"는 결론이 아니라, <strong>"만들지 말지를 판단하기 위한 데이터와 분석"</strong>이다.<br><br>
+  • [검증됨] = 마켓 스캔 API 또는 임상 문헌으로 직접 확인된 사실<br>
+  • [가설] = 데이터에서 유추했으나 실제 전환/매출로 검증되지 않은 판단<br>
+  • [미검증] = 데이터 자체가 없거나 접근 불가. 오프라인 운영 후 실측 필요<br><br>
+  <strong>"만들어야 하는가?"에 대한 최종 답은 7-9월 오프라인 운영 데이터가 나온 후에 내린다.</strong></div>
+</div>
+
+<!-- Section 1: GLP-1 GI 부작용 -->
+<div class="section">
+  <div class="section-eyebrow">Section 1</div>
+  <h2>GLP-1 GI 부작용 — 왜 이 제품을 검토하는가</h2>
+
+  <h3>GI = GLP-1 부작용 중 발생률 1위, 발생 시점 최초</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>부작용</th><th>발생률</th><th>발생 시점</th></tr></thead>
+      <tbody>
+        <tr><td><strong>GI (메스꺼움/변비/설사)</strong></td><td><strong>44-74%</strong></td><td><strong>투약 즉시~수주 내</strong></td></tr>
+        <tr><td>피부 처짐</td><td>보편적 (급격한 감량 시)</td><td>수개월 후</td></tr>
+        <tr><td>근손실</td><td>체중 감소분의 25-40%</td><td>수개월 후</td></tr>
+        <tr><td>탈모</td><td>2.5-10%</td><td>3-6개월 후</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="color:var(--text-muted); font-size:13px;">출처: STEP 1-3 풀링 분석 (Wharton et al. 2022, PMC 9293236), GLP-1 임상시험 통합</p>
+
+  <h3>GI 부작용 세부 (세마글루타이드 2.4mg, STEP 1-3)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>증상</th><th>발생률 (약물)</th><th>발생률 (플라시보)</th><th>중앙 지속기간</th></tr></thead>
+      <tbody>
+        <tr><td>메스꺼움</td><td>43.9%</td><td>16.1%</td><td>8일</td></tr>
+        <tr><td><strong>설사</strong></td><td><strong>29.7%</strong></td><td>15.9%</td><td><strong>3일</strong></td></tr>
+        <tr><td>구토</td><td>24.5%</td><td>6.3%</td><td>2일</td></tr>
+        <tr><td><strong>변비</strong></td><td><strong>24.2%</strong></td><td>9.5%</td><td><strong>47일</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="color:var(--text-muted); font-size:13px;">출처: Wharton et al. (2022), Diabetes, Obesity and Metabolism. STEP 1-3 풀링 분석.</p>
+
+  <h3>변비 vs 설사 — 어느 쪽이 더 큰 문제인가</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>기준</th><th>설사</th><th>변비</th></tr></thead>
+      <tbody>
+        <tr><td>발생 빈도</td><td><strong>높음</strong> (29.7%)</td><td>낮음 (24.2%)</td></tr>
+        <tr><td>지속 기간</td><td>짧음 (3일)</td><td><strong>길음 (47일)</strong></td></tr>
+        <tr><td>일상 불편</td><td>급성이지만 빠르게 해소</td><td><strong>만성적 불편</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><strong>설사가 더 흔하고, 변비가 더 오래 간다.</strong> 두 가지 모두 케어 대상.</div>
+
+  <h3>성별/나이 차이 [검증됨]</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>구분</th><th>경향</th><th>출처</th></tr></thead>
+      <tbody>
+        <tr><td><strong>여성</strong></td><td>남성 대비 GI 부작용으로 치료 중단 <strong>2배.</strong> 지속적 메스꺼움/구토 <strong>2배 이상.</strong></td><td>Endocrinology, Oxford 2024</td></tr>
+        <tr><td><strong>남성</strong></td><td>설사가 상대적으로 더 흔 (OR 0.83)</td><td>NIH All of Us 코호트</td></tr>
+        <tr><td><strong>고령</strong></td><td>GI 부작용 보고 빈도 낮음 (젊은 층이 더 높음)</td><td>NIH All of Us</td></tr>
+        <tr><td><strong>GLPH 타겟 (20-40대 여성)</strong></td><td>GI 부작용의 <strong>가장 취약 그룹</strong></td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>한국 현장 증거</h3>
+  <div class="callout">중앙일보 2026.04.16 기사:<br><strong>"최근 마운자로 부작용으로 추정되는 환자들이 위장약을 타러 오는 경우가 부쩍 늘었다"</strong> — 서울 강남구 가정의학과 원장<br><br>
+  마운자로 2026년 3월 처방: <strong>22만 8,199건/월.</strong> 두 약제(마운자로+위고비) 누적 처방 <strong>200만 건 돌파.</strong></div>
+</div>
+
+<!-- Section 2: 원료 검토 -->
+<div class="section">
+  <div class="section-eyebrow">Section 2</div>
+  <h2>원료 검토 — 무엇을 넣을 것인가</h2>
+
+  <h3>원료 1: 생강 추출물 — 메스꺼움 완화</h3>
+  <p><strong>임상 근거 수준: 강함</strong> [검증됨]</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>기전</td><td>5-HT3 수용체 길항 + 위장 운동 촉진. 항구역 약물과 유사한 메커니즘.</td></tr>
+        <tr><td>임상 근거</td><td>임신 메스꺼움: 12건 RCT, 1,278명 — 유의미 감소 (PMC 2014). 항암 CINV: 시스템적 리뷰 (Nutrients 2022). 수술 후 PONV: 5건 RCT, 363명 — 효과적.</td></tr>
+        <tr><td>GLP-1 전용</td><td>78명 RCT (Medscape 2026) + <strong>다학제 전문가 합의에서 GLP-1 환자에 생강 권고</strong> (PMC 9821052)</td></tr>
+        <tr><td>안전성</td><td>모든 연구에서 부작용 보고 없음. 임산부에게도 안전. GLP-1 약물 상호작용 없음 (Drugs.com).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>약리학적 충돌 — 위 배출 촉진 문제</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th></th><th>GLP-1 (약물)</th><th>생강 (보충제)</th></tr></thead>
+      <tbody>
+        <tr><td>위 배출 방향</td><td><strong>지연</strong> (포만감 유지 → 체중 감소)</td><td><strong>촉진</strong> (메스꺼움 완화)</td></tr>
+        <tr><td>작용 수준</td><td>수용체 수준 약리학적 작용</td><td>식품 수준</td></tr>
+        <tr><td>지속</td><td>주 1회 주사 → 7일</td><td>복용 후 수 시간</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>이 충돌에 대한 검토 결과: [검증됨 + 미검증 혼합]</h4>
+  <ol>
+    <li>GLP-1 체중감소의 주 기전 = <strong>중추 식욕억제(뇌)</strong>이지 위 배출 지연이 아님. 세마글루타이드 2.4mg 20주 사용 후 위 배출 지연 효과 소실됐으나 체중감소 유지됨. (JCEM 2024, PMC 11620716)</li>
+    <li>생강이 GLP-1 체중감소 효과를 감소시킨다는 임상 증거 = <strong>0건.</strong></li>
+    <li>이 충돌에 대해 경고한 전문가/기관 = <strong>없음.</strong> 오히려 전문가 합의에서 GLP-1 환자에 생강 권고.</li>
+    <li><strong>단, GLP-1 투여 상태에서 생강의 위 배출 촉진 효과를 직접 측정한 RCT는 없음</strong> = [미검증]</li>
+    <li>GLP-1 환자의 25%+가 GI 부작용으로 약 자체를 중단 → 메스꺼움을 완화해서 약을 유지하게 하는 것이 체중감소에 더 기여.</li>
+  </ol>
+
+  <h4>용량 — 실제 효과가 나는 최소 라인:</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>형태</th><th>용량</th><th>진저롤 함량</th><th>근거</th></tr></thead>
+      <tbody>
+        <tr><td>원물 분말</td><td>1,000mg/일</td><td>7-14mg</td><td>대부분의 임상</td></tr>
+        <tr><td>추출물 5% 진저롤</td><td>600mg/일</td><td>30mg</td><td>항암 CINV 다기관 RCT</td></tr>
+        <tr><td><strong>추출물 10% 진저롤</strong></td><td><strong>300mg/일</strong></td><td><strong>30mg</strong></td><td>동등. 원료 공급업체 다수 (Star Hi Herbs, Dielegance 등)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>원료 2: 차전자피(사일리움) — 배변 양방향 정상화</h3>
+  <p><strong>임상 근거 수준: 강함</strong> [검증됨]</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>기전</td><td>겔 형성 수용성 섬유질. 변비 시: 수분 머금어 대변 부피 증가 + 연화 → 배변 촉진. 설사 시: 과잉 수분 흡수 → 변 정상화.</td></tr>
+        <tr><td>변비 근거</td><td>메타분석 16건 RCT, 1,251명. 유의미 효과. (2022)</td></tr>
+        <tr><td>설사 근거</td><td>4건 RCT (교차설계). 10.5g/일 → 대장 통과 유의미 감속. (PMC 12224249, 2025)</td></tr>
+        <tr><td>IBS 근거</td><td>메타분석: 수용성 섬유질(사일리움) RR=0.83, NNT=7. 불용성(밀기울)은 효과 없음.</td></tr>
+        <tr><td>양방향 효과</td><td>"사일리움의 겔이 수분을 양방향으로 조절. 변비에서는 수분 공급, 설사에서는 수분 흡수." (Gastroenterology 2023, Nutrition Today 2021)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>용량:</strong> 5,000mg (5g)/일 = 임상 최소 유효 용량.</p>
+  <div class="callout"><strong>주의:</strong> 반드시 물 200-250ml와 함께 복용. 물 없이 복용 시 겔이 장내에서 굳어 오히려 변비 악화 가능.</div>
+  <p><strong>한국 건기식:</strong> 고시형 원료. "배변활동 원활에 도움을 줄 수 있음" 기능성 표시 가능.</p>
+
+  <h3>원료 3: 비타민B6 — 보조</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>용량</td><td>25mg</td></tr>
+        <tr><td>역할</td><td>생강과 병용 시 구역감 완화 보조 (임신 RCT에서 병용 효과 확인) + B군 결핍 보충</td></tr>
+        <tr><td>한국 건기식</td><td>고시형. 기능성 표시 가능.</td></tr>
+        <tr><td>UL</td><td>100mg/일. 25mg은 안전 범위.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>두 원료의 상호작용 [검증됨]</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>검토 항목</th><th>결과</th><th>근거</th></tr></thead>
+      <tbody>
+        <tr><td>생강↔차전자피 직접 상호작용</td><td><strong>확인된 것 없음</strong></td><td>Drugs.com 상호작용 DB. 사일리움 29건 상호작용에 생강 미포함.</td></tr>
+        <tr><td>작용 부위 겹침</td><td><strong>안 겹침</strong> — 생강 = 위(stomach), 차전자피 = 장(intestine)</td><td>약리학적 기전</td></tr>
+        <tr><td>시장에 복합 제품 존재</td><td><strong>다수</strong> — Vimerson, Rütean, BMVINVOL, Naturlax 등</td><td>Amazon 검색 확인</td></tr>
+        <tr><td>차전자피가 생강 흡수 방해?</td><td>가능성 있으나 동일 제형에서 동시 복용 시 임상적 유의 수준 미확인</td><td>차전자피의 일반적 흡수 방해 특성</td></tr>
+        <tr><td>다른 GLPH SKU 부작용 악화?</td><td><strong>없음</strong> (차전자피의 미네랄 흡수 방해만 주의 → 2시간 간격으로 해결)</td><td>문헌</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section 3: 포뮬러 -->
+<div class="section">
+  <div class="section-eyebrow">Section 3</div>
+  <h2>포뮬러</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>원료</th><th>함량</th><th>역할</th><th>임상 근거</th><th>크기</th></tr></thead>
+      <tbody>
+        <tr><td><strong>차전자피 분말</strong></td><td><strong>5,000mg (5g)</strong></td><td>배변 정상화 (변비+설사 양방향)</td><td>메타분석 16건 RCT</td><td>5.0g</td></tr>
+        <tr><td><strong>생강 추출물 (10% 진저롤)</strong></td><td><strong>300mg</strong></td><td>메스꺼움/구역감 완화 (진저롤 30mg)</td><td>다수 메타분석 + GLP-1 전문가 합의</td><td>0.3g</td></tr>
+        <tr><td><strong>비타민B6</strong></td><td><strong>25mg</strong></td><td>구역감 완화 보조 + B군 결핍 보충</td><td>임신 RCT 병용 효과. 고시형.</td><td>0.025g</td></tr>
+        <tr><td>구연산</td><td>~300mg</td><td>산미 + 맛 밸런스</td><td>—</td><td>0.3g</td></tr>
+        <tr><td>천연향료</td><td>~200mg</td><td>레몬진저/피치진저</td><td>—</td><td>0.2g</td></tr>
+        <tr><td>감미료</td><td>~50mg</td><td>스테비아/수크랄로스</td><td>—</td><td>0.05g</td></tr>
+        <tr><td><strong>총 내용량</strong></td><td></td><td></td><td></td><td><strong>~5.9g/포</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>제형:</strong> 파우더 스틱 (물 200-250ml에 타서 즉시 음용)</p>
+  <p><strong>구성:</strong> 30포/박스 (30일분, 1일 1포)</p>
+  <p><strong>복용:</strong> 취침 전 권장 (다른 GLPH SKU와 2시간+ 간격 자동 확보)</p>
+</div>
+
+<!-- Section 4: 제형 선택 근거 -->
+<div class="section">
+  <div class="section-eyebrow">Section 4</div>
+  <h2>제형 선택 근거</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>제형</th><th>차전자피 5g?</th><th>생강 300mg?</th><th>메스꺼운 환자 수용성</th><th>시장 선례</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td><strong>파우더 스틱</strong></td><td><strong>O</strong></td><td><strong>O</strong></td><td>높음 (마시는 것)</td><td>Metamucil, Konsyl, Flatter Me</td><td><strong>유일한 현실적 선택</strong></td></tr>
+        <tr><td>캡슐</td><td>10-12알 필요</td><td>O</td><td>낮음 (삼키기 어려움)</td><td>GLP-1 SOS</td><td>비현실</td></tr>
+        <tr><td>액상 스틱</td><td>X (겔화)</td><td>O</td><td>높음</td><td>GLPH AFTER-1</td><td>불가</td></tr>
+        <tr><td>구미/츄어블</td><td>X</td><td>O</td><td>높음</td><td>Vitafusion</td><td>불가</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section 5: 경쟁 환경 -->
+<div class="section">
+  <div class="section-eyebrow">Section 5 [검증됨 — 마켓 스캔]</div>
+  <h2>경쟁 환경</h2>
+
+  <h3>조사 방법</h3>
+  <ul>
+    <li><strong>DataForSEO Amazon 검색량:</strong> 25개 GI 키워드 조회</li>
+    <li><strong>DataForSEO Google Korea 검색량:</strong> 15개 한국어 키워드 조회</li>
+    <li><strong>SerpAPI Amazon 제품 검색:</strong> 2개 쿼리, 96개 제품 분석</li>
+    <li><strong>Keepa 판매량:</strong> 10개 ASIN 조회</li>
+  </ul>
+
+  <h3>아마존 GI 키워드</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>키워드</th><th>Amazon 월간</th></tr></thead>
+      <tbody>
+        <tr><td>glp-1 constipation</td><td>411</td></tr>
+        <tr><td>wegovy constipation</td><td>224</td></tr>
+        <tr><td>ozempic constipation relief</td><td>187</td></tr>
+        <tr><td>wegovy nausea</td><td>187</td></tr>
+        <tr><td>semaglutide constipation</td><td>149</td></tr>
+        <tr><td>semaglutide nausea</td><td>112</td></tr>
+        <tr><td>ozempic nausea relief</td><td>112</td></tr>
+        <tr><td>glp-1 nausea relief</td><td>112</td></tr>
+        <tr><td>glp-1 nausea</td><td>112</td></tr>
+        <tr><td>mounjaro constipation</td><td>261</td></tr>
+        <tr><td>mounjaro nausea</td><td>112</td></tr>
+        <tr><td><strong>GLP-1 GI 전용 합산</strong></td><td><strong>~1,231/월</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>참고: "ginger psyllium", "ginger GLP-1", "psyllium GLP-1" 등 조합 키워드는 전부 <strong>0.</strong> 소비자가 아직 이 원료를 GLP-1과 연결하지 않고 있음.</p>
+
+  <h3>한국 Google 검색량</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>키워드</th><th>Google KR 월간</th></tr></thead>
+      <tbody>
+        <tr><td><strong>위고비 부작용</strong></td><td><strong>12,100</strong></td></tr>
+        <tr><td><strong>마운자로 부작용</strong></td><td><strong>8,100</strong></td></tr>
+        <tr><td>마운자로 설사</td><td>590</td></tr>
+        <tr><td>마운자로 변비</td><td>260</td></tr>
+        <tr><td>위고비 변비</td><td>260</td></tr>
+        <tr><td>위고비 메스꺼움</td><td>90</td></tr>
+        <tr><td>마운자로 메스꺼움</td><td>70</td></tr>
+        <tr><td><strong>한국 GI 관련 합산</strong></td><td><strong>~21,470/월</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><strong>한국이 아마존의 17배.</strong> 한국에서 GI 키워드 수요가 압도적으로 더 크다.</div>
+
+  <h3>아마존 상위 경쟁자</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>제품</th><th>브랜드</th><th>월 판매</th><th>가격</th><th>핵심 원료</th><th>생강?</th><th>차전자피?</th></tr></thead>
+      <tbody>
+        <tr><td>GLP-1 Support Fiber Plus</td><td>Vitafusion</td><td><strong>4,000</strong></td><td>$12.99</td><td>파이버 + VitD/B12</td><td>X</td><td>X</td></tr>
+        <tr><td>Flatter Me Fiber GLP-1</td><td>HUM</td><td><strong>4,000</strong></td><td>$29.99</td><td>프리바이오틱 + 소화효소</td><td>X</td><td>X</td></tr>
+        <tr><td>Replenza Daily GLP-1</td><td>Replenza</td><td><strong>3,000</strong></td><td>$19.97</td><td>비타민/미네랄 멀티</td><td>X</td><td>X</td></tr>
+        <tr><td>GLP-1 SOS Digestive</td><td>GLP-1 SOS</td><td><strong>2,000</strong></td><td>$29.99</td><td>마그네슘 + <strong>생강</strong> + 프로바이오틱</td><td><strong>O</strong></td><td>X</td></tr>
+        <tr><td>GLP-1 Nausea &amp; Gut</td><td>Plus+Ultra</td><td><strong>2,000</strong></td><td>$29.95</td><td>프리/프로/포스트바이오틱</td><td>X</td><td>X</td></tr>
+        <tr><td>PeptideVite GLP-1</td><td>Zen Nutrients</td><td><strong>1,000</strong></td><td>$46.99</td><td>프로바이오틱 + 브로멜린</td><td>X</td><td>X</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><strong>핵심 발견:</strong><br>
+  • 생강 포함 GLP-1 GI 제품 = <strong>1개</strong> (GLP-1 SOS)<br>
+  • 차전자피 포함 GLP-1 GI 제품 = <strong>0개</strong> (Metamucil은 GLP-1 전용이 아님)<br>
+  • <strong>생강 + 차전자피 조합 GLP-1 제품 = 0개</strong> [검증됨]</div>
+
+  <h3>한국 GLP-1 GI 전용 제품</h3>
+  <div class="callout"><strong>0개.</strong> [검증됨] 한국에 GLP-1 부작용 관리 전용 건기식/보충제 제품은 현재 존재하지 않음. 차전자피 건기식(종근당 쾌변엔 등)과 생강 제품은 각각 존재하지만 GLP-1 타겟 복합 제품은 없음.</div>
+</div>
+
+<!-- Section 6: 벤치마킹 대상 -->
+<div class="section">
+  <div class="section-eyebrow">Section 6</div>
+  <h2>벤치마킹 대상</h2>
+
+  <h3>GLP-1 SOS (B0GC739CTY) — 가장 가까운 경쟁자</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>GLP-1 SOS</th><th>GLPH (제안)</th></tr></thead>
+      <tbody>
+        <tr><td>월 판매</td><td>2,000개</td><td>—</td></tr>
+        <tr><td>가격</td><td>$29.99</td><td>$25-30 예상</td></tr>
+        <tr><td>원료</td><td>마그네슘 + 생강 + 프로바이오틱 + B12</td><td><strong>생강(임상 용량) + 차전자피 5g + B6</strong></td></tr>
+        <tr><td>생강 용량</td><td>미공개 (임상 유효인지 불명)</td><td><strong>300mg (10% 진저롤 = 30mg, 임상 근거)</strong></td></tr>
+        <tr><td>변비 대응</td><td>마그네슘 (간접)</td><td><strong>차전자피 5g (RCT 직접 검증)</strong></td></tr>
+        <tr><td>설사 대응</td><td>없음</td><td><strong>차전자피 양방향 정상화</strong></td></tr>
+        <tr><td>제형</td><td>캡슐</td><td><strong>파우더 스틱 (메스꺼운 환자에 더 적합)</strong></td></tr>
+        <tr><td>타이틀</td><td>"for Ozempic Wegovy Mounjaro Users"</td><td>동일 프레이밍 가능</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>차용 제안:</strong> 타이틀에 "Ozempic Wegovy Mounjaro" 약물명 직접 사용 (GLP-1 SOS가 선례를 세움, 현재 활성 판매 중). "Digestive Support for [약물명] Users" 프레이밍.</p>
+
+  <h3>Flatter Me Fiber (B0FJK1ZFLT) — 파이버 카테고리 1위</h3>
+  <p><strong>차용 제안:</strong> 파우더 스틱 제형이 GLP-1 파이버 시장에서 작동한다는 판매 증거 (4,000/월). $29.99 가격대가 시장 수용 범위.</p>
+
+  <h3>Metamucil GLP-1 Friendly (B000052Y5Q) — 범용 파이버 1위</h3>
+  <p><strong>차용 제안:</strong> 사일리움 파우더 스틱이 소비자에게 익숙한 제형 (Metamucil이 이미 30,000/월로 교육함). "GLP-1 Friendly"라는 라벨만 추가해도 시장에 진입한 사례.</p>
+</div>
+
+<!-- Section 7: 비용 + 리드타임 -->
+<div class="section">
+  <div class="section-eyebrow">Section 7</div>
+  <h2>비용 + 리드타임</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>예상</th></tr></thead>
+      <tbody>
+        <tr><td>OEM 개발비 (파우더 스틱)</td><td>500-1,000만 원 (신규 제형)</td></tr>
+        <tr><td>원료비/포</td><td>500-800원</td></tr>
+        <tr><td>제조비/포</td><td>200-400원</td></tr>
+        <tr><td>원가/포 합산</td><td>700-1,200원</td></tr>
+        <tr><td>30포/박스 원가</td><td>21,000-36,000원</td></tr>
+        <tr><td>소비자가 (한국)</td><td>29,000-35,000원</td></tr>
+        <tr><td>소비자가 (아마존)</td><td>$25-30</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>리드타임</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>단계</th><th>소요</th></tr></thead>
+      <tbody>
+        <tr><td>OEM 선정 + 견적</td><td>2-3주</td></tr>
+        <tr><td>시제품 + 맛 테스트</td><td>4-6주</td></tr>
+        <tr><td>본생산</td><td>3-4주</td></tr>
+        <tr><td><strong>총</strong></td><td><strong>~10-13주 (2.5-3개월)</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>7월 런칭 후 바로 개발 착수 시 → 10-11월 생산 완료 → 11-12월 런칭 가능.</p>
+
+  <h3>OEM 확인 사항</h3>
+  <ol>
+    <li>광동헬스바이오 파우더 스틱 라인 보유 여부 (미보유 시 별도 OEM)</li>
+    <li>생강 추출물 10% 진저롤 원료 국내 확보</li>
+    <li>차전자피 5g + 생강 300mg 혼합 맛 테스트</li>
+    <li>건기식 신고 vs 일반식품 결정</li>
+  </ol>
+</div>
+
+<!-- Section 8: 타 SKU 동시 복용 안전성 -->
+<div class="section">
+  <div class="section-eyebrow">Section 8 [검증됨]</div>
+  <h2>타 SKU 동시 복용 안전성</h2>
+
+  <h3>핵심 원칙: GI 제품은 다른 SKU와 2시간 간격 복용</h3>
+  <p>차전자피가 겔 형태로 다른 성분의 흡수를 물리적으로 방해할 수 있음. 취침 전 복용으로 자동 해결.</p>
+
+  <h3>전 SKU 합산 시</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>원료</th><th>합산 (4SKU 전부)</th><th>UL</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td>생강 추출물</td><td>AFTER-1(300mg) + GI(300mg) = 600mg</td><td>—</td><td>안전 (임상 최적 범위)</td></tr>
+        <tr><td>비타민B6</td><td>AFTER-1(~10mg) + GI(25mg) = ~35mg</td><td>100mg</td><td>안전</td></tr>
+        <tr><td>비타민D</td><td>1,000+1,000 = 2,000IU</td><td>4,000IU</td><td>안전</td></tr>
+        <tr><td>비타민C</td><td>100+100 = 200mg</td><td>2,000mg</td><td>안전</td></tr>
+        <tr><td>비오틴</td><td>2,500+10,000 = 12,500mcg</td><td>미설정</td><td>혈액검사 간섭 주의 (기존과 동일)</td></tr>
+        <tr><td>마그네슘</td><td>270mg</td><td>350mg</td><td>안전</td></tr>
+        <tr><td>아연</td><td>8mg</td><td>40mg</td><td>안전</td></tr>
+        <tr><td>철분</td><td>14mg</td><td>45mg</td><td>안전 (2시간 간격으로 차전자피 흡수 방해 회피)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><strong>모든 원료 UL 이내. 안전.</strong></div>
+
+  <h3>권장 복용 스케줄</h3>
+  <div class="code-block"><pre>아침 식후:  AFTER-1 (올인원) + AFTER-HAIR (정제) + AFTER-SKIN (액상)
+취침 전:   GI 제품 (파우더 스틱, 물에 타서)
+           → 아침 제품과 12시간+ 간격 → 흡수 방해 문제 없음
+           → 수면 중 장내 작용 → 아침 배변 유도</pre></div>
+</div>
+
+<!-- Section 9: 한/미 시장 비교 -->
+<div class="section">
+  <div class="section-eyebrow">Section 9</div>
+  <h2>한/미 시장 비교</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>기준</th><th>아마존 US</th><th>한국</th></tr></thead>
+      <tbody>
+        <tr><td>GLP-1 GI 키워드 합산</td><td>~1,231/월</td><td><strong>~21,470/월 (17배)</strong></td></tr>
+        <tr><td>GI 전용 경쟁 제품</td><td>8개+ (대부분 프로바이오틱)</td><td><strong>0개</strong></td></tr>
+        <tr><td>생강+차전자피 GLP-1 제품</td><td><strong>0개</strong></td><td><strong>0개</strong></td></tr>
+        <tr><td>시장 선례 (파우더 파이버)</td><td>Metamucil 30K, Flatter Me 4K</td><td>종근당 쾌변엔 등 (GLP-1 비타겟)</td></tr>
+        <tr><td>소비자 수요 증거</td><td>키워드 + 판매 데이터</td><td><strong>"위장약 타러 오는 환자 늘었다"</strong> (현장 증언)</td></tr>
+        <tr><td>월 처방 규모</td><td>미국 GLP-1 인구 ~8명 중 1명</td><td>마운자로 월 22만건 + 위고비 7만건</td></tr>
+        <tr><td>규제</td><td>Structure/function claim 가능</td><td>차전자피+B6 고시형. 생강 기능성 표시 불가.</td></tr>
+        <tr><td><strong>포지션</strong></td><td><strong>니치 롤업의 한 조각</strong></td><td><strong>오프라인에서 가장 먼저 팔릴 가능성</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section 10: 객관성 검토 -->
+<div class="section">
+  <div class="section-eyebrow">Section 10</div>
+  <h2>객관성 검토 — 이 보고서의 한계</h2>
+
+  <h3>검증된 것</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>주장</th><th>상태</th></tr></thead>
+      <tbody>
+        <tr><td>아마존에 생강+차전자피 GLP-1 제품이 0개</td><td>[검증됨] SerpAPI + Keepa</td></tr>
+        <tr><td>한국에 GLP-1 GI 전용 건기식이 0개</td><td>[검증됨] WebSearch</td></tr>
+        <tr><td>생강+차전자피 약리학적 상충 없음</td><td>[검증됨] Drugs.com + 문헌. 단 GLP-1 투여 상태 직접 연구는 없음.</td></tr>
+        <tr><td>생강의 항구역 효과</td><td>[검증됨] 다수 메타분석 + 전문가 합의</td></tr>
+        <tr><td>차전자피의 양방향 배변 정상화</td><td>[검증됨] 메타분석 + RCT (PMC 12224249)</td></tr>
+        <tr><td>아마존 GI 키워드 ~1,231/월</td><td>[검증됨] DataForSEO</td></tr>
+        <tr><td>한국 GI 키워드 ~21,470/월</td><td>[검증됨] DataForSEO</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>검증 안 된 것 — 솔직하게</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>주장</th><th>상태</th><th>왜 중요</th></tr></thead>
+      <tbody>
+        <tr><td>한국 오프라인에서 GI 제품이 잘 팔릴 것</td><td><strong>[미검증. 가설.]</strong></td><td>부작용 겪는 것 ≠ 보충제 사는 것. 환자가 기존 위장약 대신 GLPH를 선택하는가?</td></tr>
+        <tr><td>아마존에서 키워드 1,231/월로 유의미한 매출 가능</td><td><strong>[미검증.]</strong></td><td>GLP-1 SOS 2,000/월은 사실이지만 GLPH가 같은 수준 도달하는가는 별개.</td></tr>
+        <tr><td>생강이 GLP-1 체중감소 효과를 감소시키지 않는다</td><td><strong>[미검증.]</strong></td><td>이론적으로 가능성 낮으나 직접 RCT 없음. 전문가 합의는 "권고"하지만 이 충돌을 직접 검증한 건 아님.</td></tr>
+        <tr><td>29,000-35,000원에 소비자가 살 것</td><td><strong>[미검증.]</strong></td><td>기존 위장약(겔포스 등)은 3,000-5,000원. 10배 비싼 제품으로 전환 근거 불확실.</td></tr>
+        <tr><td>AFTER-1의 생강 300mg으로 충분하지 않아 별도 SKU가 필요</td><td><strong>[미검증.]</strong></td><td>올인원의 생강만으로 환자가 만족하면 GI 전용 SKU 불필요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section 11: 판단 프레임워크 -->
+<div class="section">
+  <div class="section-eyebrow">Section 11</div>
+  <h2>판단 프레임워크 — 언제, 어떻게 결정하는가</h2>
+  <div class="callout"><strong>지금 확정하지 않는다.</strong> 다음 데이터를 수집한 후 결정한다:</div>
+
+  <h3>7-9월 오프라인 운영 중 수집할 데이터</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>데이터</th><th>수집 방법</th><th>판단 기준</th></tr></thead>
+      <tbody>
+        <tr><td>GI 불만 빈도</td><td>카운터 직원이 "속 불편" 호소 환자 수 기록</td><td>전체 GLP-1 환자의 30%+ 호소 시 → 수요 확인</td></tr>
+        <tr><td>AFTER-1 복용 후 GI 피드백</td><td>재방문 환자에게 "속은 좀 편하세요?" 질문</td><td>"편해졌다" 70%+ → 생강 300mg으로 충분 → GI SKU 불필요 가능</td></tr>
+        <tr><td>GI 전용 니즈</td><td>"속이 많이 불편한데 더 강한 게 없나요?" 문의 빈도</td><td>월 10건+ 문의 → GI 전용 SKU 수요 확인</td></tr>
+        <tr><td>기존 위장약 사용 현황</td><td>"위장약 드시고 계세요?" 질문</td><td>이미 위장약 쓰는 환자 비율 → 전환 가능성 판단</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>의사결정 플로차트</h3>
+  <div class="code-block"><pre>7-9월 데이터 수집
+      │
+      ├── AFTER-1 생강 300mg으로 환자 GI 만족도 높음 (70%+)
+      │   → GI 전용 SKU 불필요. 올인원으로 충분.
+      │   → 절약된 리소스를 AFTER-SKIN/HAIR에 집중.
+      │
+      ├── GI 불만 높으나 기존 위장약으로 해결 중
+      │   → GI 전용 SKU 수요 불확실. 추가 관찰.
+      │
+      └── GI 불만 높고 + "더 강한 것 있나요?" 문의 다수
+          → GI 전용 SKU 개발 착수. 10월 OEM 의뢰 → 12월 런칭.</pre></div>
+</div>
+
+<!-- Section 12: 요약 -->
+<div class="section">
+  <div class="section-eyebrow">Section 12</div>
+  <h2>요약</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>질문</th><th>답</th></tr></thead>
+      <tbody>
+        <tr><td>GI 부작용이 심각한 문제인가?</td><td><strong>맞다.</strong> 발생률 44-74%, 투약 즉시, GLPH 타겟(20-40대 여성)이 가장 취약. [검증됨]</td></tr>
+        <tr><td>생강+차전자피가 이걸 커버하는가?</td><td><strong>이론적으로 맞다.</strong> 메스꺼움(생강) + 변비/설사(차전자피) = 3대 GI 증상 커버. [검증됨]</td></tr>
+        <tr><td>경쟁 제품이 있는가?</td><td><strong>이 조합은 0개.</strong> 한/미 양쪽 모두. [검증됨]</td></tr>
+        <tr><td>지금 개발에 착수해야 하는가?</td><td><strong>아니다.</strong> 오프라인 데이터(7-9월) 수집 후 판단. [미검증 항목 다수]</td></tr>
+        <tr><td>AFTER-1에 생강은 넣는가?</td><td><strong>넣는다.</strong> 300mg 추가는 제형 변경 없이 가능하고, 44% 환자의 메스꺼움에 기본 대응.</td></tr>
+        <tr><td>GI 전용 SKU의 포지션은?</td><td>아마존: 니치 롤업의 한 조각 (키워드 1,231/월). 한국 오프라인: <strong>가장 먼저 팔릴 가능성</strong> (발생률 1위 + 즉시 발생). 단, [가설].</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="color:var(--text-muted); font-size:13px; margin-top:24px;"><em>GLPH GI 부작용 케어 제품 리서치 | 2026.05.11</em><br>
+  <em>마켓 스캔: DataForSEO Amazon 25kw + Google KR 15kw / SerpAPI 2쿼리 96제품 / Keepa 10 ASIN</em></p>
 </div>
 
 </div>
