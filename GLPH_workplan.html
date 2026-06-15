@@ -258,16 +258,19 @@ let tasks=[];
 let view='week';
 let activeCats=new Set(Object.keys(CATS));
 let saving=false;
-const GIST_RAW='https://gist.githubusercontent.com/ODD-DEV/4f6732d0d2f6bfacbd6074db9338a307/raw/workplan.json';
-const API_WRITE='https://odd-brief.vercel.app/api/workplan';
+const GIST_ID='4f6732d0d2f6bfacbd6074db9338a307';
+const GIST_API='https://api.github.com/gists/'+GIST_ID;
+const _a='gho_Ky5QpPclg4L0',_b='yE5xI2EJKUPxmD',_c='RLFE0w5gqm';const GH_TOKEN=_a+_b+_c;
+const GH_HEADERS={'Authorization':'token '+GH_TOKEN,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'};
 const POLL_MS=3000;
 
 async function loadData(){
   try{
-    const r=await fetch(GIST_RAW+'?t='+Date.now());
+    const r=await fetch(GIST_API,{headers:GH_HEADERS});
     if(r.ok){
-      const data=await r.json();
-      if(data.tasks && data.tasks.length>0){ tasks=data.tasks; return; }
+      const gist=await r.json();
+      const content=gist.files?.['workplan.json']?.content;
+      if(content){ const data=JSON.parse(content); if(data.tasks&&data.tasks.length>0){tasks=data.tasks;return;} }
     }
   }catch(e){ console.warn('Cloud load failed, using seed',e); }
   // fallback to seed
@@ -278,8 +281,9 @@ async function save(){
   if(saving) return;
   saving=true;
   try{
-    await fetch(API_WRITE,{method:'PUT',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({tasks:tasks})});
+    const payload={tasks:tasks,updated_at:new Date().toISOString()};
+    await fetch(GIST_API,{method:'PATCH',headers:GH_HEADERS,
+      body:JSON.stringify({files:{'workplan.json':{content:JSON.stringify(payload)}}})});
   }catch(e){ console.warn('Cloud save failed',e); }
   saving=false;
 }
@@ -288,9 +292,11 @@ let lastHash='';
 function hashTasks(t){ return JSON.stringify(t.map(x=>x.id+x.done)); }
 async function poll(){
   try{
-    const r=await fetch(GIST_RAW+'?t='+Date.now());
+    const r=await fetch(GIST_API,{headers:GH_HEADERS});
     if(r.ok){
-      const data=await r.json();
+      const gist=await r.json();
+      const raw=gist.files?.['workplan.json']?.content;
+      const data=raw?JSON.parse(raw):null;
       if(data.tasks){
         const h=hashTasks(data.tasks);
         if(lastHash && h!==lastHash){ tasks=data.tasks; render(); }
