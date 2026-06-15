@@ -258,12 +258,13 @@ let tasks=[];
 let view='week';
 let activeCats=new Set(Object.keys(CATS));
 let saving=false;
-const BLOB='https://jsonblob.com/api/jsonBlob/019ec9fd-a8fe-73cd-94b0-9852205f2a62';
+const GIST_RAW='https://gist.githubusercontent.com/ODD-DEV/4f6732d0d2f6bfacbd6074db9338a307/raw/workplan.json';
+const API_WRITE='https://odd-brief.vercel.app/api/workplan';
 const POLL_MS=3000;
 
 async function loadData(){
   try{
-    const r=await fetch(BLOB);
+    const r=await fetch(GIST_RAW+'?t='+Date.now());
     if(r.ok){
       const data=await r.json();
       if(data.tasks && data.tasks.length>0){ tasks=data.tasks; return; }
@@ -277,8 +278,8 @@ async function save(){
   if(saving) return;
   saving=true;
   try{
-    await fetch(BLOB,{method:'PUT',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({tasks:tasks,updated_at:new Date().toISOString()})});
+    await fetch(API_WRITE,{method:'PUT',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({tasks:tasks})});
   }catch(e){ console.warn('Cloud save failed',e); }
   saving=false;
 }
@@ -287,7 +288,7 @@ let lastHash='';
 function hashTasks(t){ return JSON.stringify(t.map(x=>x.id+x.done)); }
 async function poll(){
   try{
-    const r=await fetch(BLOB);
+    const r=await fetch(GIST_RAW+'?t='+Date.now());
     if(r.ok){
       const data=await r.json();
       if(data.tasks){
