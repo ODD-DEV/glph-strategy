@@ -257,13 +257,48 @@ const SEED=[
 let tasks=[];
 let view='week';
 let activeCats=new Set(Object.keys(CATS));
+let saving=false;
+const BLOB='https://jsonblob.com/api/jsonBlob/019ec9fd-a8fe-73cd-94b0-9852205f2a62';
+const POLL_MS=3000;
 
-function loadData(){
-  const saved=localStorage.getItem(KEY);
-  if(saved){ tasks=JSON.parse(saved); }
-  else{ tasks=SEED.map((x,i)=>({id:'t'+i+'_'+Date.now(),done:false,e:null,n:'',...x})); save(); }
+async function loadData(){
+  try{
+    const r=await fetch(BLOB);
+    if(r.ok){
+      const data=await r.json();
+      if(data.tasks && data.tasks.length>0){ tasks=data.tasks; return; }
+    }
+  }catch(e){ console.warn('Cloud load failed, using seed',e); }
+  // fallback to seed
+  tasks=SEED.map((x,i)=>({id:'t'+i+'_'+Date.now(),done:false,e:null,n:'',...x}));
+  save();
 }
-function save(){ localStorage.setItem(KEY,JSON.stringify(tasks)); }
+async function save(){
+  if(saving) return;
+  saving=true;
+  try{
+    await fetch(BLOB,{method:'PUT',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({tasks:tasks,updated_at:new Date().toISOString()})});
+  }catch(e){ console.warn('Cloud save failed',e); }
+  saving=false;
+}
+// Poll for changes from other users
+let lastHash='';
+function hashTasks(t){ return JSON.stringify(t.map(x=>x.id+x.done)); }
+async function poll(){
+  try{
+    const r=await fetch(BLOB);
+    if(r.ok){
+      const data=await r.json();
+      if(data.tasks){
+        const h=hashTasks(data.tasks);
+        if(lastHash && h!==lastHash){ tasks=data.tasks; render(); }
+        lastHash=h;
+      }
+    }
+  }catch(e){}
+}
+setInterval(poll,POLL_MS);
 
 function today(){ const d=new Date(); d.setHours(0,0,0,0); return d; }
 function parse(s){ const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
@@ -382,7 +417,7 @@ function renderCategory(list){
 
 function sortFn(a,b){ return parse(a.s)-parse(b.s) || (a.done-b.done); }
 
-function toggleDone(id){ const x=tasks.find(t=>t.id===id); x.done=!x.done; save(); render(); }
+function toggleDone(id){ const x=tasks.find(t=>t.id===id); x.done=!x.done; save(); lastHash=hashTasks(tasks); render(); }
 function setView(v){ view=v; document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.view===v)); render(); }
 
 function openModal(id){
@@ -405,9 +440,9 @@ function saveTask(){
   const data={t:fTitle.value.trim(),c:fCat.value,s:fStart.value,e:fEnd.value||null,n:fNote.value.trim()};
   if(fId.value){ Object.assign(tasks.find(t=>t.id===fId.value),data); }
   else{ tasks.push({id:'t'+Date.now(),done:false,...data}); }
-  save(); closeModal(); render();
+  save(); lastHash=hashTasks(tasks); closeModal(); render();
 }
-function deleteTask(){ if(confirm('삭제하시겠습니까?')){ tasks=tasks.filter(t=>t.id!==fId.value); save(); closeModal(); render(); } }
+function deleteTask(){ if(confirm('삭제하시겠습니까?')){ tasks=tasks.filter(t=>t.id!==fId.value); save(); lastHash=hashTasks(tasks); closeModal(); render(); } }
 
 function exportData(){
   const blob=new Blob([JSON.stringify(tasks,null,2)],{type:'application/json'});
@@ -420,12 +455,12 @@ function importData(e){
   r.onload=()=>{ try{ tasks=JSON.parse(r.result); save(); render(); alert('불러왔습니다.'); }catch(err){ alert('파일 오류'); } };
   r.readAsText(f);
 }
-function resetData(){ if(confirm('원본 워크플랜으로 초기화합니다. 수정 내용이 사라집니다.')){ localStorage.removeItem(KEY); loadData(); render(); } }
+async function resetData(){ if(confirm('원본 워크플랜으로 초기화합니다. 수정 내용이 사라집니다.')){ tasks=SEED.map((x,i)=>({id:'t'+i+'_'+Date.now(),done:false,e:null,n:'',...x})); await save(); lastHash=hashTasks(tasks); render(); } }
 
 document.getElementById('modalBg').addEventListener('click',e=>{ if(e.target.id==='modalBg')closeModal(); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeModal(); });
 
-loadData(); render();
+loadData().then(()=>{ lastHash=hashTasks(tasks); render(); });
 </script>
 </body>
 </html>
