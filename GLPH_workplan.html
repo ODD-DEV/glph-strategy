@@ -262,18 +262,25 @@ const GIST_ID='4f6732d0d2f6bfacbd6074db9338a307';
 const GIST_API='https://api.github.com/gists/'+GIST_ID;
 const _a='gho_Ky5QpPclg4L0',_b='yE5xI2EJKUPxmD',_c='RLFE0w5gqm';const GH_TOKEN=_a+_b+_c;
 const GH_HEADERS={'Authorization':'token '+GH_TOKEN,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'};
-const POLL_MS=3000;
+const POLL_MS=1500;
+let etag='';
+
+function gistFetch(method,body){
+  const opts={method:method||'GET',headers:{...GH_HEADERS,'If-None-Match':''},cache:'no-store'};
+  if(body) opts.body=JSON.stringify(body);
+  return fetch(GIST_API,opts);
+}
 
 async function loadData(){
   try{
-    const r=await fetch(GIST_API,{headers:GH_HEADERS});
+    const r=await gistFetch();
     if(r.ok){
+      etag=r.headers.get('etag')||'';
       const gist=await r.json();
       const content=gist.files?.['workplan.json']?.content;
       if(content){ const data=JSON.parse(content); if(data.tasks&&data.tasks.length>0){tasks=data.tasks;return;} }
     }
   }catch(e){ console.warn('Cloud load failed, using seed',e); }
-  // fallback to seed
   tasks=SEED.map((x,i)=>({id:'t'+i+'_'+Date.now(),done:false,e:null,n:'',...x}));
   save();
 }
@@ -282,18 +289,21 @@ async function save(){
   saving=true;
   try{
     const payload={tasks:tasks,updated_at:new Date().toISOString()};
-    await fetch(GIST_API,{method:'PATCH',headers:GH_HEADERS,
-      body:JSON.stringify({files:{'workplan.json':{content:JSON.stringify(payload)}}})});
+    const r=await gistFetch('PATCH',{files:{'workplan.json':{content:JSON.stringify(payload)}}});
+    if(r.ok) etag=r.headers.get('etag')||'';
   }catch(e){ console.warn('Cloud save failed',e); }
   saving=false;
 }
-// Poll for changes from other users
 let lastHash='';
-function hashTasks(t){ return JSON.stringify(t.map(x=>x.id+x.done)); }
+function hashTasks(t){ return JSON.stringify(t.map(x=>x.id+''+x.done)); }
 async function poll(){
+  if(saving) return;
   try{
-    const r=await fetch(GIST_API,{headers:GH_HEADERS});
+    const r=await gistFetch();
     if(r.ok){
+      const newEtag=r.headers.get('etag')||'';
+      if(newEtag===etag) return;
+      etag=newEtag;
       const gist=await r.json();
       const raw=gist.files?.['workplan.json']?.content;
       const data=raw?JSON.parse(raw):null;
