@@ -560,28 +560,81 @@
     border-top: 1px solid #E8E3DD;
   }
 
-  /* ===== PAGE HEADER ===== */
-  .page-header {
+  /* ===== PAGE TAB HEADER ===== */
+  .page-tabs {
     position: fixed;
     top: 16px;
     left: 50%;
     transform: translateX(-50%);
     background: #1a1a1a;
-    color: #fff;
-    padding: 8px 24px;
+    display: flex;
     border-radius: 100px;
+    z-index: 100;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .page-tab {
+    padding: 8px 20px;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 1.5px;
-    z-index: 100;
-    white-space: nowrap;
     text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    border: none;
+    background: transparent;
   }
+  .page-tab.active {
+    background: #fff;
+    color: #1a1a1a;
+    border-radius: 100px;
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ===== ABOUT PAGE STYLES ===== */
+  .about-hero { position: relative; width: 100%; height: 580px; overflow: hidden; background: #2A2723; display: flex; align-items: flex-end; }
+  .about-hero-bg-note { position: absolute; top: 50%; left: 0; right: 0; text-align: center; color: rgba(255,255,255,0.12); font-size: 12px; letter-spacing: 1px; transform: translateY(-50%); }
+  .about-hero-inner { position: relative; z-index: 2; padding: 0 28px 56px; }
+  .about-hero .kicker { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 20px; font-weight: 500; }
+  .about-hero h1 { font-size: 30px; font-weight: 300; line-height: 1.45; color: #fff; letter-spacing: -0.5px; }
+  .about-hero h1 b { font-weight: 600; }
+  .origin { padding: 60px 28px; background: #fff; }
+  .origin .kicker { font-size: 11px; color: #B0A898; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; font-weight: 500; }
+  .origin p { font-size: 16px; line-height: 1.85; color: #2A2A2A; letter-spacing: -0.3px; margin-bottom: 18px; }
+  .origin p.lead { font-size: 18px; font-weight: 500; color: #1a1a1a; }
+  .origin .disclaimer { font-size: 11px; color: #C0B8AE; line-height: 1.6; margin-top: 26px; padding-top: 18px; border-top: 1px solid #EDE8E1; }
+  .standards { padding: 56px 24px; background: #F7F5F2; }
+  .standards .kicker { font-size: 11px; color: #B0A898; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; font-weight: 500; }
+  .standards h3 { font-size: 24px; font-weight: 600; color: #1a1a1a; margin-bottom: 32px; line-height: 1.35; letter-spacing: -0.5px; }
+  .axis { padding: 24px 0; border-bottom: 1px solid #E8E3DD; }
+  .axis:first-of-type { padding-top: 0; }
+  .axis .ax-q { font-size: 12px; color: #B0A898; font-weight: 600; margin-bottom: 9px; letter-spacing: -0.2px; }
+  .axis .ax-a { font-size: 16px; color: #1a1a1a; font-weight: 600; line-height: 1.5; letter-spacing: -0.3px; }
+  .axis .ax-sub { font-size: 13px; color: #8a8278; line-height: 1.6; margin-top: 7px; letter-spacing: -0.2px; }
+  .expert-block { margin-top: 34px; padding-top: 30px; border-top: 1px solid #E8E3DD; }
+  .expert-block h4 { font-size: 17px; font-weight: 600; color: #1a1a1a; line-height: 1.45; letter-spacing: -0.3px; margin-bottom: 14px; }
+  .expert-photo { width: 100%; height: 170px; background: #E2DCD3; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #B0A898; font-size: 12px; letter-spacing: 0.5px; margin-bottom: 12px; }
+  .expert-cap { font-size: 11px; color: #B0A898; line-height: 1.6; }
+  .about-closing { background: #1a1b1e; color: #fff; text-align: center; padding: 76px 28px; }
+  .about-closing .kicker { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 22px; font-weight: 500; }
+  .about-closing h2 { font-size: 26px; font-weight: 300; letter-spacing: -0.5px; margin-bottom: 18px; line-height: 1.45; }
+  .about-closing h2 b { font-weight: 600; }
+  .about-closing p { font-size: 13px; color: #888; line-height: 1.7; margin-bottom: 32px; letter-spacing: -0.2px; }
+  .about-closing .cta-group { display: flex; flex-direction: column; gap: 10px; }
+  .about-closing .cta { font-size: 14px; font-weight: 600; padding: 15px; border-radius: 10px; text-decoration: none; letter-spacing: -0.2px; display: block; text-align: center; }
+  .about-closing .cta.primary { background: #fff; color: #1a1a1a; }
+  .about-closing .cta.ghost { border: 1px solid rgba(255,255,255,0.25); color: #fff; }
 </style>
 </head>
 <body>
 
-<div class="page-header">GLPH HOME — Mobile Wireframe v2</div>
+<div class="page-tabs">
+  <button class="page-tab active" onclick="switchTab('home')">HOME</button>
+  <button class="page-tab" onclick="switchTab('about')">ABOUT</button>
+</div>
 
 <div class="phone">
   <div class="notch"></div>
@@ -597,6 +650,9 @@
       </div>
     </div>
   </div>
+
+  <!-- ══════ HOME TAB ══════ -->
+  <div id="tab-home" class="tab-content active">
 
   <!-- ===== 1. HERO ===== -->
   <div class="section-anno" style="background: #3A3530; padding-top: 64px;">
@@ -760,6 +816,79 @@
     <a href="#">브랜드 스토리 보기 →</a>
   </div>
 
+  </div><!-- /tab-home -->
+
+  <!-- ══════ ABOUT TAB ══════ -->
+  <div id="tab-about" class="tab-content">
+
+    <div class="section-anno" style="background:#2A2723; padding-top:64px;">
+      <div class="num">1</div>
+      <div class="label">히어로 — 풀스크린 / 브랜드 관점 한 문장</div>
+    </div>
+    <div class="about-hero">
+      <div class="about-hero-bg-note">풀스크린 배경 이미지 (정적·미니멀)</div>
+      <div class="about-hero-inner">
+        <div class="kicker">The Missing Half</div>
+        <h1>매달 1만 5천 명.<br>감량의 시작을 곁에서<br>지켜본 약사가,<br><b>그다음을 만들었습니다.</b></h1>
+      </div>
+    </div>
+
+    <div class="section-anno" style="background:#fff;">
+      <div class="num">2</div>
+      <div class="label">시작점 — 왜 만들었는가</div>
+    </div>
+    <div class="origin">
+      <p class="lead">한 약사가 현장에서 매일 마주한 건, 감량을 시작하는 수많은 사람들이었습니다.</p>
+      <p>빠르게 줄어드는 체중 곁에서, 함께 줄어드는 것들이 보였습니다. 적게 먹는 시기가 길어질수록 채워지지 않는 자리 ― 아무도 그 '다음'을 말하지 않았습니다.</p>
+      <p>대부분의 관심은 '얼마나 줄였는가'에 머물러 있었습니다. 그래서 만들었습니다. 혼자가 아니라, 여러 의사·약사와 함께.</p>
+      <div class="disclaimer">※ 위 내용은 일반적인 정보이며, 특정 제품의 효과를 보장하거나 질병의 예방·치료를 의미하지 않습니다. GLPH 제품은 일반식품입니다.</div>
+    </div>
+
+    <div class="section-anno" style="background:#F7F5F2;">
+      <div class="num">3</div>
+      <div class="label">기준 + 전문가 참여</div>
+    </div>
+    <div class="standards">
+      <div class="kicker">Our Standards</div>
+      <h3>우리가 제품을<br>만드는 기준.</h3>
+      <div class="axis">
+        <div class="ax-q">무엇을 담는가</div>
+        <div class="ax-a">적게 먹는 시기를 기준으로 함량을 설계합니다.</div>
+        <div class="ax-sub">'많이 넣었다'가 아니라 '왜 그만큼인가'에서 출발합니다.</div>
+      </div>
+      <div class="axis">
+        <div class="ax-q">무엇을 거부하는가</div>
+        <div class="ax-a">가짓수를 채우기 위한 성분을 넣지 않습니다.</div>
+        <div class="ax-sub">라벨을 길어 보이게 하는 미량 원료를 배제합니다.</div>
+      </div>
+      <div class="axis">
+        <div class="ax-q">무엇을 공개하는가</div>
+        <div class="ax-a">모든 원료의 함량·원산지·근거를 공개합니다.</div>
+        <div class="ax-sub">소비자가 직접 확인하고 판단할 수 있도록 합니다.</div>
+      </div>
+      <div class="expert-block">
+        <h4>한 명이 본 것을,<br>여러 전문가가 함께 설계했습니다.</h4>
+        <div class="expert-photo">공동 설계 의사·약사 단체 사진 (직함·소속 표기)</div>
+        <div class="expert-cap">※ 제품 개발·설계 참여 사실을 표시한 것이며, 효과를 보증·추천하는 것이 아닙니다.</div>
+      </div>
+    </div>
+
+    <div class="section-anno" style="background:#1a1b1e;">
+      <div class="num" style="background:#444;">4</div>
+      <div class="label" style="color:#555;">클로징 — 다크 + 제품 CTA</div>
+    </div>
+    <div class="about-closing">
+      <div class="kicker">GLPH</div>
+      <h2>줄이는 일에 집중할 때,<br><b>채우는 일을 생각합니다.</b></h2>
+      <p>비어 가는 자리를 기준으로 설계한 일반식품.</p>
+      <div class="cta-group">
+        <a href="#" class="cta primary">제품 보기</a>
+        <a href="#" class="cta ghost">케어 가이드</a>
+      </div>
+    </div>
+
+  </div><!-- /tab-about -->
+
   <!-- ===== 8. FOOTER ===== -->
   <div class="footer">
     <div class="footer-logo">GLPH</div>
@@ -785,5 +914,15 @@
 
 </div>
 
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.page-tab').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.querySelector('[onclick="switchTab(\'' + tab + '\')"]').classList.add('active');
+  document.querySelector('.phone').scrollTop = 0;
+  window.scrollTo(0, 0);
+}
+</script>
 </body>
 </html>
