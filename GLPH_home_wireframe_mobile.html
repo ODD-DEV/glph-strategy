@@ -1083,18 +1083,42 @@ const WF_HDR={'Authorization':'token '+_x+_y+_z,'Accept':'application/vnd.github
 const WF_FILE='wireframe_edits.json';
 let wfEdits={}, wfMode=false, wfTimer=null;
 
+var WF_INLINE=/^(BR|B|STRONG|I|EM|U|SPAN|MARK|SMALL)$/;
 function wfEsc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
-function wfApply(el,t){ el.innerHTML = wfEsc(t).replace(/\n/g,'<br>'); }
-function wfToast(m){ var s=document.getElementById('wfStatus'); s.textContent=m; s.classList.add('show'); clearTimeout(s._t); s._t=setTimeout(function(){s.classList.remove('show');},1500); }
+// 안정키 = .phone 기준 DOM 경로 (구조 안 바뀌면 불변)
+function wfKey(el){
+  var root=document.querySelector('.phone'), p=[], cur=el;
+  while(cur && cur!==root && cur.parentElement){
+    var i=1, s=cur;
+    while(s.previousElementSibling){ s=s.previousElementSibling; i++; }
+    p.unshift(i); cur=cur.parentElement;
+  }
+  return 'k'+p.join('.');
+}
+// 저장 텍스트(\n, **굵게**) → HTML 렌더
+function wfApply(el,t){ el.innerHTML = wfEsc(t).replace(/\n/g,'<br>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>'); }
+// 현재 HTML → 편집용 텍스트(<br>→\n, <b>→**)
+function wfToText(el){
+  var h=el.innerHTML.replace(/<br\s*\/?>/gi,'\n').replace(/<\/(b|strong)>/gi,'**').replace(/<(b|strong)>/gi,'**');
+  var d=document.createElement('div'); d.innerHTML=h; return d.textContent;
+}
+function wfToast(m){ var s=document.getElementById('wfStatus'); s.textContent=m; s.classList.add('show'); clearTimeout(s._t); s._t=setTimeout(function(){s.classList.remove('show');},1800); }
 
 function wfCollect(){
-  var els=[];
-  document.querySelectorAll('.phone *').forEach(function(el){
+  var root=document.querySelector('.phone'), els=[];
+  root.querySelectorAll('*').forEach(function(el){
     if(el.closest('.page-tabs'))return;
-    var nonBr=[].slice.call(el.children).filter(function(c){return c.nodeName!=='BR';});
-    if(nonBr.length===0 && el.textContent.trim()) els.push(el);
+    if(!el.textContent.trim())return;
+    // 블록 자식(인라인·BR 아님)이 있으면 컨테이너 → 제외
+    if([].slice.call(el.children).some(function(c){return !WF_INLINE.test(c.nodeName);})) return;
+    // 부모가 이미 편집대상(인라인만 포함)이면 자식 인라인 제외 (b 중복 방지)
+    var p=el.parentElement;
+    if(p && WF_INLINE.test(el.nodeName) &&
+       ![].slice.call(p.children).some(function(c){return !WF_INLINE.test(c.nodeName);}) &&
+       p.textContent.trim() && !p.closest('.page-tabs')) return;
+    els.push(el);
   });
-  els.forEach(function(el,i){ el.dataset.eid='e'+i; el.classList.add('wf-edit');
+  els.forEach(function(el){ el.dataset.eid=wfKey(el); el.classList.add('wf-edit');
     el.addEventListener('click',function(e){
       if(!wfMode)return;
       e.stopPropagation(); e.preventDefault();
@@ -1111,7 +1135,9 @@ function wfCollect(){
   });
 }
 function wfStart(el){
+  el.textContent=wfToText(el);
   el.contentEditable='plaintext-only'; el.classList.add('wf-editing'); el.focus();
+  wfToast('편집 중 — 줄바꿈 Enter, 굵게는 **양쪽 별표 2개**');
   var r=document.createRange(); r.selectNodeContents(el); r.collapse(false);
   var s=getSelection(); s.removeAllRanges(); s.addRange(r);
 }
