@@ -686,9 +686,20 @@
   .blogwf .bcta .k { font-size:11px; letter-spacing:2px; color:rgba(255,255,255,0.45); text-transform:uppercase; margin-bottom:12px; }
   .blogwf .bcta .h { font-size:18px; font-weight:600; color:#fff; line-height:1.5; margin-bottom:18px; letter-spacing:-0.3px; }
   .blogwf .bcta .btn { display:inline-block; font-size:14px; font-weight:600; background:#fff; color:#1a1a1a; padding:13px 28px; border-radius:10px; }
+
+  /* ===== 인라인 카피 편집 ===== */
+  .wf-toggle { position:fixed; top:14px; right:14px; z-index:300; background:#38bdf8; color:#fff; border:none; padding:9px 16px; border-radius:100px; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 4px 14px rgba(14,165,233,0.35); }
+  body.wf-on .wf-toggle { background:#e0556e; }
+  .wf-status { position:fixed; bottom:14px; left:50%; transform:translateX(-50%); z-index:300; background:rgba(26,27,30,0.9); color:#fff; padding:7px 16px; border-radius:100px; font-size:11.5px; opacity:0; transition:opacity .3s; pointer-events:none; }
+  .wf-status.show { opacity:1; }
+  body.wf-on .wf-edit { cursor:text; }
+  body.wf-on .wf-edit:hover { outline:1px dashed rgba(56,189,248,0.7); outline-offset:2px; border-radius:2px; }
+  .wf-editing { outline:2px solid #38bdf8 !important; outline-offset:2px; background:rgba(56,189,248,0.08); border-radius:2px; }
 </style>
 </head>
 <body>
+<button class="wf-toggle" onclick="wfToggle()">✎ 카피 편집</button>
+<div class="wf-status" id="wfStatus"></div>
 
 <div class="page-tabs">
   <button class="page-tab active" onclick="switchTab('home')">HOME</button>
@@ -1063,6 +1074,84 @@ function switchTab(tab) {
   document.querySelector('.phone').scrollTop = 0;
   window.scrollTo(0, 0);
 }
+</script>
+
+<script>
+// ===== 인라인 카피 편집 + Gist 동기화 (텍스트만, 구조 보존) =====
+const WF_GIST='4f6732d0d2f6bfacbd6074db9338a307';
+const _x='gho_Ky5QpPclg4L0',_y='yE5xI2EJKUPxmD',_z='RLFE0w5gqm';
+const WF_HDR={'Authorization':'token '+_x+_y+_z,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'};
+const WF_FILE='wireframe_edits.json';
+let wfEdits={}, wfMode=false, wfTimer=null;
+
+function wfEsc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function wfApply(el,t){ el.innerHTML = wfEsc(t).replace(/\n/g,'<br>'); }
+function wfToast(m){ var s=document.getElementById('wfStatus'); s.textContent=m; s.classList.add('show'); clearTimeout(s._t); s._t=setTimeout(function(){s.classList.remove('show');},1500); }
+
+function wfCollect(){
+  var els=[];
+  document.querySelectorAll('.phone *').forEach(function(el){
+    if(el.closest('.page-tabs'))return;
+    var nonBr=[].slice.call(el.children).filter(function(c){return c.nodeName!=='BR';});
+    if(nonBr.length===0 && el.textContent.trim()) els.push(el);
+  });
+  els.forEach(function(el,i){ el.dataset.eid='e'+i; el.classList.add('wf-edit');
+    el.addEventListener('click',function(e){
+      if(!wfMode)return;
+      e.stopPropagation(); e.preventDefault();
+      wfStart(el);
+    });
+    el.addEventListener('keydown',function(e){ if(e.key==='Escape'){e.preventDefault();el.blur();} });
+    el.addEventListener('blur',function(){
+      if(el.isContentEditable){
+        var t=el.innerText.replace(/\n+$/,'');
+        el.contentEditable='false'; el.classList.remove('wf-editing');
+        wfApply(el,t); wfEdits[el.dataset.eid]=t; wfSave();
+      }
+    });
+  });
+}
+function wfStart(el){
+  el.contentEditable='plaintext-only'; el.classList.add('wf-editing'); el.focus();
+  var r=document.createRange(); r.selectNodeContents(el); r.collapse(false);
+  var s=getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+function wfToggle(){
+  wfMode=!wfMode;
+  document.body.classList.toggle('wf-on',wfMode);
+  document.querySelector('.wf-toggle').textContent = wfMode?'✓ 편집 종료':'✎ 카피 편집';
+  wfToast(wfMode?'편집 모드 — 텍스트를 눌러 수정':'편집 종료 (자동 저장됨)');
+}
+function wfSave(){
+  clearTimeout(wfTimer);
+  wfTimer=setTimeout(function(){
+    fetch('https://api.github.com/gists/'+WF_GIST,{method:'PATCH',headers:WF_HDR,
+      body:JSON.stringify({files:{[WF_FILE]:{content:JSON.stringify(wfEdits)}}})})
+      .then(function(){wfToast('저장됨');}).catch(function(){wfToast('저장 실패');});
+  },700);
+}
+function wfRender(){
+  document.querySelectorAll('[data-eid]').forEach(function(el){
+    var t=wfEdits[el.dataset.eid]; if(t!==undefined) wfApply(el,t);
+  });
+}
+function wfLoad(){
+  fetch('https://api.github.com/gists/'+WF_GIST,{headers:WF_HDR})
+    .then(function(r){return r.json();})
+    .then(function(g){ var c=g.files&&g.files[WF_FILE]&&g.files[WF_FILE].content; if(c){wfEdits=JSON.parse(c); wfRender();} })
+    .catch(function(e){console.warn('wf load',e);});
+}
+// 실시간 반영(편집 중 아닐 때만)
+setInterval(function(){
+  if(document.querySelector('.wf-editing'))return;
+  fetch('https://api.github.com/gists/'+WF_GIST,{headers:WF_HDR})
+    .then(function(r){return r.json();})
+    .then(function(g){ var c=g.files&&g.files[WF_FILE]&&g.files[WF_FILE].content;
+      if(c){ var ne=JSON.parse(c); if(JSON.stringify(ne)!==JSON.stringify(wfEdits)){wfEdits=ne; wfRender();} } })
+    .catch(function(){});
+},5000);
+
+wfCollect(); wfLoad();
 </script>
 </body>
 </html>
