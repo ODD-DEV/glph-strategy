@@ -663,9 +663,14 @@
   .blogwf .toc { margin:20px 24px; padding:16px 18px; background:#FAF8F5; border-radius:12px; }
   .blogwf .toc-t { font-size:11px; font-weight:700; color:#B0A898; letter-spacing:1px; text-transform:uppercase; margin-bottom:11px; }
   .blogwf .toc-i { font-size:13px; color:#555; padding:5px 0; letter-spacing:-0.2px; }
+  .blogwf .toc2 { display:flex; gap:7px; margin:16px 24px; overflow-x:auto; scrollbar-width:none; }
+  .blogwf .toc2::-webkit-scrollbar { display:none; }
+  .blogwf .tchip { white-space:nowrap; flex:0 0 auto; font-size:12.5px; font-weight:600; padding:7px 14px; border-radius:18px; border:1px solid #E0D9D0; background:#fff; color:#8a8278; cursor:pointer; }
+  .blogwf .tchip b { font-weight:800; color:inherit; margin-right:3px; }
+  .blogwf .tchip.on { background:#1a1a1a; color:#fff; border-color:#1a1a1a; }
   .blogwf .bbody { padding:6px 24px; }
   .blogwf .lead { font-size:16px; font-weight:500; color:#2a2a2a; line-height:1.8; letter-spacing:-0.3px; margin-bottom:24px; }
-  .blogwf .bh2 { font-size:19px; font-weight:700; color:#1a1a1a; letter-spacing:-0.3px; margin:28px 0 12px; }
+  .blogwf .bh2 { font-size:19px; font-weight:700; color:#1a1a1a; letter-spacing:-0.3px; margin:28px 0 12px; scroll-margin-top:60px; }
   .blogwf .bbody p { font-size:14.5px; color:#3a3a3a; line-height:1.85; letter-spacing:-0.2px; margin-bottom:14px; }
   .blogwf .data-card { background:#1a1b1e; color:#fff; border-radius:14px; padding:22px; margin:18px 0; }
   .blogwf .data-card .big { font-size:32px; font-weight:800; letter-spacing:-1px; }
@@ -1079,16 +1084,18 @@
       <div class="author"><div class="av"></div><div class="info">GLPH 약사팀<br><span>감수 · OOO 약사 (면허번호 표기)</span></div></div>
     </div>
     <div class="anno"><div class="n">3</div><div class="l">목차 — 앵커 링크 (SEO + UX)</div></div>
-    <div class="toc"><div class="toc-t">목차</div><div class="toc-i">01 · 식욕이 사라진 자리</div><div class="toc-i">02 · 거울 앞에서 느끼는 변화</div><div class="toc-i">03 · 머리카락이 보내는 신호</div><div class="toc-i">04 · 무엇을 채워야 하나</div></div>
+    <div class="toc2" id="noteToc"><button class="tchip on" onclick="noteJump('ns1',this)"><b>01</b>식욕이 사라진 자리</button><button class="tchip" onclick="noteJump('ns2',this)"><b>02</b>거울 앞에서 느끼는 변화</button><button class="tchip" onclick="noteJump('ns3',this)"><b>03</b>머리카락이 보내는 신호</button><button class="tchip" onclick="noteJump('ns4',this)"><b>04</b>무엇을 채워야 하나</button></div>
     <div class="anno"><div class="n">4</div><div class="l">본문 — H2 구조 · 인풋 화법</div></div>
     <div class="bbody">
       <div class="lead">체중을 줄이는 일에는 모두가 집중합니다. 그런데 빠르게 줄어드는 동안, 함께 줄어드는 것들이 있습니다.</div>
-      <div class="bh2">01. 식욕이 사라진 자리</div>
+      <div class="bh2" id="ns1">01. 식욕이 사라진 자리</div>
       <p>적게 먹는 시기가 길어지면, 몸에 들어오는 영양도 함께 줄어듭니다. 단백질, 비타민, 무기질 — 평소라면 식사로 채워지던 것들이 비어 가기 시작합니다.</p>
       <div class="data-card"><div class="big">40%</div><div class="cap">감량된 체중 중 제지방(근육 등)이 차지하는 비율로 보고된 연구 사례. (출처 병기)</div></div>
-      <div class="bh2">02. 거울 앞에서 느끼는 변화</div>
+      <div class="bh2" id="ns2">02. 거울 앞에서 느끼는 변화</div>
       <p>급하게 빠질수록 피부가 그 속도를 따라가지 못합니다. 콜라겐과 수분이 채워지는 시간보다 부피가 줄어드는 속도가 빠르기 때문입니다.</p>
-      <div class="bh2">04. 무엇을 채워야 하나</div>
+      <div class="bh2" id="ns3">03. 머리카락이 보내는 신호</div>
+      <p>감량 두세 달 뒤, 베개와 배수구에서 머리카락이 눈에 띄기 시작합니다. 휴지기 탈모는 영양 부족과 급격한 체중 변화가 겹칠 때 흔히 나타나며, 시작 시점을 알면 미리 대비할 수 있습니다.</p>
+      <div class="bh2" id="ns4">04. 무엇을 채워야 하나</div>
       <p>핵심은 '덜 먹는 시기에 비어 가는 것'을 기준으로 영양을 보충하는 것입니다. GLPH는 그 자리를 채우기 위해 설계한 일반식품입니다.</p>
     </div>
     <div class="anno"><div class="n">5</div><div class="l">면책 박스 — 합법 필수</div></div>
@@ -1144,6 +1151,12 @@ function switchTab(tab) {
   document.querySelector('[onclick="switchTab(\'' + tab + '\')"]').classList.add('active');
   document.querySelector('.phone').scrollTop = 0;
   window.scrollTo(0, 0);
+}
+function noteJump(id, btn) {
+  var el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  var bar = document.getElementById('noteToc');
+  if (bar) Array.prototype.forEach.call(bar.children, function(c){ c.classList.toggle('on', c === btn); });
 }
 </script>
 
