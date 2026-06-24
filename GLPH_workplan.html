@@ -147,7 +147,6 @@
       <button class="btn" onclick="exportData()">백업</button>
       <button class="btn" onclick="document.getElementById('imp').click()">불러오기</button>
       <input type="file" id="imp" accept=".json" style="display:none" onchange="importData(event)">
-      <button class="btn" onclick="resetData()">초기화</button>
     </div>
   </div>
 
@@ -486,7 +485,6 @@ function importData(e){
   r.onload=()=>{ try{ tasks=JSON.parse(r.result); save(); render(); alert('불러왔습니다.'); }catch(err){ alert('파일 오류'); } };
   r.readAsText(f);
 }
-async function resetData(){ if(confirm('원본 워크플랜으로 초기화합니다. 수정 내용이 사라집니다.')){ tasks=SEED.map((x,i)=>({id:'t'+i+'_'+Date.now(),done:false,e:null,n:'',...x})); await save(); lastHash=hashTasks(tasks); render(); } }
 
 document.getElementById('modalBg').addEventListener('click',e=>{ if(e.target.id==='modalBg')closeModal(); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeModal(); });
