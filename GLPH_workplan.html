@@ -280,9 +280,11 @@ async function loadData(){
       const content=gist.files?.['workplan.json']?.content;
       if(content){ const data=JSON.parse(content); if(data.tasks&&data.tasks.length>0){tasks=data.tasks;return;} }
     }
-  }catch(e){ console.warn('Cloud load failed, using seed',e); }
-  tasks=SEED.map((x,i)=>({id:'t'+i+'_'+Date.now(),done:false,e:null,n:'',...x}));
-  save();
+  }catch(e){ console.warn('Cloud load failed',e); }
+  // [안전수정] 클라우드 읽기 실패 시 SEED로 덮어쓰지 않음 — 데이터 보호 (자동 저장 금지)
+  alert('워크플랜을 클라우드에서 불러오지 못했습니다.\n데이터 보호를 위해 자동 저장을 중단합니다.\n인터넷 연결 확인 후 새로고침해 주세요.');
+  tasks=[];
+  if(typeof render==='function') render();
 }
 async function save(){
   if(saving) return;
