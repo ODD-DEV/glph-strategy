@@ -271,6 +271,7 @@ function gistFetch(method,body){
   return fetch(GIST_API,opts);
 }
 
+let cloudOffline=false;
 async function loadData(){
   try{
     const r=await gistFetch();
@@ -278,19 +279,30 @@ async function loadData(){
       etag=r.headers.get('etag')||'';
       const gist=await r.json();
       const content=gist.files?.['workplan.json']?.content;
-      if(content){ const data=JSON.parse(content); if(data.tasks&&data.tasks.length>0){tasks=data.tasks;return;} }
+      if(content){ const data=JSON.parse(content); if(data.tasks&&data.tasks.length>0){ tasks=data.tasks; try{localStorage.setItem('glph_wp_backup',content);}catch(e){} cloudOffline=false; return; } }
     }
   }catch(e){ console.warn('Cloud load failed',e); }
-  // [안전수정] 클라우드 읽기 실패 시 SEED로 덮어쓰지 않음 — 데이터 보호 (자동 저장 금지)
-  alert('워크플랜을 클라우드에서 불러오지 못했습니다.\n데이터 보호를 위해 자동 저장을 중단합니다.\n인터넷 연결 확인 후 새로고침해 주세요.');
+  // [안전] 클라우드 실패 → localStorage 백업에서 복원 (SEED 저장 절대 금지)
+  try{
+    const bak=localStorage.getItem('glph_wp_backup');
+    if(bak){ const data=JSON.parse(bak); if(data.tasks&&data.tasks.length>0){ tasks=data.tasks; cloudOffline=true; alert('클라우드 연결 실패 — 로컬 백업에서 복원했습니다.\n연결이 돌아오면 새로고침하여 동기화하세요. (지금은 클라우드 자동 저장 보류)'); if(typeof render==='function')render(); return; } }
+  }catch(e){}
+  cloudOffline=true;
+  alert('워크플랜을 불러오지 못했고 로컬 백업도 없습니다.\n데이터 보호를 위해 자동 저장을 중단합니다. 새로고침해 주세요.');
   tasks=[];
   if(typeof render==='function') render();
 }
 async function save(){
+  // [안전1] 빈 목록은 절대 저장하지 않음 — 데이터 손상 방지의 핵심
+  if(!tasks || tasks.length===0){ console.warn('빈 목록 저장 차단'); return; }
+  // [안전2] 모든 저장을 localStorage에 먼저 미러 (클라우드 실패해도 데이터 보존)
+  const payload={tasks:tasks,updated_at:new Date().toISOString()};
+  try{ localStorage.setItem('glph_wp_backup',JSON.stringify(payload)); }catch(e){}
+  // [안전3] 클라우드 오프라인(로드 실패) 상태면 클라우드 저장 보류 — 잘못된 덮어쓰기 방지
+  if(cloudOffline){ return; }
   if(saving) return;
   saving=true;
   try{
-    const payload={tasks:tasks,updated_at:new Date().toISOString()};
     const r=await gistFetch('PATCH',{files:{'workplan.json':{content:JSON.stringify(payload)}}});
     if(r.ok) etag=r.headers.get('etag')||'';
   }catch(e){ console.warn('Cloud save failed',e); }
