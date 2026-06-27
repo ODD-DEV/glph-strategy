@@ -14,6 +14,16 @@
   .sync{font-size:11px;color:#999;}
   .sync b{color:#C9A24B;}
   .refresh{font-size:11px;border:1px solid #d8d4cc;background:#fff;border-radius:100px;padding:5px 12px;cursor:pointer;color:#555;}
+  .livebtn{display:inline-flex;align-items:center;gap:7px;border:1px solid #d8d4cc;background:#fff;border-radius:100px;padding:7px 13px;cursor:pointer;font-size:12px;font-weight:700;color:#555;}
+  .livebtn .ldot{width:9px;height:9px;border-radius:50%;background:#bbb;flex-shrink:0;}
+  .livebtn .ltime{font-weight:500;color:#999;font-size:11px;}
+  .livebtn.live{border-color:#bfe6cd;background:#f1faf4;color:#2e9457;}
+  .livebtn.live .ldot{background:#3a9d5d;animation:pulse 1.8s infinite;}
+  .livebtn.sync{border-color:#f0e2c0;background:#fdf8ec;color:#b8860b;}
+  .livebtn.sync .ldot{background:#d98a2b;}
+  .livebtn.err{border-color:#f3c4c4;background:#fdeeee;color:#c0392b;}
+  .livebtn.err .ldot{background:#d23b3b;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(58,157,93,.55);}70%{box-shadow:0 0 0 7px rgba(58,157,93,0);}100%{box-shadow:0 0 0 0 rgba(58,157,93,0);}}
   .summary{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
   .sm{flex:1;min-width:70px;background:#fff;border:1px solid #eae6df;border-radius:10px;padding:9px 10px;text-align:center;}
   .sm .n{font-size:20px;font-weight:800;}
@@ -57,11 +67,10 @@
 <header>
   <div class="wrap" style="padding:0;">
     <div class="htop">
-      <h1>GLPH 워크플랜 <span style="font-size:11px;font-weight:600;color:#C9A24B;">● LIVE</span></h1>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <span class="sync" id="sync">동기화 중…</span>
-        <span class="refresh" onclick="load()">새로고침</span>
-      </div>
+      <h1>GLPH 워크플랜</h1>
+      <button class="livebtn sync" id="livebtn" onclick="load()" title="클릭하면 즉시 새로고침">
+        <span class="ldot"></span><span id="lstate">연결 중…</span><span class="ltime" id="ltime"></span>
+      </button>
     </div>
     <div class="summary" id="summary"></div>
     <div class="filters" id="filters"></div>
@@ -92,6 +101,19 @@ const PEOPLE_COLORS={'창석':'#3b6fb0','동현':'#0f9d8c','민호':'#b8632b','�
 const EXT=['웰파인','상상바이오','노바렉스'];
 let activeFilter=null;
 let allTasks=[];
+let lastSync=0;
+
+function setStatus(state){
+  const b=document.getElementById('livebtn'), s=document.getElementById('lstate');
+  b.className='livebtn '+state;
+  s.textContent = state==='live'?'LIVE':state==='sync'?'동기화 중':'연결 끊김';
+}
+function fmtAgo(){
+  const el=document.getElementById('ltime');
+  if(!lastSync){el.textContent='';return;}
+  const sec=Math.round((Date.now()-lastSync)/1000);
+  el.textContent='· '+(sec<5?'방금':sec<60?sec+'초 전':Math.floor(sec/60)+'분 전');
+}
 
 function whoColor(n){ return PEOPLE_COLORS[n] || (EXT.includes(n)?'#a9a195':'#6b7280'); }
 function parseDeadline(s){
@@ -120,17 +142,23 @@ function statusOf(h){
 }
 
 async function load(){
+  if(!lastSync) setStatus('sync');
   try{
     const url=`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(RANGE)}?key=${API_KEY}`;
-    const r=await fetch(url);
+    const r=await fetch(url,{cache:'no-store'});
     if(!r.ok) throw new Error('Sheets API '+r.status);
     const d=await r.json();
     const rows=d.values||[];
     parseRows(rows);
     render();
-    document.getElementById('sync').innerHTML='업데이트 <b>'+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+'</b>';
+    lastSync=Date.now();
+    setStatus('live'); fmtAgo();
   }catch(e){
-    document.getElementById('board').innerHTML='<div class="err">시트를 불러오지 못했습니다: '+e.message+'<br>시트가 \"링크 공개\"인지, API 키 리퍼러 제한이 이 주소를 허용하는지 확인하세요.</div>';
+    setStatus('err');
+    document.getElementById('ltime').textContent='· 확인 필요';
+    if(!allTasks.length){
+      document.getElementById('board').innerHTML='<div class="err">시트를 불러오지 못했습니다: '+e.message+'<br>시트가 \"링크 공개\"인지, API 키 리퍼러 제한이 이 주소를 허용하는지 확인하세요.</div>';
+    }
   }
 }
 
@@ -212,6 +240,13 @@ async function loadArchive(){
 load();
 loadArchive();
 setInterval(load, 20000);
+// 1초마다 경과시간 갱신 + 60초 이상 갱신 없으면 '끊김'으로 표시
+setInterval(()=>{
+  fmtAgo();
+  if(lastSync && Date.now()-lastSync>60000){ setStatus('err'); document.getElementById('ltime').textContent='· '+Math.floor((Date.now()-lastSync)/1000)+'초 지연'; }
+}, 1000);
+// 탭으로 돌아오면 즉시 갱신
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) load(); });
 </script>
 </body>
 </html>
