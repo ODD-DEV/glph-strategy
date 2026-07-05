@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLPH — GLP-1 애프터케어 시장·진출 청사진</title>
+<style>
+  :root{
+    --ink:#16181d; --sub:#5b6270; --line:#e6e8ee; --bg:#fbfbfd; --card:#fff;
+    --accent:#1f6feb; --accentbg:#eaf1ff; --green:#0e8a5f; --greenbg:#e7f6ef;
+    --amber:#a86400; --amberbg:#fdf2df; --red:#c0392b; --redbg:#fdeceb; --purple:#6d3bc7; --purplebg:#f0eafc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:var(--bg);color:var(--ink);line-height:1.72;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:940px;margin:0 auto;padding:0 22px 90px;}
+  .hero{padding:58px 0 34px;border-bottom:1px solid var(--line);}
+  .kicker{display:inline-block;font-size:12px;font-weight:800;letter-spacing:2px;color:var(--accent);background:var(--accentbg);padding:6px 12px;border-radius:20px;margin-bottom:18px;}
+  h1{font-size:33px;line-height:1.3;letter-spacing:-1px;font-weight:800;margin-bottom:14px;}
+  h1 .hl{color:var(--accent);}
+  .lead{font-size:16.5px;color:var(--sub);max-width:740px;}
+  .meta{margin-top:20px;font-size:12.5px;color:var(--sub);border-top:1px dashed var(--line);padding-top:13px;}
+  .meta b{color:var(--ink);}
+  /* at-a-glance two column */
+  .glance{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:30px 0;}
+  .glance .col{border-radius:16px;padding:22px 22px;}
+  .glance .c1{background:#f3f5f9;border:1px solid var(--line);}
+  .glance .c2{background:linear-gradient(135deg,#16181d,#252932);color:#fff;}
+  .glance .ct{font-size:12px;font-weight:800;letter-spacing:1.5px;margin-bottom:14px;}
+  .glance .c1 .ct{color:var(--sub);}
+  .glance .c2 .ct{color:#8fb4ff;}
+  .glance ul{margin:0;}
+  .glance li{padding-left:20px;position:relative;margin:9px 0;font-size:14px;}
+  .glance li::before{content:"";position:absolute;left:2px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--accent);}
+  .glance .c2 li::before{background:#ffd873;}
+  .glance .c2 b{color:#ffd873;}
+  @media(max-width:720px){.glance{grid-template-columns:1fr;}}
+  /* sections */
+  section{margin-top:58px;}
+  .snum{font-size:13px;font-weight:800;color:var(--accent);letter-spacing:1px;}
+  h2{font-size:25px;font-weight:800;letter-spacing:-.6px;margin:6px 0 6px;}
+  .sdek{color:var(--sub);font-size:15px;margin-bottom:20px;}
+  h3{font-size:17px;font-weight:800;margin:28px 0 10px;padding-left:12px;border-left:4px solid var(--accent);}
+  p{margin:10px 0;}
+  ul.b{margin:10px 0 10px 4px;list-style:none;}
+  ul.b>li{padding-left:20px;position:relative;margin:8px 0;}
+  ul.b>li::before{content:"–";position:absolute;left:2px;color:var(--accent);font-weight:800;}
+  b,strong{font-weight:700;}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid #cfe0ff;}
+  /* stat + evidence */
+  .stat2{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin:12px 0;display:flex;gap:18px;align-items:flex-start;}
+  .stat2 .num{font-size:26px;font-weight:800;letter-spacing:-.5px;color:var(--ink);min-width:130px;line-height:1.15;}
+  .stat2 .num small{display:block;font-size:12px;font-weight:600;color:var(--sub);margin-top:3px;}
+  .stat2 .body{flex:1;}
+  .stat2 .claim{font-weight:700;font-size:14.5px;}
+  .stat2 .evi{font-size:12px;color:#8b929e;margin-top:5px;line-height:1.55;}
+  .stat2 .evi b{color:var(--sub);}
+  /* mini stat cards */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:13px;margin:22px 0;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:16px;}
+  .card .n{font-size:24px;font-weight:800;letter-spacing:-.5px;}
+  .card .l{font-size:12.5px;color:var(--sub);margin-top:5px;}
+  .card .e{font-size:10.5px;color:#a3a9b4;margin-top:7px;border-top:1px dashed var(--line);padding-top:6px;}
+  /* tables */
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  th{background:#f3f5f9;text-align:left;padding:11px 12px;font-weight:800;font-size:12.5px;border-bottom:1px solid var(--line);}
+  td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  td .big{font-weight:800;}
+  .src{font-size:11px;color:#a3a9b4;}
+  /* callouts */
+  .box{border-radius:13px;padding:18px 20px;margin:20px 0;font-size:14.5px;}
+  .box .bt{font-weight:800;font-size:12.5px;letter-spacing:.5px;margin-bottom:7px;}
+  .b-opp{background:var(--greenbg);border:1px solid #bfe6d4;} .b-opp .bt{color:var(--green);}
+  .b-honest{background:var(--amberbg);border:1px solid #f0dcb0;} .b-honest .bt{color:var(--amber);}
+  .b-gap{background:var(--redbg);border:1px solid #f3cdc9;} .b-gap .bt{color:var(--red);}
+  .b-idea{background:var(--purplebg);border:1px solid #ddd0f5;} .b-idea .bt{color:var(--purple);}
+  /* journey */
+  .journey{display:flex;gap:0;margin:22px 0;flex-wrap:wrap;}
+  .jstep{flex:1;min-width:150px;background:var(--card);border:1px solid var(--line);padding:16px 14px;position:relative;}
+  .jstep:not(:last-child){border-right:none;}
+  .jstep .jn{font-size:11px;font-weight:800;color:var(--accent);}
+  .jstep .jh{font-weight:800;font-size:14.5px;margin:5px 0;}
+  .jstep .jp{font-size:12.5px;color:var(--sub);}
+  .jstep .jarrow{position:absolute;right:-11px;top:50%;transform:translateY(-50%);z-index:2;background:#fff;color:var(--accent);font-weight:800;font-size:14px;border:1px solid var(--line);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;}
+  @media(max-width:720px){.jstep{border-right:1px solid var(--line)!important;}.jstep .jarrow{display:none;}}
+  /* blueprint */
+  .bp-pos{background:linear-gradient(135deg,#1f6feb,#3b8bff);color:#fff;border-radius:16px;padding:26px 28px;margin:22px 0;}
+  .bp-pos .t{font-size:12px;font-weight:800;letter-spacing:1.5px;color:#cfe0ff;margin-bottom:8px;}
+  .bp-pos .big{font-size:22px;font-weight:800;line-height:1.4;letter-spacing:-.5px;}
+  .bp-pos .big u{text-decoration:none;background:rgba(255,255,255,.22);padding:0 6px;border-radius:5px;}
+  /* ladder */
+  .ladder{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:20px 0;}
+  .rung{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:18px;}
+  .rung .rn{font-size:11px;font-weight:800;color:var(--accent);}
+  .rung .rh{font-weight:800;font-size:16px;margin:5px 0 3px;}
+  .rung .rd{font-size:12.5px;color:var(--sub);}
+  .rung .rt{font-size:11px;color:#a3a9b4;margin-top:8px;}
+  @media(max-width:720px){.ladder{grid-template-columns:1fr;}}
+  /* phases */
+  .phase{display:flex;gap:16px;margin:14px 0;align-items:flex-start;}
+  .phase .pnum{background:var(--ink);color:#fff;font-weight:800;border-radius:10px;min-width:64px;text-align:center;padding:10px 6px;font-size:13px;}
+  .phase .pbody .ph{font-weight:800;font-size:15px;}
+  .phase .pbody .pp{font-size:13.5px;color:var(--sub);}
+  /* mini bar compare */
+  .mm{display:flex;align-items:flex-end;gap:18px;margin:18px 0;padding:20px;background:var(--card);border:1px solid var(--line);border-radius:14px;flex-wrap:wrap;}
+  .mm .bar{text-align:center;}
+  .mm .bar .fill{width:76px;background:var(--accent);border-radius:8px 8px 0 0;}
+  .mm .bar.small .fill{background:#c7ccd6;}
+  .mm .bar .cap{font-size:11.5px;color:var(--sub);margin-top:8px;line-height:1.4;}
+  .mm .bar .v{font-size:15px;font-weight:800;margin-bottom:6px;}
+  /* sources */
+  .sources{margin-top:60px;padding-top:26px;border-top:2px solid var(--ink);font-size:12px;color:var(--sub);}
+  .sources h2{font-size:18px;color:var(--ink);}
+  .sources .grp{margin:14px 0;}
+  .sources .grp b{color:var(--ink);}
+  .disc{font-size:11.5px;color:#a3a9b4;margin-top:8px;line-height:1.6;}
+  .howcite{background:#f3f5f9;border:1px solid var(--line);border-radius:12px;padding:16px 18px;font-size:13px;color:var(--sub);margin:16px 0;}
+  .howcite b{color:var(--ink);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="kicker">GLPH · GLP-1 애프터케어 시장 & 진출 청사진</span>
+    <h1>주사로 살은 빠졌다.<br>이제 <span class="hl">되돌리는 시장</span>이 열린다 — 한국엔 아직 아무도 없다.</h1>
+    <p class="lead">이 문서는 두 가지를 전달한다: ① <b>국내 GLP-1 시장이 실제로 어떻게 돌아가는지</b>(누가·어디서·얼마에·몇 명, 무엇이 문제인지)를 구체적으로, ② 그 위에서 <b>GLPH가 어떤 포지션·컨셉·전략으로 진출하는지</b>의 청사진. 모든 수치에는 <b>'어떤 연구/조사에서 어떻게 나온 값인지'</b>를 바로 옆에 붙였다.</p>
+    <div class="meta">작성 2026-07 · 출처: 임상시험(STEP·SURMOUNT)·정부통계(질병청)·산업조사(IQVIA·KFF)·업계 실적(노보·릴리·데일리팜) · 대부분 2곳 이상 교차검증 · <b>이 문서는 상세페이지에 그대로 쓰는 게 아니라, 기획자가 브랜드 방향을 이해하기 위한 내부 청사진이다.</b></div>
+  </div>
+
+  <!-- AT A GLANCE : SITUATION vs OUR MOVE -->
+  <div class="glance">
+    <div class="col c1">
+      <div class="ct">지금 국내 상황 (3줄)</div>
+      <ul>
+        <li>다이어트 주사가 <b>미용 다이어트</b>로 번져 폭증 중 — 후발 <b>마운자로가 위고비를 추월</b>하며 성장 주도(2026 Q1 매출 3,232억)</li>
+        <li>사용자 대부분이 <b>근손실·탈모·속불편·피부처짐</b>을 겪지만 절반 이상 1년 내 끊고, 끊으면 <b>2/3가 요요</b></li>
+        <li>미국엔 애프터케어 카테고리가 생겼는데 <b>한국엔 전용 브랜드가 0개</b></li>
+      </ul>
+    </div>
+    <div class="col c2">
+      <div class="ct">그래서 GLPH의 수(手)</div>
+      <ul>
+        <li><b>포지션</b>: 한국 <b>최초·유일</b>의 "GLP-1 애프터케어" 전용 브랜드 = 카테고리 창출자</li>
+        <li><b>컨셉</b>: "뺀 뒤를 정직하게 돌본다" — 근육·모발·피부 <b>3제품 라인</b>으로 부작용을 나눠 케어</li>
+        <li><b>전략</b>: 규제상 대면 처방만 가능 → <b>의원·약국 선런칭</b>(전문가 신뢰)으로 시작해 온라인·글로벌로 확장</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 1 : KOREA CLOSE-UP -->
+  <section>
+    <div class="snum">01 — 국내 시장 클로즈업</div>
+    <h2>한국 GLP-1 시장은 지금 이렇게 돌아간다</h2>
+    <p class="sdek">"시장이 크다"가 아니라, 실제로 <b>누가·어디서·얼마에·몇 명이</b> 쓰는지. 이걸 알아야 우리가 어디에 붙을지가 보인다.</p>
+
+    <h3>① 누가·어디서·얼마에 쓰나</h3>
+    <table>
+      <tr><th>항목</th><th>내용</th><th>근거 / 맥락</th></tr>
+      <tr><td><b>누가</b></td><td>30~40대 여성 중심 + 정상체중의 미용 목적 사용자까지 확산</td><td>초고도비만 3만명 대비 월 처방 15.6만건 → 대부분 '의학적 필수'가 아닌 <b>미용 다이어트</b> <span class="src">Daum 팩트체크 2025.8</span></td></tr>
+      <tr><td><b>어디서</b></td><td>비만클리닉·의원에서 처방 → 약국 조제. <b>자가주사제라 처방 없이 판매 불가.</b></td><td>비대면(온라인) 처방은 <b>2024.12부터 금지</b> → 미국식 앱 번들 불가, <b>대면 접점이 필수</b> <span class="src">나무위키·복지부</span></td></tr>
+      <tr><td><b>얼마에</b></td><td>위고비 소비자가 <b>월 40~50만원</b>(공급가 4주분 372,025원 + 처방료), <b>전액 비급여</b></td><td>비급여라 순수 자기부담 = 소비 여력 있는 자기관리층 <span class="src">나무위키/위고비</span></td></tr>
+      <tr><td><b>몇 명</b></td><td>누적 처방 <b>마운자로 150만+ · 위고비 122만+</b> 건 (마운자로가 추월)</td><td>2026.6 심평원 기준 <span class="src">서울신문</span></td></tr>
+    </table>
+
+    <h3>② 얼마나 빨리 크나 — 지금 성장을 주도하는 건 '마운자로'다</h3>
+    <p>위고비(2024.10 출시)가 시장을 열었지만, <b>1년 늦게 나온 마운자로(2025.8 출시)가 단 6개월 만에 매출·처방·점유율을 모두 추월</b>했다. 지금 한국 시장 성장의 엔진은 마운자로다.</p>
+    <div class="cards">
+      <div class="card"><div class="n">3,232억</div><div class="l">마운자로 2026 Q1 매출 (시장 1위)</div><div class="e">위고비(1,040억)의 <b>3배 이상</b> · 데일리팜(IQVIA)</div></div>
+      <div class="card"><div class="n">×11.4</div><div class="l">마운자로 매출 급증 (2분기 만)</div><div class="e">284억(Q3’25) → 1,871억(Q4) → 3,232억(Q1’26) · 데일리팜</div></div>
+      <div class="card"><div class="n">150만건</div><div class="l">마운자로 누적 처방</div><div class="e">위고비(122만) <b>추월</b> — 1년 늦게 출시하고도 · 심평원/서울신문</div></div>
+      <div class="card"><div class="n">월 20만+</div><div class="l">마운자로 월 처방 돌파</div><div class="e">2026.4 최초 · 첫 달 1.9만 → 8개월 만 · 데일리팜</div></div>
+    </div>
+    <div class="mm">
+      <div style="flex:1;min-width:200px;font-size:13px;color:var(--sub);align-self:center;"><b>왜 마운자로가 이기나</b><br>직접비교 임상(SURMOUNT-5, 72주)에서 <b>마운자로 −20.2% vs 위고비 −13.7%</b> — 약 47% 더 큰 감량(GLP-1+GIP 이중작용). + 저용량 위주로 가격 접근성·공급 안정. <span class="src">Lilly IR·ACC·NEJM</span></div>
+      <div class="bar small"><div class="v">1,040억</div><div class="fill" style="height:42px;"></div><div class="cap">위고비<br>Q1’26 매출</div></div>
+      <div class="bar"><div class="v">3,232억</div><div class="fill" style="height:128px;"></div><div class="cap">마운자로<br>Q1’26 매출</div></div>
+    </div>
+    <ul class="b">
+      <li><b>시장 전체가 ~10배 팽창</b>: 2023 Q1 444억 → 2026 Q1 <b>4,502억</b>(GLP-1 주사제가 95%). <span class="src">데일리팜(IQVIA)</span></li>
+      <li><b>위고비</b>는 시장을 연 선발주자(출시 1년 매출 4,106억·수입 의약품 1위)로 여전히 큰 축. <b>삭센다</b>(’18 강자)는 −88.7%로 몰락 → 판이 신약 중심으로 재편.</li>
+      <li>다음 변곡점은 <b>경구제(오르포글리프론)</b> — 릴리(마운자로 진영)가 유리한 위치라 <b>성장 주도권이 당분간 마운자로 쪽</b>일 가능성. <span class="src">메디칼타임즈</span></li>
+    </ul>
+    <p class="src">※ 분기 매출은 IQVIA 표본조사(데일리팜 인용), 처방 건수는 심평원(HIRA) — 서로 다른 소스인데 방향 일치. 임상 통계가 아니라 '시장 규모/판매' 산업 데이터다. (마운자로 국내 출시 2025.8.20, 전량 비급여 비만 처방)</p>
+
+    <h3>③ 한국만의 특수성 3가지 (전략에 직결)</h3>
+    <ul class="b">
+      <li><b>대면 처방만 가능</b>(비대면 금지) → 사용자를 만나는 곳은 <b>의원·약국</b>. 우리 채널 전략의 출발점(§4).</li>
+      <li><b>미용 다이어트화 + 규제 개입 동시 진행</b> — 정부가 위고비·마운자로·삭센다를 '오남용 우려 의약품'으로 지정 추진(2026 상반기). 즉 <b>대중화가 규제로 인정될 만큼 빠르다.</b> <span class="src">의학신문·메디칼타임즈</span></li>
+      <li><b>한국 사용자의 부작용 관심도 순서가 미국과 다르다</b> — 국내는 <b>①속 메스꺼움 → ②탈모</b> 순으로 신경 쓰는 반면, 미국은 '오젬픽 페이스(피부처짐)'가 압도적 1위. <b>예뻐지려고 주사까지 썼는데 머리가 빠지는 두려움</b>이 국내 심리에 크게 자리. <span class="src">방향성 인사이트(정성) — 하드 통계 아님, 컨셉 참고용</span></li>
+    </ul>
+    <div class="box b-opp"><div class="bt">▲ 여기서 읽히는 것</div>돈 낼 여력 있는 자기관리층(30~40대 여성)이, <b>의원·약국이라는 명확한 물리적 접점</b>에서, <b>부작용을 이미 걱정하며</b> 늘고 있다. 게다가 지금 시장을 이끄는 <b>마운자로는 위고비보다 더 많이 빼주는 만큼(−20% vs −14%), 근손실·부작용 케어 수요도 더 크다.</b> 시장은 위(주사)에서 폭발했고 아래(케어)는 비어 있다. → 우리가 붙을 자리가 선명하다.</div>
+  </section>
+
+  <!-- SECTION 2 : SIDE EFFECTS = ENTRY POINT -->
+  <section>
+    <div class="snum">02 — 진입점</div>
+    <h2>부작용은 사실이고 흔하다 = 우리의 진입점</h2>
+    <p class="sdek">아래 각 수치는 <b>어떤 임상에서·누구를 대상으로·무엇을 쟀는지</b>를 그대로 붙였다. (상세페이지엔 '현상 설명'으로만 인용, 자사 효능 연결 금지)</p>
+
+    <div class="stat2"><div class="num">25~40%<small>감량 체중 중 근육</small></div><div class="body">
+      <div class="claim">빠르게 빼면, 줄어든 체중의 상당 부분이 지방이 아니라 근육이다.</div>
+      <div class="evi"><b>근거:</b> 세마글루타이드 임상(STEP 1, 성인 비만 대상, DXA 체성분 측정)에서 제지방 −6.9kg vs 지방 −10.4kg → 감량의 <b>약 40%가 제지방</b>. 티르제파타이드(SURMOUNT-1)에서는 <b>25~26%</b>. 메타분석도 25~40% 범위로 일치. <b>[NEJM 2021 · DOM 2025]</b></div>
+    </div></div>
+
+    <div class="stat2"><div class="num">43.9%<small>오심(가장 흔함)</small></div><div class="body">
+      <div class="claim">가장 흔한 부작용은 속(위장) — 오심·구토·설사.</div>
+      <div class="evi"><b>근거:</b> STEP 1 임상에서 오심 발생률 세마글루타이드 <b>43.9%</b> vs 위약 16.1%(구토 24.5%, 설사 29.7%). 두 개 출처가 동일 수치로 일치. <b>[Wilding, NEJM 2021]</b> — <i>한국 소비자가 가장 신경 쓰는 부작용과 일치.</i></div>
+    </div></div>
+
+    <div class="stat2"><div class="num">3~7.1%<small>탈모(여성↑)</small></div><div class="body">
+      <div class="claim">탈모는 여성에서 훨씬 흔하다 — 우리 타겟과 정확히 겹친다.</div>
+      <div class="evi"><b>근거:</b> 임상 보고 탈모율 세마글루타이드 <b>3%</b>(위약 1%) · 티르제파타이드 <b>5.4%</b>(위약 0.9%). 실사용 코호트에서 <b>여성 7.1% vs 남성 &lt;1%</b>. 기전은 급감량 스트레스에 의한 휴지기탈모(대개 가역). <b>[STEP·SURMOUNT 통합 · 실사용 코호트]</b></div>
+    </div></div>
+
+    <div class="stat2"><div class="num">64.8%<small>1년 내 중단</small></div><div class="body">
+      <div class="claim">대부분이 오래 못 버틴다 — 그래서 '한 번의 다이어트'가 아니다.</div>
+      <div class="evi"><b>근거:</b> 신규 처방 성인 <b>125,474명</b> 전자의무기록(EHR) 분석에서 <b>비당뇨 사용자의 64.8%가 12개월 내 중단</b>. 다른 데이터(Prime Therapeutics)와도 방향 일치. <b>[EHR 코호트 2025]</b></div>
+    </div></div>
+
+    <div class="stat2"><div class="num">≈2/3<small>중단 후 요요</small></div><div class="body">
+      <div class="claim">끊으면 뺀 살의 3분의 2가 돌아온다 → 평생 관리 + 케어 수요.</div>
+      <div class="evi"><b>근거:</b> STEP 1 연장연구 — 세마글루타이드로 68주 −17.3% 감량 후 중단하니 120주까지 <b>11.6%p 재증가</b>(=뺀 살의 약 2/3). 유지된 순감량은 5.6%뿐. <b>[Wilding, DOM 2022, 원문 확인]</b></div>
+    </div></div>
+
+    <div class="box b-idea"><div class="bt">◇ 이 통계들이 브랜드에 주는 것</div>세 부작용의 뿌리는 <b>약의 독성이 아니라 "빠른 감량 + 단백질·영양 결핍"</b> → <b>영양 애프터케어가 과학적으로 정당</b>하다. 게다가 중단·요요 데이터는 GLP-1이 <b>평생 관리</b>임을 증명 → 근육·모발·피부·유지 케어의 <b>반복 수요(정기구독)</b>가 구조적으로 존재한다.</div>
+  </section>
+
+  <!-- SECTION 3 : GAP -->
+  <section>
+    <div class="snum">03 — 경쟁 공백</div>
+    <h2>미국은 이미 카테고리, 한국은 백지</h2>
+    <p class="sdek">수요는 폭증하는데, 그걸 받는 제품이 — 특히 한국엔 — 없다.</p>
+    <div class="cards">
+      <div class="card"><div class="n">$4.1B→$13B</div><div class="l">미국 GLP-1 컴패니언 영양 시장(‘25→‘35)</div><div class="e">CAGR 12% · Future Market Insights</div></div>
+      <div class="card"><div class="n">7개+</div><div class="l">미국 진입 대기업</div><div class="e">Nestlé·Abbott·Danone·Herbalife·GNC·Vitamin Shoppe·Conagra</div></div>
+      <div class="card"><div class="n">0개</div><div class="l">한국 GLP-1 애프터케어 전용 브랜드</div><div class="e">2026.7 리서치 기준 · 존재하지 않음</div></div>
+    </div>
+    <div class="box b-gap"><div class="bt">✕ 한국 = 진짜 백지</div>국내에서 'GLP-1'을 단 유일한 제품(종근당 지엘핏 등)은 <b>몸의 GLP-1을 흉내내 '살을 빼주는' 유산균 — 정반대 목적</b>이다. 나머지는 전부 기사·콘텐츠거나 제약사의 <b>약</b> 개발(일동·한미)이다. <b>주사를 이미 맞는 사람을 위한 케어 제품은 아무도 안 만들고 있다.</b> 수요(위고비 2024.10 출시·부작용 공론화)는 있는데 공급이 0.</div>
+    <div class="box b-opp"><div class="bt">▲ 그래서 선점</div>미국의 공백은 대기업이 이미 채우는 중이지만, <b>한국은 아무도 없는 백지</b>다. 게다가 미국이 카테고리를 <b>이미 검증</b>했기에 "될까?" 리스크는 낮다. 한국에서 <b>통합 애프터케어 정체성</b>으로 먼저 깃발을 꽂는 것이 GLPH의 자리.</div>
+  </section>
+
+  <!-- SECTION 4 : BLUEPRINT (THE HEART) -->
+  <section>
+    <div class="snum">04 — GLPH 청사진 ★</div>
+    <h2>우리는 이렇게 들어간다</h2>
+    <p class="sdek">포지션 → 제품 라인 → 진출 단계. 이 문서의 심장이자, 기획자가 브랜드를 그릴 뼈대.</p>
+
+    <div class="bp-pos">
+      <div class="t">POSITIONING</div>
+      <div class="big">GLPH는 <u>한국 최초의 'GLP-1 애프터케어'</u> 전용 브랜드다.<br>다이어트 주사로 뺀 뒤 흔들리는 <u>근육·머릿결·피부</u>를, <u>약이 아닌 매일 한 포의 케어</u>로 되돌린다.</div>
+    </div>
+
+    <h3>제품 라인 — 부작용을 3개로 나눠 케어 (그리고 크로스셀 사다리)</h3>
+    <div class="ladder">
+      <div class="rung"><div class="rn">SKU1 · 앵커</div><div class="rh">올인원 (근육)</div><div class="rd">아미노산(단백질 재료)을 뿌리로 근육·모발·피부를 한 포에. 액상스틱.</div><div class="rt">진입 앵커 — 가장 강한 니즈(근손실)</div></div>
+      <div class="rung"><div class="rn">SKU2 · 심화</div><div class="rh">GROW (모발)</div><div class="rd">시스틴+비오틴 정제. 한국 관심도 2위 '탈모'를 정면 겨냥.</div><div class="rt">여성 타겟과 정확히 일치</div></div>
+      <div class="rung"><div class="rn">SKU3 · 심화</div><div class="rh">6-COMPLEX (피부)</div><div class="rd">저분자 콜라겐 6종 복합 액상. '오젬픽 페이스' 케어.</div><div class="rt">7개국 프리미엄 원료 소싱</div></div>
+    </div>
+    <p class="src">→ "SKU1은 매일 기본기(올인원 토대), SKU2·3는 부위 집중(심화)" — 한 사용자가 GLP-1 여정 내내 여러 SKU를 순차 소비하도록 설계(LTV·정기구독).</p>
+
+    <h3>진출 전략 — 왜 '의원·약국 선런칭'인가</h3>
+    <div class="box b-honest" style="margin-top:8px;"><div class="bt">핵심 논리</div>한국은 <b>비대면 처방 금지</b>라 위고비를 받는 곳은 <b>대면 의원·약국뿐</b>이다. 그 동선에 케어 제품이 함께 있으면, 사용자는 <b>부작용을 걱정하는 바로 그 순간·그 장소</b>에서 우리를 만난다. 그리고 이 카테고리는 <b>"의사·약사의 한마디"가 온라인 리뷰 100개보다 강한</b> 신뢰 상품이다. (의료인 74%가 특정 보충제 추천 / 현장 배치 시 순응도 60→100%)</div>
+    <div class="phase"><div class="pnum">Phase 1</div><div class="pbody"><div class="ph">의원·약국 선런칭 — 신뢰 자산 구축</div><div class="pp">매출보다 <b>'의사·약사 6인 공동설계'·초기 리뷰·전문가 추천</b> 레퍼런스 확보. 맞춤형 건기식 제도(2025.3)로 상담+추천 결합. 낮은 물량, 높은 전환.</div></div></div>
+    <div class="phase"><div class="pnum">Phase 2</div><div class="pbody"><div class="ph">온라인 확장 — 스케일</div><div class="pp">오프라인에서 검증된 신뢰를 근거로 쿠팡·네이버(국내 건기식의 <b>70%가 온라인</b>)·자사몰로 확대. 자사몰=정기구독(유지 라인)으로 LTV.</div></div></div>
+    <div class="phase"><div class="pnum">Phase 3</div><div class="pbody"><div class="ph">글로벌 — 미국 아마존</div><div class="pp">"GLP-1" 검색 진열대에 doctor-formulated 포지션으로 진입(컴패니언 $4~5B 카테고리). 한국에서 검증한 포뮬러·스토리를 이식.</div></div></div>
+
+    <h3>바이럴·시딩 유입 전략 (마운자로·위고비 키워드 정면 공략)</h3>
+    <p>우리가 잡을 키워드는 <b>'마운자로'·'위고비'가 들어간 키워드</b>다. 여기에 사람이 몰려 있는데(후기·부작용·탈모·영양제), 이 키워드는 <b>일반식품이 광고할 수 없다</b>(약물명 광고 불가 + "부작용" 검색은 네이버가 &lt;10으로 필터). → 그래서 광고가 아니라 <b>네이버 블로그·카페 바이럴 + 유튜브·인스타 시딩</b>으로 이 검색·커뮤니티를 점령하는 것이 우리의 정공법이다.</p>
+
+    <table>
+      <tr><th>의도</th><th>마운자로·위고비 키워드 · 월 검색량(네이버)</th><th>우리 콘텐츠 훅</th></tr>
+      <tr><td><b>정보·후기<br>(유입 관문)</b></td><td>마운자로 가격 <b>22.1만</b> · 위고비 가격 8.9만 · 마운자로 후기 <b>3.3만</b> · 위고비 후기 3,560</td><td>"마운자로 O개월 후기·가격" 정보/후기형 블로그·유튜브로 트래픽 흡수</td></tr>
+      <tr><td><b>부작용·증상<br>(문제 인지 = 핵심)</b></td><td>마운자로 설사 7,090 · 변비 2,470 · 구토 2,220 · 속쓰림 1,530 · <b>근손실 800</b> · 메스꺼움 570 (+ "마운자로 부작용"은 네이버 필터, 구글 예측 <b>~11만</b>)</td><td>"마운자로 근손실·속·탈모 어떻게 관리" 정보성 콘텐츠 → 자연스러운 제품 유입</td></tr>
+      <tr><td><b>탈모·피부<br>(SKU 직결)</b></td><td>마운자로 탈모 <b>3,410</b> · 위고비 탈모 990 · 마운자로 피부 490</td><td>SKU2(모발)·SKU3(피부)와 정확히 매칭 — 카페·시딩으로 후기 확산</td></tr>
+      <tr><td><b>영양제<br>(구매 의도 = 정확히 우리)</b></td><td>마운자로 영양제 1,440 · 위고비 영양제 120 · 마운자로 콜라겐 25 (초저경쟁)</td><td>지금 작아도 <b>가장 정확한 전환 키워드</b> — 블로그·상위노출로 선점</td></tr>
+    </table>
+    <p class="src">※ 출처: GLPH 키워드 데이터셋(네이버 검색광고 + 구글, 109개, 2026.6 · odd-dev.github.io/glph-strategy). "마운자로/위고비 부작용"은 네이버가 검색량을 &lt;10으로 강제 필터하지만 실수요는 큼(구글 KR 기준 마운자로부작용 예측 ~11만, 전년비 +150%↑).</p>
+
+    <p style="font-weight:800;margin-top:22px;margin-bottom:2px;">채널 플레이 — 광고가 아니라 바이럴·시딩 중심</p>
+    <ul class="b">
+      <li><b>네이버 블로그 상위노출</b> — "마운자로 부작용·근손실·탈모 관리", "마운자로 후기" 정보성·후기형 콘텐츠를 대량 생산해 검색 상단 점령(광고 막힌 자리를 콘텐츠로).</li>
+      <li><b>네이버 카페 바이럴·제휴</b> — 다이어트·맘카페의 마운자로/위고비 후기 스레드에 침투(30~40대 여성 밀집).</li>
+      <li><b>유튜브·인스타 시딩</b> — "마운자로 O개월 · 머릿결/근육/피부" 류 크리에이터 콘텐츠에 제품 노출·협업.</li>
+      <li>보조: 🟢성분 키워드(EAA·저분자콜라겐·비오틴영양제) 정도만 광고 가능 — <b>약물명·부작용 키워드는 광고 불가라, 처음부터 바이럴·시딩이 유일한 길.</b></li>
+    </ul>
+    <div class="box b-idea"><div class="bt">◇ 왜 바이럴·시딩인가</div>사람들은 <b>"마운자로/위고비 + 후기·부작용·탈모·영양제"</b>를 매달 수만~수십만 번 검색하고 카페·유튜브에서 이야기한다. 그런데 <b>일반식품은 이 키워드에 광고를 못 산다.</b> → 그래서 <b>블로그·카페 바이럴과 유튜브·인스타 시딩으로 그 검색·대화의 한복판에 콘텐츠로 들어가는 것</b>이 정공법이다. (⚠️ 콘텐츠에서 약물명은 정보성으로만, 제품 효능 단정 금지)</div>
+
+    <h3>왜 이길 수 있나 (차별화)</h3>
+    <ul class="b">
+      <li><b>카테고리 창출자 선점</b> — 한국 최초 통합 애프터케어 정체성(경쟁 실질 0).</li>
+      <li><b>규제가 만든 해자</b> — 비대면 금지가 오프라인 처방접점을 필수화 → 처방처 근접·전문가 신뢰가 곧 진입장벽.</li>
+      <li><b>정직 브랜딩</b> — 과대광고 단속이 심한 카테고리에서 '효능 과장 안 하는 정직'이 오히려 신뢰 차별점.</li>
+      <li><b>6인 의사·약사 공동설계 + 다국적 프리미엄 원산지</b> — 임상·시험성적서 없이도 신뢰를 세우는 자산.</li>
+    </ul>
+  </section>
+
+  <!-- BOTTOM LINE -->
+  <div class="bp-pos" style="margin-top:56px;background:linear-gradient(135deg,#16181d,#252932);">
+    <div class="t" style="color:#8fb4ff;">BOTTOM LINE</div>
+    <div class="big" style="font-size:19px;">① 시장은 <u style="background:rgba(255,216,115,.25);">폭발</u>하고 ② 사용자는 <u style="background:rgba(255,216,115,.25);">돈 내며 늘고</u> ③ 부작용은 <u style="background:rgba(255,216,115,.25);">사실이며 반복되고</u> ④ 케어 브랜드는 <u style="background:rgba(255,216,115,.25);">한국에 없다.</u><br>GLPH는 이 창(窓)에 <u style="background:rgba(255,216,115,.25);">의원·약국 → 온라인 → 글로벌</u> 순으로 들어가는 한국 최초 GLP-1 애프터케어 브랜드다.</div>
+  </div>
+
+  <!-- HOW WE CITE -->
+  <div class="howcite">
+    <b>이 문서의 숫자는 어떻게 인용됐나</b> — 모든 수치는 세 종류 중 하나에서 왔고, 각 숫자 옆에 종류를 표기했다. ⑴ <b>임상시험/논문</b>(STEP 1·SURMOUNT-1 등 — 부작용·효능 통계): "무슨 약·몇 명·무엇을 측정·위약 대비"를 함께 적음. ⑵ <b>정부·공공 통계</b>(질병관리청 국민건강영양조사 — 비만율 등). ⑶ <b>산업 데이터</b>(IQVIA·KFF·제약사 실적·업계지 — 시장규모·판매·처방 건수). 임상 통계와 시장 통계를 <b>섞지 않았다</b>(성격이 다름). 교차검증이 안 된 단일 출처·정성 인사이트는 본문에 명시했다.
+  </div>
+
+  <!-- SOURCES -->
+  <div class="sources">
+    <h2>출처 (전체)</h2>
+    <div class="grp"><b>국내 시장:</b> <a href="https://dailypharm.com/user/news/333721">데일리팜(위고비 4,106억·분기실적·삭센다)</a> · <a href="https://www.pharmnews.com/news/articleView.html?idxno=248727">팜뉴스(IQVIA +137%·글로벌 5위)</a> · <a href="https://www.kpanews.co.kr/news/articleView.html?idxno=537897">약사공론(수입 의약품 1위)</a> · 한국일보·서울신문(처방 건수·미용 다이어트) · Daum 팩트체크(월처방 ×7.8·3만 vs 15.6만) · <a href="https://www.medipana.com/news/articleView.html?idxno=334777">질병청 국민건강영양조사(비만율 37.2%)</a> · <a href="https://www.bosa.co.kr/news/articleView.html?idxno=3003059">의학신문(오남용 우려 지정)</a></div>
+    <div class="grp"><b>부작용(임상):</b> <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2032183">STEP 1 (NEJM 2021 — 오심·체성분)</a> · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11965027/">SURMOUNT-1 체성분(DOM 2025)</a> · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9542252/">STEP 1 연장연구(요요, Wilding 2022)</a> · <a href="https://www.sciencedirect.com/science/article/pii/S0190962226002483">탈모 코호트(JAAD)</a> · EHR 중단율(Medscape/2025) · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12125019/">단백질 다학회 권고</a></div>
+    <div class="grp"><b>글로벌 시장:</b> <a href="https://www.morganstanley.com/insights/articles/glp1-weight-loss-market-may-double-190-billion-2035">Morgan Stanley</a> · <a href="https://www.goldmansachs.com/insights/articles/the-anti-obesity-drug-market-may-prove-smaller-than-expected">Goldman Sachs</a> · <a href="https://www.jpmorgan.com/insights/global-research/current-events/obesity-drugs">JPMorgan</a> · <a href="https://www.kff.org/public-opinion/kff-health-tracking-poll-prescription-drug-costs-views-on-trump-administration-actions-and-glp-1-use/">KFF</a> · Novo/Lilly 실적</div>
+    <div class="grp"><b>애프터케어 공백·유통:</b> <a href="https://www.futuremarketinsights.com/reports/glp-1-nutritional-support-market">FMI($4.1B→$13B)</a> · <a href="https://press.vitaminshoppe.com/2025-03-31-the-vitamin-shoppe-unveils-first-of-its-kind-supplement-line-formulated-for-glp-1-users/">Vitamin Shoppe</a> · <a href="https://www.nestle.com/media/news/health-science-glp-1-nutrition-support-platform">Nestlé</a> · 종근당 지엘핏(메디포뉴스) · <a href="https://www.mknews.kr/?mid=view&no=43831">마케팅신문(한국 공백)</a> · <a href="https://www.wiseapp.co.kr/insight/detail/441">Wiseapp(온라인 70%·채널 신뢰)</a> · <a href="https://www.kpanews.co.kr/news/articleView.html?idxno=529523">약사공론(맞춤형 건기식)</a></div>
+    <div class="disc"><b>신뢰도 고지:</b> ①한국 분기 시장값·월처방 증가는 업계지 단독 인용(방향은 타 자료와 일치) ②"오젬픽 페이스"는 GLP-1 전용 정량 데이터 부재(바리아트릭 연구 프록시) ③"한국 부작용 관심도 1위 메스꺼움·2위 탈모"는 <b>정성 인사이트(하드 통계 아님)</b> — 컨셉 참고용 ④네이버 검색량·부당광고 적발 건수는 하드 수치 미확보. 이 항목들은 대외 인용 전 원출처 재확인 권장.</div>
+  </div>
+
+</div>
+</body>
+</html>
