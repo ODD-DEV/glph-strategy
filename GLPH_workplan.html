@@ -3,64 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GLPH 워크플랜 (실시간)</title>
+<title>GLPH 워크플랜</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:-apple-system,'Apple SD Gothic Neo',sans-serif;background:#f4f3f0;color:#1a1a1a;padding:0 0 60px;}
-  .wrap{max-width:760px;margin:0 auto;padding:16px;}
+  body{font-family:-apple-system,'Apple SD Gothic Neo',sans-serif;background:#f4f3f0;color:#1a1a1a;padding:0 0 70px;-webkit-text-size-adjust:100%;}
+  .wrap{max-width:780px;margin:0 auto;padding:16px;}
   header{position:sticky;top:0;background:#f4f3f0;z-index:10;padding:14px 16px 10px;border-bottom:1px solid #e5e2db;}
   .htop{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;}
   h1{font-size:19px;font-weight:800;letter-spacing:-0.5px;}
-  .sync{font-size:11px;color:#999;}
-  .sync b{color:#C9A24B;}
-  .refresh{font-size:11px;border:1px solid #d8d4cc;background:#fff;border-radius:100px;padding:5px 12px;cursor:pointer;color:#555;}
-  .livebtn{display:inline-flex;align-items:center;gap:7px;border:1px solid #d8d4cc;background:#fff;border-radius:100px;padding:7px 13px;cursor:pointer;font-size:12px;font-weight:700;color:#555;}
-  .livebtn .ldot{width:9px;height:9px;border-radius:50%;background:#bbb;flex-shrink:0;}
-  .livebtn .ltime{font-weight:500;color:#999;font-size:11px;}
-  .livebtn.live{border-color:#bfe6cd;background:#f1faf4;color:#2e9457;}
-  .livebtn.live .ldot{background:#3a9d5d;animation:pulse 1.8s infinite;}
-  .livebtn.sync{border-color:#f0e2c0;background:#fdf8ec;color:#b8860b;}
-  .livebtn.sync .ldot{background:#d98a2b;}
-  .livebtn.err{border-color:#f3c4c4;background:#fdeeee;color:#c0392b;}
-  .livebtn.err .ldot{background:#d23b3b;}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(58,157,93,.55);}70%{box-shadow:0 0 0 7px rgba(58,157,93,0);}100%{box-shadow:0 0 0 0 rgba(58,157,93,0);}}
+  .src{font-size:11px;color:#999;}
+  .src a{color:#C9A24B;text-decoration:none;font-weight:700;}
+  .tabs{display:flex;gap:6px;margin-top:12px;}
+  .tab{flex:1;text-align:center;font-size:13px;font-weight:700;border:1px solid #d8d4cc;background:#fff;border-radius:9px;padding:9px 8px;cursor:pointer;color:#666;user-select:none;}
+  .tab.on{background:#1a1a1a;color:#fff;border-color:#1a1a1a;}
   .summary{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
-  .sm{flex:1;min-width:70px;background:#fff;border:1px solid #eae6df;border-radius:10px;padding:9px 10px;text-align:center;}
-  .sm .n{font-size:20px;font-weight:800;}
-  .sm .l{font-size:10.5px;color:#999;margin-top:2px;}
-  .sm.done .n{color:#3a9d5d;} .sm.prog .n{color:#d98a2b;} .sm.todo .n{color:#9aa0a8;}
+  .sm{flex:1;min-width:62px;background:#fff;border:1px solid #eae6df;border-radius:10px;padding:8px 6px;text-align:center;}
+  .sm .n{font-size:19px;font-weight:800;} .sm .l{font-size:10px;color:#999;margin-top:2px;}
+  .sm.done .n{color:#3a9d5d;} .sm.prog .n{color:#d98a2b;} .sm.todo .n{color:#9aa0a8;} .sm.cancel .n{color:#c0392b;}
   .filters{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;}
   .fchip{font-size:12px;border:1px solid #d8d4cc;background:#fff;border-radius:100px;padding:6px 11px;cursor:pointer;color:#555;user-select:none;}
   .fchip.on{background:#1a1a1a;color:#fff;border-color:#1a1a1a;}
-  .fchip .c{opacity:.6;font-size:10px;margin-left:3px;}
+  .fchip .c{opacity:.55;font-size:10px;margin-left:3px;}
+  .hint{font-size:11px;color:#b3ada2;margin-top:8px;}
 
-  .g1{font-size:13px;font-weight:800;color:#1a1a1a;margin:22px 4px 6px;letter-spacing:-0.3px;display:flex;align-items:center;gap:7px;}
+  .g1{font-size:13px;font-weight:800;margin:22px 4px 8px;letter-spacing:-0.3px;display:flex;align-items:center;gap:7px;}
   .g1::before{content:'';width:6px;height:16px;background:#C9A24B;border-radius:2px;}
-  .g2{font-size:12px;font-weight:700;color:#8a8276;margin:14px 6px 6px;}
-  .task{background:#fff;border:1px solid #eae6df;border-radius:10px;padding:11px 13px;margin-bottom:7px;display:flex;align-items:center;gap:10px;}
-  .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;background:#cfcabf;}
-  .dot.done{background:#3a9d5d;} .dot.prog{background:#d98a2b;}
+  .wkhdr{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff;border:1px solid #eae6df;border-radius:10px;padding:11px 13px;margin:14px 0 0;cursor:pointer;user-select:none;}
+  .wkhdr .wt{font-size:14px;font-weight:800;letter-spacing:-0.3px;}
+  .wkhdr .wc{font-size:11px;color:#999;}
+  .wkhdr.now{border-color:#C9A24B;background:#fdf9ef;}
+  .wkhdr .tag{font-size:10px;font-weight:800;color:#C9A24B;}
+  .wkbody{padding:6px 0 2px;}
+  .pgrp{margin:10px 2px 2px;}
+  .pgrp .ph{font-size:12px;font-weight:800;display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:100px;color:#fff;}
+  .task{background:#fff;border:1px solid #eae6df;border-radius:10px;padding:10px 12px;margin-top:6px;display:flex;align-items:flex-start;gap:10px;}
+  .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;background:#cfcabf;}
+  .dot.done{background:#3a9d5d;} .dot.prog{background:#d98a2b;} .dot.cancel{background:#c0392b;}
   .tmain{flex:1;min-width:0;}
-  .tname{font-size:14px;font-weight:600;letter-spacing:-0.2px;}
-  .task.done .tname{color:#9aa0a8;text-decoration:line-through;}
+  .tname{font-size:13.5px;font-weight:600;letter-spacing:-0.2px;line-height:1.4;}
+  .task.done .tname{color:#9aa0a8;} .task.cancel .tname{color:#c9a7a7;text-decoration:line-through;}
   .tmeta{display:flex;gap:6px;align-items:center;margin-top:5px;flex-wrap:wrap;}
-  .who{font-size:11px;font-weight:700;padding:2px 7px;border-radius:100px;color:#fff;}
-  .who.sub{background:#cfcabf!important;font-weight:600;}
-  .dl{font-size:11px;color:#888;}
-  .dday{font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:100px;background:#f0ede6;color:#777;}
-  .dday.over{background:#fbe4e4;color:#d23b3b;} .dday.near{background:#fff2cc;color:#b8860b;}
-  .stbadge{font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:100px;flex-shrink:0;}
-  .st-done{background:#e3f4ea;color:#3a9d5d;} .st-prog{background:#fbeedd;color:#d98a2b;} .st-todo{background:#eee;color:#9aa0a8;} .st-etc{background:#eef;color:#5566aa;}
-
-  .arch{margin-top:30px;border-top:1px solid #e5e2db;padding-top:14px;}
-  .arch summary{font-size:13px;font-weight:700;color:#8a8276;cursor:pointer;list-style:none;}
-  .arch summary::-webkit-details-marker{display:none;}
-  .arch summary::before{content:'▸ ';color:#C9A24B;}
-  .arch[open] summary::before{content:'▾ ';}
-  .arch .ai{font-size:12.5px;color:#9aa0a8;padding:8px 10px;border-bottom:1px solid #f0ede6;text-decoration:line-through;}
-  .loading{text-align:center;color:#aaa;font-size:13px;padding:40px;}
-  .err{background:#fbe4e4;color:#c0392b;font-size:12px;padding:10px 12px;border-radius:8px;margin:10px 0;line-height:1.6;}
-  .note{font-size:11px;color:#aaa;text-align:center;margin-top:24px;line-height:1.6;}
+  .who{font-size:10.5px;font-weight:800;padding:1px 7px;border-radius:100px;color:#fff;}
+  .dl{font-size:11px;color:#888;font-weight:600;}
+  .dday{font-size:10px;font-weight:800;padding:1px 7px;border-radius:100px;background:#f0ede6;color:#888;}
+  .dday.over{background:#f3ede8;color:#b7a99b;} .dday.near{background:#fff2cc;color:#b8860b;} .dday.dday{background:#ffe0e0;color:#d23b3b;}
+  .stbadge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:100px;flex-shrink:0;margin-top:1px;}
+  .st-done{background:#e3f4ea;color:#3a9d5d;} .st-prog{background:#fbeedd;color:#d98a2b;} .st-todo{background:#eee;color:#9aa0a8;} .st-cancel{background:#f7e9e9;color:#c0392b;}
+  .mscat{font-size:12px;font-weight:800;color:#8a8276;margin:18px 6px 4px;}
+  .note{font-size:11px;color:#aea89d;text-align:center;margin-top:28px;line-height:1.7;}
+  .empty{text-align:center;color:#bbb;font-size:13px;padding:36px;}
 </style>
 </head>
 <body>
@@ -68,185 +59,258 @@
   <div class="wrap" style="padding:0;">
     <div class="htop">
       <h1>GLPH 워크플랜</h1>
-      <button class="livebtn sync" id="livebtn" onclick="load()" title="클릭하면 즉시 새로고침">
-        <span class="ldot"></span><span id="lstate">연결 중…</span><span class="ltime" id="ltime"></span>
-      </button>
+      <span class="src">노션 미러 · <a href="https://app.notion.com/p/38c4151dff8d803fa91ced6b7dfd18ce" target="_blank">원본 ↗</a></span>
+    </div>
+    <div class="tabs">
+      <div class="tab on" data-v="ms" onclick="setView('ms')">마일스톤</div>
+      <div class="tab" data-v="wk" onclick="setView('wk')">주간</div>
+      <div class="tab" data-v="pp" onclick="setView('pp')">담당자별</div>
     </div>
     <div class="summary" id="summary"></div>
     <div class="filters" id="filters"></div>
+    <div class="hint" id="hint"></div>
   </div>
 </header>
 
-<div class="wrap">
-  <div id="board"><div class="loading">구글 시트에서 불러오는 중…</div></div>
-
-  <details class="arch">
-    <summary>기존 완료 기록 (이전 워크플랜)</summary>
-    <div id="archive"><div class="ai" style="text-decoration:none;color:#bbb;">불러오는 중…</div></div>
-  </details>
-
+<div class="wrap"><div id="board"></div>
   <div class="note">
-    구글 시트 실시간 미러 · 읽기 전용 · 20초마다 자동 갱신<br>
-    수정은 <b>구글 시트</b>에서 하세요. 상태는 시트의 '진행상태' 열 기준입니다.
+    노션 「GLPH Master Work Plan」 반영본 · 2026-07-07 기준<br>
+    수정은 <b>노션</b>에서 하세요. 세부 To-Do는 원본 문서를 참고하세요.
   </div>
 </div>
 
 <script>
-const SHEET_ID='1I0bB9Zxg4hNahKanznvmygJ4mKzxlzzb_GaExV-riK0';
-const API_KEY='AIzaSyC-0iUj6v4BBrmGNVSlEWYWiiWvdJkbHlY';
-const RANGE="'Work Plan'!A1:H200";
-const GIST_ID='4f6732d0d2f6bfacbd6074db9338a307';
+const TODAY=new Date(2026,6,7); TODAY.setHours(0,0,0,0);
 const YEAR=2026;
-const PEOPLE_COLORS={'창석':'#3b6fb0','동현':'#0f9d8c','민호':'#b8632b','상민':'#7a52c4','수아':'#c44d8a','종필':'#5a8f3a','종필님':'#5a8f3a','외주':'#888'};
-const EXT=['웰파인','상상바이오','노바렉스'];
-let activeFilter=null;
-let allTasks=[];
-let lastSync=0;
+const COL={'창석':'#3b6fb0','동현':'#0f9d8c','민호':'#b8632b','상민':'#7a52c4','수아':'#c44d8a','마일스톤':'#C9A24B','팀':'#C9A24B'};
+const PEOPLE=['창석','동현','상민','민호','수아'];
+const WEEKS=['6/29–7/3','7/6–7/10','7/13–7/17','7/20–7/24','7/27–7/31','8/3–8/7','8/10–8/14','8/17–8/21','8/24–8/28','8/31–9/4','9/7–9/11','9/14–9/18','9/21–9/25'];
+const WEEKNOTE={2:'월화수 워크샵·금 제헌절',6:'★ 런칭 주',11:'추석 전주',12:'추석 주'};
+const NOWWEEK=1; // 7/6–7/10
 
-function setStatus(state){
-  const b=document.getElementById('livebtn'), s=document.getElementById('lstate');
-  b.className='livebtn '+state;
-  s.textContent = state==='live'?'LIVE':state==='sync'?'동기화 중':'연결 끊김';
-}
-function fmtAgo(){
-  const el=document.getElementById('ltime');
-  if(!lastSync){el.textContent='';return;}
-  const sec=Math.round((Date.now()-lastSync)/1000);
-  el.textContent='· '+(sec<5?'방금':sec<60?sec+'초 전':Math.floor(sec/60)+'분 전');
+// ── 마일스톤 [1]+[4] ──  {c:카테고리, t, d:날짜, s:상태}
+const MS=[
+ ['판매 시작','브랜드 런칭 & SKU1(올인원) 판매시작','8/14',''],
+ ['판매 시작','SKU2(헤어) 판매시작','9/1',''],
+ ['판매 시작','SKU3(스킨) 판매시작','9/14',''],
+ ['계약·시안·가격','SKU1 계약조건 확정','','done'],
+ ['계약·시안·가격','SKU2 계약조건 확정','7/8',''],
+ ['계약·시안·가격','SKU3 계약조건 확정','7/14',''],
+ ['계약·시안·가격','SKU1,2,3 컨셉 확정','7/1',''],
+ ['계약·시안·가격','SKU1 시안 확정','7/6',''],
+ ['계약·시안·가격','SKU2 시안 확정','7/24',''],
+ ['계약·시안·가격','SKU3 시안 확정','7/31',''],
+ ['계약·시안·가격','채널별 상품 구성·가격 설정 확정','7/2',''],
+ ['브랜드 컨텐츠','제품 소개서','7/27',''],
+ ['브랜드 컨텐츠','의사/약사 촬영 결과물','7/30',''],
+ ['브랜드 컨텐츠','SKU1 제품 촬영','8/4',''],
+ ['브랜드 컨텐츠','SKU2,3 제품 촬영','9/4',''],
+ ['브랜드 컨텐츠','제품 소개서 실물사진 업데이트','9/7',''],
+ ['오프라인 영업','영업 스케쥴링 확정','7/28',''],
+ ['오프라인 영업','영업용 제안서 최종','7/31',''],
+ ['오프라인 영업','영업 시작','8/3',''],
+ ['오프라인 영업','영업용 제안서 실물사진 업데이트','9/7',''],
+ ['온라인 마케팅','네이버 상위노출 테스트','7/9','cancel'],
+ ['온라인 마케팅','시딩 컨택 시작','8/3',''],
+ ['온라인 마케팅','네이버 상위노출 라이브','8/14',''],
+ ['온라인 마케팅','PR(기사) 발행 시작','8/14',''],
+ ['온라인 마케팅','CRM 캠페인 라이브','8/14',''],
+ ['온라인 마케팅','유튜브/인스타 시딩 라이브','8/17',''],
+ ['온라인 마케팅','리타겟팅 광고 라이브','8/19',''],
+ ['채널 관리·전략','웹사이트 기획 완료 (외주)','7/16',''],
+ ['채널 관리·전략','웹사이트/상세 외주 킥오프','7/3',''],
+ ['채널 관리·전략','웹사이트/상세 외주 계약 체결','7/8',''],
+ ['채널 관리·전략','SKU1 상세페이지 기획 완료 (외주)','7/24',''],
+ ['채널 관리·전략','SKU1 상세페이지 디자인 완료','7/31',''],
+ ['채널 관리·전략','웹사이트 구축 완료','7/31',''],
+ ['채널 관리·전략','상세페이지 채널별 적용 완료','8/5',''],
+ ['채널 관리·전략','SKU1 상세페이지 제작 완료 (외주)','8/11',''],
+ ['채널 관리·전략','웹사이트 디자인 완료','8/13',''],
+ ['채널 관리·전략','자사몰·스마트스토어·쿠팡 오픈','8/14',''],
+ ['생산 관리','SKU1,2,3 단상자 샘플 제작 발주','7/10',''],
+ ['생산 관리','SKU1,2,3 단상자 목업 수령','7/16',''],
+ ['생산 관리','SKU1 2차 발주 의사결정','9/1',''],
+ ['생산 관리','SKU1 2차 발주 넣기','9/1',''],
+ ['인쇄 제작물','VMD 수령','8/7',''],
+ ['인쇄 제작물','리플렛/카드 수령','',''],
+];
+const MSCATS=['판매 시작','계약·시안·가격','브랜드 컨텐츠','오프라인 영업','온라인 마케팅','채널 관리·전략','생산 관리','인쇄 제작물'];
+
+// ── 주간 [5] ──  [주차, 담당자, 제목, 날짜, 상태]
+const WK=[
+ // W1 6/29–7/3
+ [0,'팀','SKU1 계약서 체결','',''],[0,'팀','SKU1 스틱포/패키지 시안 확정','',''],[0,'팀','마케팅 플랜/예산/프로젝션 확정','','done'],[0,'팀','영업전략 기획 결과물','',''],[0,'팀','웹사이트 외주 체결','','done'],[0,'팀','VMD·리플렛/카드 기획/디자인 결과물','',''],
+ [0,'창석','SKU1,2,3 제조사 타임라인 관리','','prog'],[0,'창석','SKU1 발주서 넣기','6/29','done'],[0,'창석','웰파인 영양성분표 확보','6/30',''],[0,'창석','SKU3 노바렉스 2차 샘플 리뷰','','done'],[0,'창석','웹외주 첫 미팅','6/30','done'],[0,'창석','자사 방향성 정리(기획/디자인)','7/2',''],[0,'창석','웹외주 킥오프 미팅','7/3',''],[0,'창석','SKU2 상상바이오 1차 샘플 수령(비오틴)','7/2',''],[0,'창석','SKU2 샘플 확정 · 가속시험 6주 시작','7/3',''],[0,'창석','SKU1 시안 확정 · 스틱포 데이터아웃','7/3',''],[0,'창석','단상자 샘플 제작 발주','7/3',''],
+ [0,'동현','예산·프로젝션 결과물 완성','7/1',''],[0,'동현','VMD 기획 확정','7/2',''],[0,'동현','리플렛&카드 기획/디자인 리뷰','7/2',''],[0,'동현','마케팅 업무별 대행사 확정','7/2',''],[0,'동현','대행사 단가협의·계약조건 확정','7/3',''],
+ [0,'민호','제작물 업체 찾기(홀로그램·택배박스)','7/2',''],[0,'민호','쇼핑백·택배박스 시안 제작','7/2',''],[0,'민호','리플렛&카드 데이터아웃','7/3',''],
+ [0,'상민','틱톡 시딩툴 파악(신규/기존)','7/1',''],[0,'상민','메일컨택→어필리에이트 퍼널 구축','7/1',''],[0,'상민','카페24 도메인 연결','7/1',''],
+ // W2 7/6–7/10
+ [1,'팀','SKU1 디자인 데이터 전체 아웃','',''],[1,'팀','네이버 상위노출 테스트','','cancel'],[1,'팀','브랜드/제품 소개서 기획/디자인 결과물','',''],[1,'팀','영업 기획 결과물','',''],
+ [1,'창석','SKU1 촬영 기획','7/6',''],[1,'창석','SKU1 계약서 체결','7/6',''],[1,'창석','단상자 디자인 최종 점검','7/8',''],[1,'창석','의사/약사 프로필 촬영 기획','7/9',''],[1,'창석','웹 1차 기획안 수령·피드백','7/8',''],[1,'창석','웹 2차 기획안 수령·피드백','7/10',''],[1,'창석','SKU1 품목제조보고 확정','7/7',''],[1,'창석','SKU1 표시문안 확보','7/13',''],[1,'창석','SKU1 가속 테스트 완료(6주)','7/10',''],[1,'창석','SKU2 영양성분표 확보','7/13',''],[1,'창석','SKU3 콜라겐 샘플 1차 수령','7/8',''],[1,'창석','SKU3 샘플 확정·가속 6주 시작','7/9',''],[1,'창석','SKU3 발주서·계약서','7/10',''],[1,'창석','단상자 샘플 제작 발주','7/10',''],
+ [1,'동현','브랜드/제품 소개서 기획','7/8',''],[1,'동현','의사/약사 컨텐츠 활용방안·멘트 기획','7/10',''],[1,'동현','외주 업무 리스팅·업체 매칭','7/7',''],[1,'동현','영업 기획(납품가격·KPI·계약서폼)','7/7',''],[1,'동현','영업 스크립트·사은품·제안서 기획','7/9',''],
+ [1,'상민','의사/약사 섭외 연락·일정 확정','7/10',''],[1,'상민','영업 리스트 확정','7/10',''],[1,'상민','도메인 이전·PG/간편결제 연결','7/7',''],[1,'상민','매체 트래킹 코드 설치','7/8',''],[1,'상민','회원가입·간편로그인','7/9',''],[1,'상민','네이버·구글 SEO 셋팅','7/10',''],[1,'상민','유튜브/인스타 시딩 리스트·협업구조','7/10',''],[1,'상민','CRM 전체 기획 1차','7/10',''],
+ [1,'민호','쇼핑백·카톤박스 확정 및 발주','7/7',''],[1,'민호','런칭 이벤트 기획','7/6',''],[1,'민호','정보성 게시물 기획','7/8',''],[1,'민호','VMD 디자인 디벨롭','7/9',''],[1,'민호','SNS 게시물/영상 기획','7/10',''],
+ [1,'수아','GLPH 스틱포 패키지 목업/디자인','7/6','prog'],[1,'수아','브랜드/제품 소개서 디자인 1차','7/10',''],[1,'수아','영업용 제안서 디자인 1차','7/10',''],[1,'수아','한아원 명함 전체 시안','7/8',''],[1,'수아','마트약국 백릿·와블러·POP 데이터아웃','7/8',''],
+ // W3 7/13–7/17
+ [2,'창석','의사/약사 프로필 스튜디오·헤메 섭외','7/13',''],[2,'창석','촬영 스케쥴링','7/15',''],[2,'창석','SKU1 촬영 모델 서치','7/17',''],[2,'창석','상세 1차 기획안·웹 3차 기획안 피드백','7/15',''],[2,'창석','웹사이트 기획안 최종 확정','7/16',''],[2,'창석','SKU1 패키지 데이터아웃','7/13',''],[2,'창석','SKU1,2,3 단상자 목업 수령','7/16',''],[2,'창석','SKU2 가속 2주차·영양성분표','7/15',''],[2,'창석','SKU2 품목제조신고 완료','7/17',''],[2,'창석','SKU3 가속 1주차','',''],
+ [2,'동현','상위노출 결과 확인','7/16',''],[2,'동현','기사 배포 기획(언론사·스크립트)','7/16',''],[2,'동현','카페 바이럴/제휴 기획','7/16',''],
+ [2,'상민','CRM 툴 리서치 정리','7/16',''],[2,'상민','네이버 스마트스토어·쿠팡 개설 신청','7/2',''],
+ [2,'민호','SKU1 촬영 모델 서치','7/13',''],[2,'민호','SNS 런칭 이벤트 컨텐츠 디자인','7/16',''],[2,'민호','VMD 발주 넣기','7/16',''],
+ [2,'수아','SNS 정보성 컨텐츠 디자인','7/16',''],
+ // W4 7/20–7/24
+ [3,'팀','상세페이지 기획안 확정','7/24',''],
+ [3,'창석','상세 1차 기획안 피드백','7/21',''],[3,'창석','상세페이지 기획안 확정','7/24',''],[3,'창석','상세 1차 디자인 시안 수령·피드백','7/24',''],[3,'창석','SKU1 촬영 모델 미팅·픽스','7/24',''],[3,'창석','SKU2 가속 3주차·표시사항 확정','7/23',''],[3,'창석','SKU2 카톤박스·PTP 데이터아웃','7/22',''],[3,'창석','SKU3 가속 2주차·영양성분표','7/22',''],[3,'창석','SKU3 품목제조신고','7/22',''],
+ [3,'동현','바이럴 업체 결정','7/20',''],[3,'동현','CRM 기획 구체화(솔루션·세그·등급)','7/24',''],
+ [3,'상민','영업 스케쥴링','7/20',''],[3,'상민','카페24-스스 리뷰 연동','7/20',''],[3,'상민','백엔드 현황 리뷰','7/21',''],[3,'상민','시딩 고도화 지속','','prog'],
+ [3,'민호','웹사이트 제작 진행(모바일)','7/24',''],
+ [3,'수아','SKU1 촬영 모델 서치 2주차','7/22',''],[3,'수아','SNS 정보성 컨텐츠 기획·디자인','7/23',''],
+ // W5 7/27–7/31
+ [4,'팀','상세페이지 디자인 확정','7/31',''],[4,'팀','의사/약사 촬영','7/31',''],
+ [4,'창석','의사/약사 촬영·피드백·확정','7/31',''],[4,'창석','SKU1 촬영 계약서 체결','7/31',''],[4,'창석','상세 3차 디자인 시안·디자인 확정','7/31',''],[4,'창석','SKU1 스틱포 생산 완료·제조사 입고','7/29',''],[4,'창석','SKU1 단상자 생산 완료','7/31',''],[4,'창석','SKU2 가속 4주차·PTP 생산 완료','7/31',''],[4,'창석','SKU3 가속 3주차·표기사항 확보','7/30',''],[4,'창석','SKU3 카톤박스 제작 시작','7/30',''],
+ [4,'동현','의사/약사 촬영','7/31',''],[4,'동현','마케팅 대행사 일괄 본계약 체결','7/28',''],[4,'동현','웹 블로그 컨텐츠 생성/업로드 자동화 구축','7/31',''],
+ [4,'상민','네이버 브랜드 검색 셋팅','7/27',''],[4,'상민','쿠팡 입점 승인·상품 상세 초안 등록','7/31',''],[4,'상민','시딩 고도화 지속','','prog'],
+ [4,'민호','웹사이트 제작 진행(웹)','7/31',''],
+ [4,'수아','제품 촬영 비품 구매','7/31',''],
+ // W6 8/3–8/7
+ [5,'팀','SKU1 제품 사진 촬영 결과물','8/5',''],[5,'팀','유튜브/인스타 시딩 컨택 시작','8/3',''],
+ [5,'창석','SKU1 제품 촬영·결과물 확정','8/5',''],[5,'창석','SKU1 제품 생산 완료','8/7',''],[5,'창석','SKU2 가속 5주차·PTP 입고','8/4',''],[5,'창석','SKU2 카톤박스 생산','8/7',''],[5,'창석','SKU3 가속 4주차·스틱포 제작 완료','8/7',''],[5,'창석','SKU3 패키지/카톤박스 데이터아웃','8/3',''],
+ [5,'동현','대행사 스탠바이 확인','8/3',''],[5,'동현','신규 마케팅 방안 기획','8/6',''],[5,'동현','SKU1 제품 촬영','8/4',''],
+ [5,'상민','유튜브/인스타 시딩 컨택','8/7',''],
+ // W7 8/10–8/14 런칭
+ [6,'팀','글리프 런칭(판매 시작)','8/14',''],
+ [6,'창석','글리프 런칭 전체 관리·미비사항 보완','8/14',''],[6,'창석','SKU1 자사품질 검사 완료','8/12',''],[6,'창석','SKU2 패키지 제조 완료·카톤박스 입고','8/11',''],[6,'창석','SKU2 가속시험 완료(6주)','8/14',''],[6,'창석','SKU3 가속 5주차·스틱포/패키지 제작','',''],
+ [6,'동현','판매시작일 광고 일괄 라이브(상위노출·카페바이럴·브랜드검색·기사)','8/14',''],
+ [6,'상민','CRM 캠페인 라이브','8/14',''],
+ [6,'민호','온라인 제작물 실사 적용','8/13',''],[6,'민호','오프라인 제작물 실사 적용 발주','8/10',''],
+ // W8 8/17–8/21
+ [7,'창석','SKU2 패키지 입고·제품 생산(감리)','8/18',''],[7,'창석','SKU3 가속 완료·패키지/카톤박스 제조 완료','8/21',''],
+ [7,'동현','리타겟팅 광고 라이브','8/19',''],
+ [7,'상민','CRM 자동화 프로세스 트래킹','8/21',''],
+ // W9 8/24–8/28
+ [8,'창석','SKU2 완제품 자가 검사','8/28',''],[8,'창석','SKU3 제품 생산 완료','8/31',''],
+ // W10 8/31–9/4
+ [9,'창석','SKU2 출고·고고창고 입고·판매준비 완료','9/1',''],[9,'창석','SKU3 자가품질 검사','9/10',''],[9,'창석','SKU2,3 제품 사진 촬영','9/4',''],
+ [9,'동현','SKU2,3 제품 사진 촬영','9/4',''],
+ // W11 9/7–9/11
+ [10,'창석','SKU3 출고','9/8',''],
+ [10,'민호','제품 카드 실물 사진 업데이트','9/7',''],
+ [10,'수아','제품 소개서·영업 제안서 실물 사진 업데이트','9/7',''],
+ // W12 9/14–9/18
+ [11,'창석','SKU3 고고창고 입고·판매준비 완료','9/14',''],
+ // W13 9/21–9/25
+ [12,'창석','SKU3 생산(후속)','',''],
+];
+
+let view='ms', filter=null;
+
+function stMeta(s){return s==='done'?{k:'done',l:'완료'}:s==='prog'?{k:'prog',l:'진행중'}:s==='cancel'?{k:'cancel',l:'취소'}:{k:'todo',l:'예정'};}
+function parseD(s){const m=(s||'').match(/(\d{1,2})\/(\d{1,2})/);return m?new Date(YEAR,+m[1]-1,+m[2]):null;}
+function sortKey(s){const m=(s||'').match(/(\d{1,2})\/(\d{1,2})/);return m?(+m[1])*100+(+m[2]):9999;}
+function dday(s,done){const dl=parseD(s);if(!dl||done)return null;const diff=Math.round((dl-TODAY)/86400000);if(diff<0)return{cls:'over',t:'지남 '+(-diff)+'일'};if(diff===0)return{cls:'dday',t:'D-day'};if(diff<=4)return{cls:'near',t:'D-'+diff};return{cls:'',t:'D-'+diff};}
+function whoCol(p){return COL[p]||'#6b7280';}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+
+function taskHTML(person,title,date,st,showWho,weekLabel){
+  const m=stMeta(st), dd=dday(date,m.k==='done'||m.k==='cancel');
+  let meta='';
+  if(showWho&&person) meta+=`<span class="who" style="background:${whoCol(person)}">${person}</span>`;
+  if(weekLabel) meta+=`<span class="who" style="background:#efece5;color:#8a8276">${weekLabel}</span>`;
+  if(date) meta+=`<span class="dl">${date}</span>`;
+  if(dd) meta+=`<span class="dday ${dd.cls}">${dd.t}</span>`;
+  return `<div class="task ${m.k}"><div class="dot ${m.k}"></div><div class="tmain"><div class="tname">${esc(title)}</div>`+
+    (meta?`<div class="tmeta">${meta}</div>`:'')+`</div><span class="stbadge st-${m.k}">${m.l}</span></div>`;
 }
 
-function whoColor(n){ return PEOPLE_COLORS[n] || (EXT.includes(n)?'#a9a195':'#6b7280'); }
-function parseDeadline(s){
-  if(!s) return null;
-  const m=s.match(/(\d{1,2})\/(\d{1,2})/);
-  if(!m) return null;
-  return new Date(YEAR, +m[1]-1, +m[2]);
-}
-function ddayInfo(dl, done){
-  if(!dl||done) return null;
-  const today=new Date(); today.setHours(0,0,0,0);
-  const diff=Math.round((dl-today)/86400000);
-  let cls='', txt;
-  if(diff<0){cls='over';txt='지남 '+(-diff)+'일';}
-  else if(diff===0){cls='near';txt='D-day';}
-  else if(diff<=3){cls='near';txt='D-'+diff;}
-  else{txt='D-'+diff;}
-  return {cls,txt};
-}
-function statusOf(h){
-  const t=(h||'').trim();
-  if(!t) return {key:'todo',label:'예정'};
-  if(t.includes('완료')) return {key:'done',label:'완료'};
-  if(t.includes('진행')) return {key:'prog',label:'진행중'};
-  return {key:'etc',label:t};
-}
-
-async function load(){
-  if(!lastSync) setStatus('sync');
-  try{
-    const url=`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(RANGE)}?key=${API_KEY}`;
-    const r=await fetch(url,{cache:'no-store'});
-    if(!r.ok) throw new Error('Sheets API '+r.status);
-    const d=await r.json();
-    const rows=d.values||[];
-    parseRows(rows);
-    render();
-    lastSync=Date.now();
-    setStatus('live'); fmtAgo();
-  }catch(e){
-    setStatus('err');
-    document.getElementById('ltime').textContent='· 확인 필요';
-    if(!allTasks.length){
-      document.getElementById('board').innerHTML='<div class="err">시트를 불러오지 못했습니다: '+e.message+'<br>시트가 \"링크 공개\"인지, API 키 리퍼러 제한이 이 주소를 허용하는지 확인하세요.</div>';
-    }
-  }
-}
-
-function parseRows(rows){
-  allTasks=[];
-  let g1='',g2='';
-  for(let i=4;i<rows.length;i++){
-    const r=rows[i]||[];
-    const B=(r[1]||'').trim(), C=(r[2]||'').trim(), D=(r[3]||'').trim();
-    const E=(r[4]||'').trim(), F=(r[5]||'').trim(), G=(r[6]||'').trim(), H=(r[7]||'').trim();
-    if(D==='분류 3') continue;
-    if(B && !D){ g1=B; g2=''; continue; }
-    if(C && !D){ g2=C; continue; }
-    if(!D) continue;
-    allTasks.push({g1,g2,name:D,main:E,sub:F,dl:G,status:H});
-  }
+function computeSummary(list){
+  let done=0,prog=0,todo=0,cancel=0;
+  list.forEach(t=>{const k=stMeta(t.s).k;k==='done'?done++:k==='prog'?prog++:k==='cancel'?cancel++:todo++;});
+  return {n:list.length,done,prog,todo,cancel};
 }
 
 function render(){
-  const tasks=allTasks;
-  // summary
-  let done=0,prog=0,todo=0;
-  tasks.forEach(t=>{const s=statusOf(t.status).key; if(s==='done')done++; else if(s==='prog')prog++; else todo++;});
-  document.getElementById('summary').innerHTML=
-    `<div class="sm"><div class="n">${tasks.length}</div><div class="l">전체</div></div>`+
-    `<div class="sm done"><div class="n">${done}</div><div class="l">완료</div></div>`+
-    `<div class="sm prog"><div class="n">${prog}</div><div class="l">진행중</div></div>`+
-    `<div class="sm todo"><div class="n">${todo}</div><div class="l">예정</div></div>`;
-  // filters (담당자)
-  const counts={};
-  tasks.forEach(t=>{ if(t.main){counts[t.main]=(counts[t.main]||0)+1;} });
-  const people=Object.keys(counts).sort((a,b)=>counts[b]-counts[a]);
-  let fh=`<span class="fchip ${activeFilter?'':'on'}" onclick="setFilter(null)">전체</span>`;
-  people.forEach(p=>{ fh+=`<span class="fchip ${activeFilter===p?'on':''}" onclick="setFilter('${p.replace(/'/g,"")}')" style="${activeFilter===p?'background:'+whoColor(p)+';border-color:'+whoColor(p):''}">${p}<span class="c">${counts[p]}</span></span>`; });
-  document.getElementById('filters').innerHTML=fh;
-  // board
-  const shown=activeFilter? tasks.filter(t=>t.main===activeFilter||t.sub===activeFilter) : tasks;
-  let html='', curG1='', curG2='';
-  if(!shown.length){ html='<div class="loading">표시할 과업이 없습니다.</div>'; }
-  shown.forEach(t=>{
-    if(t.g1!==curG1){ curG1=t.g1; curG2=''; html+=`<div class="g1">${t.g1||'기타'}</div>`; }
-    if(t.g2!==curG2){ curG2=t.g2; if(t.g2) html+=`<div class="g2">${t.g2}</div>`; }
-    const st=statusOf(t.status);
-    const isDone=st.key==='done';
-    const dd=ddayInfo(parseDeadline(t.dl), isDone);
-    let who='';
-    if(t.main) who+=`<span class="who" style="background:${whoColor(t.main)}">${t.main}</span>`;
-    if(t.sub) who+=`<span class="who sub">${t.sub}</span>`;
-    html+=`<div class="task ${isDone?'done':''}">`+
-      `<div class="dot ${st.key}"></div>`+
-      `<div class="tmain"><div class="tname">${t.name}</div>`+
-      `<div class="tmeta">${who}${t.dl?`<span class="dl">${t.dl}</span>`:''}${dd?`<span class="dday ${dd.cls}">${dd.txt}</span>`:''}</div></div>`+
-      `<span class="stbadge st-${st.key}">${st.label}</span>`+
-      `</div>`;
-  });
-  document.getElementById('board').innerHTML=html;
-}
-
-function setFilter(p){ activeFilter=p; render(); }
-
-// 기존 Gist 완료 항목 (1회 로드, 읽기전용 아카이브)
-async function loadArchive(){
-  try{
-    const r=await fetch('https://api.github.com/gists/'+GIST_ID);
-    if(!r.ok) throw 0;
-    const g=await r.json();
-    const f=g.files['workplan.json']; if(!f) throw 0;
-    const data=JSON.parse(f.content);
-    const tasks=Array.isArray(data)?data:(data.tasks||[]);
-    const done=tasks.filter(t=>t.done);
-    document.getElementById('archive').innerHTML = done.length
-      ? done.map(t=>`<div class="ai">${(t.t||t.title||t.n||'').replace(/</g,'&lt;')}</div>`).join('')
-      : '<div class="ai" style="text-decoration:none;color:#bbb;">완료 기록 없음</div>';
-  }catch(e){
-    document.getElementById('archive').innerHTML='<div class="ai" style="text-decoration:none;color:#bbb;">기존 기록을 불러오지 못했습니다</div>';
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.v===view));
+  // 필터칩은 주간/담당자 뷰에서만
+  const fbox=document.getElementById('filters'), hint=document.getElementById('hint');
+  if(view==='ms'){ fbox.innerHTML=''; hint.textContent=''; }
+  else{
+    const counts={}; WK.forEach(w=>{if(w[1]!=='팀')counts[w[1]]=(counts[w[1]]||0)+1;});
+    let fh=`<span class="fchip ${filter?'':'on'}" onclick="setFilter(null)">전체</span>`;
+    PEOPLE.forEach(p=>{const on=filter===p;fh+=`<span class="fchip ${on?'on':''}" onclick="setFilter('${p}')" style="${on?'background:'+whoCol(p)+';border-color:'+whoCol(p):''}">${p}<span class="c">${counts[p]||0}</span></span>`;});
+    fbox.innerHTML=fh;
+    hint.textContent = view==='wk'?'주차를 눌러 접기/펼치기 · 담당자 칩으로 필터':'담당자 칩을 눌러 한 명만 보기';
   }
+  // summary
+  let sumList;
+  if(view==='ms') sumList=MS.map(m=>({s:m[3]}));
+  else sumList=WK.filter(w=>w[1]!=='팀'&&(!filter||w[1]===filter)).map(w=>({s:w[4]}));
+  const s=computeSummary(sumList);
+  document.getElementById('summary').innerHTML=
+    `<div class="sm"><div class="n">${s.n}</div><div class="l">전체</div></div>`+
+    `<div class="sm done"><div class="n">${s.done}</div><div class="l">완료</div></div>`+
+    `<div class="sm prog"><div class="n">${s.prog}</div><div class="l">진행중</div></div>`+
+    `<div class="sm todo"><div class="n">${s.todo}</div><div class="l">예정</div></div>`+
+    (s.cancel?`<div class="sm cancel"><div class="n">${s.cancel}</div><div class="l">취소</div></div>`:'');
+
+  const board=document.getElementById('board');
+  if(view==='ms') board.innerHTML=renderMS();
+  else if(view==='wk') board.innerHTML=renderWK();
+  else board.innerHTML=renderPP();
 }
 
-load();
-loadArchive();
-setInterval(load, 20000);
-// 1초마다 경과시간 갱신 + 60초 이상 갱신 없으면 '끊김'으로 표시
-setInterval(()=>{
-  fmtAgo();
-  if(lastSync && Date.now()-lastSync>60000){ setStatus('err'); document.getElementById('ltime').textContent='· '+Math.floor((Date.now()-lastSync)/1000)+'초 지연'; }
-}, 1000);
-// 탭으로 돌아오면 즉시 갱신
-document.addEventListener('visibilitychange',()=>{ if(!document.hidden) load(); });
+function renderMS(){
+  let html='';
+  MSCATS.forEach(cat=>{
+    const items=MS.filter(m=>m[0]===cat).sort((a,b)=>sortKey(a[2])-sortKey(b[2]));
+    if(!items.length)return;
+    html+=`<div class="mscat">${cat}</div>`;
+    items.forEach(m=>{ html+=taskHTML('마일스톤',m[1],m[2],m[3],false,null); });
+  });
+  return html;
+}
+
+function renderWK(){
+  let html='';
+  WEEKS.forEach((wl,i)=>{
+    let items=WK.filter(w=>w[0]===i);
+    if(filter) items=items.filter(w=>w[1]===filter);
+    if(!items.length) return;
+    const open = i>=NOWWEEK && i<=NOWWEEK+2;
+    const note=WEEKNOTE[i]?`<span class="tag"> · ${WEEKNOTE[i]}</span>`:'';
+    html+=`<div class="wkhdr ${i===NOWWEEK?'now':''}" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">`+
+      `<div class="wt">${wl}${note}</div><div class="wc">${items.length}건 ${open?'▾':'▸'}</div></div>`+
+      `<div class="wkbody" style="display:${open?'block':'none'}">`;
+    // 담당자별 소그룹
+    const order=['팀',...PEOPLE];
+    order.forEach(p=>{
+      const pit=items.filter(w=>w[1]===p);
+      if(!pit.length)return;
+      html+=`<div class="pgrp"><span class="ph" style="background:${whoCol(p)}">${p}</span></div>`;
+      pit.forEach(w=>{ html+=taskHTML(p,w[2],w[3],w[4],false,null); });
+    });
+    html+='</div>';
+  });
+  return html||'<div class="empty">표시할 항목이 없습니다.</div>';
+}
+
+function renderPP(){
+  const persons = filter?[filter]:PEOPLE;
+  let html='';
+  persons.forEach(p=>{
+    const items=WK.filter(w=>w[1]===p).sort((a,b)=>(a[0]-b[0])||(sortKey(a[3])-sortKey(b[3])));
+    if(!items.length)return;
+    html+=`<div class="g1" style="color:${whoCol(p)}">${p} <span style="font-weight:600;color:#aaa;font-size:11px">${items.length}건</span></div>`;
+    let curW=-1;
+    items.forEach(w=>{
+      if(w[0]!==curW){curW=w[0];html+=`<div class="mscat">${WEEKS[w[0]]}${WEEKNOTE[w[0]]?' · '+WEEKNOTE[w[0]]:''}</div>`;}
+      html+=taskHTML(p,w[2],w[3],w[4],false,null);
+    });
+  });
+  return html||'<div class="empty">표시할 항목이 없습니다.</div>';
+}
+
+function setView(v){view=v;render();window.scrollTo(0,0);}
+function setFilter(p){filter=p;render();}
+render();
 </script>
 </body>
 </html>
